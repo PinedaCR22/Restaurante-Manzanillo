@@ -1,13 +1,13 @@
 // Hero.tsx
 import { useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { FaArrowDown } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 
-// Asegúrate de importar estilos globales de Swiper en tu app:
+// Asegúrate de importar estilos globales de Swiper en tu app (p. ej. en main.tsx):
 // import "swiper/css";
 // import "swiper/css/pagination";
 // import "swiper/css/effect-fade";
@@ -16,6 +16,54 @@ type HeroProps = {
   images?: string[];
   scrollTargetId?: string;
 };
+
+/** AnimatedText: anima PALABRA por PALABRA con stagger (evita cortes dentro de palabras) */
+function AnimatedText({
+  text,
+  className,
+  delay = 0.1,
+  duration = 0.5,
+}: {
+  text: string;
+  className?: string;
+  delay?: number;
+  duration?: number;
+}) {
+  const container: Variants = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: delay,
+      },
+    },
+  };
+
+  const word: Variants = {
+    hidden: { y: 14, opacity: 0 },
+    show: {
+      y: 0,
+      opacity: 1,
+      transition: { duration, ease: [0.16, 1, 0.3, 1], type: "tween" },
+    },
+  };
+
+  return (
+    <motion.span
+      className={className}
+      variants={container}
+      initial="hidden"
+      animate="show"
+      aria-label={text}
+    >
+      {text.split(" ").map((w, i) => (
+        <motion.span key={`${w}-${i}`} variants={word} className="inline-block mr-2">
+          {w}
+        </motion.span>
+      ))}
+    </motion.span>
+  );
+}
 
 export default function Hero({
   images = [
@@ -69,15 +117,24 @@ export default function Hero({
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-center text-white max-w-3xl"
         >
-          <h1 className="text-3xl md:text-5xl font-extrabold drop-shadow-[0_3px_6px_rgba(0,0,0,0.6)]">
-            Bienvenidos al restaurante flotante de Manzanillo
-          </h1>
-          <p className="mt-3 md:mt-4 text-base md:text-lg opacity-95 drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
-            Sabores del mar y experiencias de ecoturismo en el Golfo de Nicoya.
-          </p>
+          {/* Título animado palabra por palabra */}
+          <AnimatedText
+            text="Bienvenidos al restaurante flotante de Manzanillo"
+            className="block text-3xl md:text-5xl font-extrabold leading-tight drop-shadow-[0_3px_6px_rgba(0,0,0,0.6)]"
+            delay={0.15}
+            duration={0.45}
+          />
+
+          {/* Subtítulo animado palabra por palabra */}
+          <AnimatedText
+            text="Sabores del mar y experiencias de ecoturismo en el Golfo de Nicoya."
+            className="block mt-3 md:mt-4 text-base md:text-lg opacity-95 leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]"
+            delay={0.35}
+            duration={0.4}
+          />
 
           {/* Flecha hacia abajo debajo del subtítulo */}
           <button
@@ -87,11 +144,7 @@ export default function Hero({
           >
             <motion.div
               animate={{ y: [0, 10, 0] }}
-              transition={{
-                duration: 1.2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
             >
               <FaArrowDown />
             </motion.div>
