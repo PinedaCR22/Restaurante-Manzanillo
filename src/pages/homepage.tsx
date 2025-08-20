@@ -1,6 +1,10 @@
+import Hero from "../sections/homepage/hero"
+
 const homepage = () => {
   return (
-    <div>homepage</div>
+    <>
+    <Hero />
+    <div>homepage</div></>
   )
 }
 

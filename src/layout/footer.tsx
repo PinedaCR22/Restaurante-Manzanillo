@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-[#50ABD7] text-gray-100">
+    <footer className="bg-[#443314] text-white shadow">
       <div className="max-w-6xl mx-auto px-4 py-10 text-center">
         {/* Logo arriba */}
         <img
@@ -39,7 +39,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-gray-700 text-center text-sm py-4">
+      <div className="border-t border-white text-center text-sm py-4">
         © {new Date().getFullYear()} MUDECOOP R.L. – Todos los derechos reservados.
       </div>
     </footer>
