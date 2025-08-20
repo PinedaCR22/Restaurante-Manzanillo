@@ -1,12 +1,21 @@
+// Hero.tsx
+import { useRef } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { FaArrowDown } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+
+// Asegúrate de importar estilos globales de Swiper en tu app:
+// import "swiper/css";
+// import "swiper/css/pagination";
+// import "swiper/css/effect-fade";
 
 type HeroProps = {
-  images?: string[];         
-  scrollTargetId?: string;  
- };
+  images?: string[];
+  scrollTargetId?: string;
+};
 
 export default function Hero({
   images = [
@@ -16,13 +25,18 @@ export default function Hero({
   ],
   scrollTargetId = "menu",
 }: HeroProps) {
+  const swiperRef = useRef<SwiperType | null>(null);
+
   const handleScroll = () => {
     const el = document.getElementById(scrollTargetId);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
-    <section id="top" className="relative w-full h-[55vh] md:h-[60vh] lg:h-[65vh] overflow-hidden">
+    <section
+      id="top"
+      className="relative w-full h-[55vh] md:h-[60vh] lg:h-[65vh] overflow-hidden"
+    >
       {/* Carrusel */}
       <Swiper
         className="w-full h-full"
@@ -32,6 +46,7 @@ export default function Hero({
         autoplay={{ delay: 4000, disableOnInteraction: false }}
         loop
         pagination={{ clickable: true }}
+        onSwiper={(sw) => (swiperRef.current = sw)}
       >
         {images.map((src, idx) => (
           <SwiperSlide key={idx}>
@@ -39,42 +54,68 @@ export default function Hero({
               className="w-full h-full bg-center bg-cover"
               style={{ backgroundImage: `url(${src})` }}
             >
-              {/* overlay para legibilidad */}
-              <div className="w-full h-full bg-black/35" />
+              {/* Gradiente + overlay para legibilidad */}
+              <div className="absolute inset-0">
+                <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/35 to-black/60" />
+                <div className="absolute inset-0 bg-black/10" />
+              </div>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
 
       {/* Texto centrado */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-4">
+      <div className="absolute inset-0 z-10 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="text-center text-white max-w-3xl"
         >
-          <h1 className="text-3xl md:text-5xl font-extrabold drop-shadow-md">
+          <h1 className="text-3xl md:text-5xl font-extrabold drop-shadow-[0_3px_6px_rgba(0,0,0,0.6)]">
             Bienvenidos al restaurante flotante de Manzanillo
           </h1>
-          <p className="mt-3 md:mt-4 text-base md:text-lg opacity-95 drop-shadow">
+          <p className="mt-3 md:mt-4 text-base md:text-lg opacity-95 drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
             Sabores del mar y experiencias de ecoturismo en el Golfo de Nicoya.
           </p>
+
+          {/* Flecha hacia abajo debajo del subtítulo */}
+          <button
+            onClick={handleScroll}
+            aria-label="Bajar al contenido"
+            className="mt-6 flex justify-center w-full text-white text-3xl"
+          >
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{
+                duration: 1.2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              <FaArrowDown />
+            </motion.div>
+          </button>
         </motion.div>
       </div>
 
-      {/* Flecha hacia abajo (animación “bajar”) */}
+      {/* Flechas laterales sin círculos */}
       <button
-        onClick={handleScroll}
-        aria-label="Bajar al contenido"
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-white/90 hover:bg-white p-2 shadow-lg"
+        type="button"
+        aria-label="Anterior"
+        onClick={() => swiperRef.current?.slidePrev()}
+        className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 text-white hover:text-yellow-400 transition-colors"
       >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ChevronDown className="h-6 w-6 text-black" />
-        </motion.div>
+        <ChevronLeft className="h-10 w-10 md:h-12 md:w-12 drop-shadow-[0_3px_6px_rgba(0,0,0,0.7)]" />
+      </button>
+
+      <button
+        type="button"
+        aria-label="Siguiente"
+        onClick={() => swiperRef.current?.slideNext()}
+        className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 text-white hover:text-yellow-400 transition-colors"
+      >
+        <ChevronRight className="h-10 w-10 md:h-12 md:w-12 drop-shadow-[0_3px_6px_rgba(0,0,0,0.7)]" />
       </button>
     </section>
   );
