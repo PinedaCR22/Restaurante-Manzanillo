@@ -1,5 +1,8 @@
 // src/sections/routes.tsx
 import { createBrowserRouter } from "react-router-dom";
+import MainLayout from "../layout/mainlayout";
+import AdminLayout from "../layout/adminlayout";
+
 import HomePage from "../pages/homepage";
 import ActivitiesPage from "../pages/activities";
 import CooperativaPage from "../pages/cooperativa";
@@ -8,20 +11,32 @@ import LoginPage from "../pages/loginpage";
 import NotFoundPage from "../pages/notfoundpage";
 import UnauthorizedPage from "../pages/unathorizable";
 
+
 export const router = createBrowserRouter([
   {
     path: "/",
+    element: <MainLayout />,
     children: [
-      // Rutas principales
-      { index: true, element: <HomePage /> },             
+      { index: true, element: <HomePage /> },
       { path: "actividades", element: <ActivitiesPage /> },
       { path: "cooperativa", element: <CooperativaPage /> },
-      { path: "admin", element: <AdminPage /> },
-      { path: "login", element: <LoginPage /> },
-
-      // Accesos
-      { path: "*", element: <NotFoundPage /> },
       { path: "unauthorized", element: <UnauthorizedPage /> },
     ],
   },
+
+  { path: "/login", element: <LoginPage /> },
+
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      { index: true, element: <AdminPage /> },
+      // futuras subrutas admin:
+      // { path: "reservas", element: <AdminReservations /> },
+      // { path: "menu", element: <AdminMenu /> },
+    ],
+  },
+
+  // 404 global
+  { path: "*", element: <NotFoundPage /> },
 ]);
