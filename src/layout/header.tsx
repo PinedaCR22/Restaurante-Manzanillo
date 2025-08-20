@@ -3,7 +3,7 @@ import { User } from "lucide-react";
 
 export default function Header() {
   return (
-    <header className="bg-sky-500 text-white shadow">
+    <header className="bg-[#443314] text-white shadow">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo + nombre */}
         <Link to="/" className="flex items-center gap-3">
@@ -18,7 +18,10 @@ export default function Header() {
         </Link>
 
         {/* Icono usuario */}
-        <Link to="/login" className="p-3 hover:bg-sky-600 rounded-full">
+        <Link
+          to="/login"
+          className="p-3 rounded-full hover:bg-[#5c4420] transition-colors"
+        >
           <User className="h-7 w-7" />
         </Link>
       </div>

@@ -9,7 +9,7 @@ export default function HeaderAdmin() {
   }
 
   return (
-    <header className="bg-sky-500 text-white shadow">
+    <header className="bg-[#443314] text-white shadow">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo + nombre */}
         <Link to="/admin" className="flex items-center gap-3">
@@ -26,7 +26,7 @@ export default function HeaderAdmin() {
         {/* Botón cerrar sesión */}
         <button
           onClick={handleSignOut}
-          className="inline-flex items-center gap-2 rounded px-4 py-3 bg-sky-600 hover:bg-sky-700 transition text-lg"
+          className="inline-flex items-center gap-2 rounded px-4 py-3 bg-red-600 hover:bg-red-700 transition text-lg"
           aria-label="Cerrar sesión"
           title="Cerrar sesión"
         >
