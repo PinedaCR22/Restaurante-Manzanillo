@@ -1,12 +1,13 @@
 // src/pages/menu.tsx
 import { memo, useMemo } from "react";
 import { motion, type Variants } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export type Category = { id: string; name: string; image: string };
 
 type MenuProps = {
   title?: string;
-  titleClassName?: string; // puedes pasar la misma clase/tipografía del Hero
+  titleClassName?: string;
   categories?: Category[];
   onSelectCategory?: (id: string) => void;
 };
@@ -22,15 +23,15 @@ const cardV: Variants = {
 };
 
 const DEFAULT: Category[] = [
-  { id: "ceviches", name: "Ceviches", image: "https://i.ytimg.com/vi/YF-yzSOyQsE/maxresdefault.jpg" },
-  { id: "mariscos", name: "Mariscos", image: "https://media.istockphoto.com/id/1305699663/es/foto/plato-de-mariscos-langosta-a-la-parrilla-camarones-vieiras-langostinos-pulpo-calamar-en-plato.jpg?s=612x612&w=0&k=20&c=H_dWTXDSIuNKsdyN-WCZB8X--1Iy64V4m4E4Zq9wns4=" },
-  { id: "pescados", name: "Pescados", image: "https://www.recetasnestle.com.co/sites/default/files/inline-images/Recetas_2_-Mojarra-con-ensalada-de-aguacate%2C-arroz-con-coco%2C-pla%CC%81tano-y-limo%CC%81n_1200x500.jpeg" },
-  { id: "casados", name: "Casados", image: "https://morphocostarica.com/wp-content/uploads/2020/03/Casado.jpg" },
-  { id: "batidos", name: "Batidos", image: "https://hiraoka.com.pe/media/mageplaza/blog/post/j/u/juegos_y_batidos_saludables_nutritivos-hiraoka.jpg" },
-  { id: "com-rapida", name: "Com. rápida", image: "https://images.unsplash.com/photo-1550547660-d9450f859349?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGFtYnVyZ3Vlc2ElMjBnb3VybWV0fGVufDB8fDB8fHww" },
-  { id: "alcohol", name: "Alcohol", image: "https://media.istockphoto.com/id/475273684/es/foto/frascos-y-gafas-de-una-variedad-de-bebidas-alcoh%C3%B3licas.jpg?s=612x612&w=0&k=20&c=SgFGQskDEHv_--Teekq_J4DQ7rOdZybPSX2j37H51Ck=" },
-  { id: "cocteles", name: "Cocteles", image: "https://animalgourmet.com/wp-content/uploads/2019/12/cocteles-faciles-1-e1577462291521.jpg" },
-  { id: "vinos", name: "Vinos", image: "https://vivancoculturadevino.es/blog/wp-content/uploads/2015/07/vino-rosado-blanco-tinto.jpg" },
+  { id: "ceviches",   name: "Ceviches",   image: "https://i.ytimg.com/vi/YF-yzSOyQsE/maxresdefault.jpg" },
+  { id: "mariscos",   name: "Mariscos",   image: "https://media.istockphoto.com/id/1305699663/es/foto/plato-de-mariscos-langosta-a-la-parrilla-camarones-vieiras-langostinos-pulpo-calamar-en-plato.jpg?s=612x612&w=0&k=20&c=H_dWTXDSIuNKsdyN-WCZB8X--1Iy64V4m4E4Zq9wns4=" },
+  { id: "pescados",   name: "Pescados",   image: "https://www.recetasnestle.com.co/sites/default/files/inline-images/Recetas_2_-Mojarra-con-ensalada-de-aguacate%2C-arroz-con-coco%2C-pla%CC%81tano-y-limo%CC%81n_1200x500.jpeg" },
+  { id: "casados",    name: "Casados",    image: "https://morphocostarica.com/wp-content/uploads/2020/03/Casado.jpg" },
+  { id: "batidos",    name: "Batidos",    image: "https://hiraoka.com.pe/media/mageplaza/blog/post/j/u/juegos_y_batidos_saludables_nutritivos-hiraoka.jpg" },
+  { id: "com-rapida", name: "Com. rápida",image: "https://images.unsplash.com/photo-1550547660-d9450f859349?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGFtYnVyZ3Vlc2ElMjBnb3VybWV0fGVufDB8fDB8fHww" },
+  { id: "alcohol",    name: "Alcohol",    image: "https://media.istockphoto.com/id/475273684/es/foto/frascos-y-gafas-de-una-variedad-de-bebidas-alcoh%C3%B3licas.jpg?s=612x612&w=0&k=20&c=SgFGQskDEHv_--Teekq_J4DQ7rOdZybPSX2j37H51Ck=" },
+  { id: "cocteles",   name: "Cocteles",   image: "https://animalgourmet.com/wp-content/uploads/2019/12/cocteles-faciles-1-e1577462291521.jpg" },
+  { id: "vinos",      name: "Vinos",      image: "https://vivancoculturadevino.es/blog/wp-content/uploads/2015/07/vino-rosado-blanco-tinto.jpg" },
 ];
 
 function clsx(...c: Array<string | false | null | undefined>) {
@@ -44,6 +45,12 @@ function Menu({
   onSelectCategory,
 }: MenuProps) {
   const data = useMemo(() => categories ?? DEFAULT, [categories]);
+  const navigate = useNavigate();
+
+  const handleClick = (id: string) => {
+    onSelectCategory?.(id);
+    navigate(`/menu/${id}`);
+  };
 
   return (
     <section id="menu" className="w-full">
@@ -58,12 +65,11 @@ function Menu({
           >
             {title}
           </h2>
-          {/* 🔽 Línea degradada (igual a navbar) */}
           <div className="mt-3 h-[6px] w-full bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]" />
         </div>
       </div>
 
-      {/* Grid */}
+      {/* Grid de categorías */}
       <motion.div
         variants={containerV}
         initial="hidden"
@@ -73,31 +79,35 @@ function Menu({
         <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-7">
           {data.map((cat, i) => {
             const isOddLastOnMobile = data.length % 2 === 1 && i === data.length - 1;
+
             return (
               <motion.button
                 key={cat.id}
                 type="button"
                 variants={cardV}
-                onClick={() => onSelectCategory?.(cat.id)}
+                onClick={() => handleClick(cat.id)}
                 aria-label={`Abrir categoría ${cat.name}`}
                 className={clsx(
                   "group rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden",
                   "transition hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500",
-                  "w-full md:max-w-[300px] lg:max-w-[300px] xl:max-w-[360px] md:justify-self-center",
+                  // Desktop: cards más largos y centrados en su columna
+                  "w-full md:max-w-[320px] lg:max-w-[340px] xl:max-w-[360px] md:justify-self-center",
+                  // Móvil: si es último impar → centrado (mismo tamaño)
                   isOddLastOnMobile && "col-span-2 justify-self-center md:col-span-1"
                 )}
               >
-                {/* Imagen con proporción fija */}
-                <div className="aspect-[4/3] w-full overflow-hidden">
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
+                <div className="aspect-[5/3] w-full overflow-hidden">
+  <img
+    src={cat.image}
+    alt={cat.name}
+    loading="lazy"
+    decoding="async"
+    referrerPolicy="no-referrer"
+    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+  />
+</div>
 
-                {/* Botón/etiqueta */}
+
                 <div className="p-2 md:p-3">
                   <span className="block rounded-md px-3 py-1 text-center text-sm font-semibold text-white transition-colors bg-[#50ABD7] group-hover:bg-[#3f98c1]">
                     {cat.name}

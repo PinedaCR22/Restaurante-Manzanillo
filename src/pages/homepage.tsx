@@ -1,5 +1,6 @@
 import Hero from "../sections/homepage/hero"
 import Menu from "../sections/homepage/menu"
+import ReservasPage from "../sections/homepage/reservas"
 
 const homepage = () => {
   return (
@@ -7,7 +8,9 @@ const homepage = () => {
     <Hero />
     <div className="h-12"></div>
     <Menu />
-    <div>homepage</div></>
+    <div className="h-12"></div>
+    <ReservasPage />
+    </>
   )
 }
 

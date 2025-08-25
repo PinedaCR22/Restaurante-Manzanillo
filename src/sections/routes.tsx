@@ -10,6 +10,7 @@ import AdminPage from "../pages/adminpage";
 import LoginPage from "../pages/loginpage";
 import NotFoundPage from "../pages/notfoundpage";
 import UnauthorizedPage from "../pages/unathorizable";
+import CategoryMenuPage from "../pages/CategoryMenuPage";
 
 
 export const router = createBrowserRouter([
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
       { path: "actividades", element: <ActivitiesPage /> },
       { path: "cooperativa", element: <CooperativaPage /> },
       { path: "unauthorized", element: <UnauthorizedPage /> },
+      { path: "menu/:categoryId", element: <CategoryMenuPage /> },
     ],
   },
 
