@@ -7,7 +7,9 @@ const Mudecoop: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
 
-  const images = ["https://scontent.fsjo14-1.fna.fbcdn.net/v/t39.30808-6/516498648_1179772304190407_6105943606169912598_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=-nq9Alhe-l8Q7kNvwFpJKC9&_nc_oc=AdkMvuAHMBwvxMRroaZgy2hiIdqLkGgpMAbX2nLG7WhY4e87rZPAfIXrcHa_xmS6hwQ&_nc_zt=23&_nc_ht=scontent.fsjo14-1.fna&_nc_gid=mKMF7HusHz5GFSCZqE-zzg&oh=00_AfWSVkkLdbEaZvonVuRruRC4q37vESdY3hDE6qdS7EV8UQ&oe=68B2C4CF"];
+  const images = [
+    "https://scontent.fsjo14-1.fna.fbcdn.net/v/t39.30808-6/516498648_1179772304190407_6105943606169912598_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=-nq9Alhe-l8Q7kNvwFpJKC9&_nc_oc=AdkMvuAHMBwvxMRroaZgy2hiIdqLkGgpMAbX2nLG7WhY4e87rZPAfIXrcHa_xmS6hwQ&_nc_zt=23&_nc_ht=scontent.fsjo14-1.fna&_nc_gid=mKMF7HusHz5GFSCZqE-zzg&oh=00_AfWSVkkLdbEaZvonVuRruRC4q37vESdY3hDE6qdS7EV8UQ&oe=68B2C4CF"
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -18,7 +20,8 @@ const Mudecoop: React.FC = () => {
 
   return (
     <motion.div
-      className="w-full flex flex-col md:flex-row items-center py-16 px-8 bg-white text-gray-900"
+      id="mudecoop"
+      className="w-full flex flex-col md:flex-row items-center py-16 px-8 bg-white text-gray-900 scroll-mt-24"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -56,7 +59,9 @@ const Mudecoop: React.FC = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.4 }}
       >
-        <h2 className="text-3xl font-bold mb-2">¡Este restaurante fue posible gracias a Mudecoop R.L!</h2>
+        <h2 className="text-3xl font-bold mb-2">
+          ¡Este restaurante fue posible gracias a Mudecoop R.L!
+        </h2>
         {/* Línea degradada */}
         <div className="mb-4 h-[6px] w-full bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]" />
 
