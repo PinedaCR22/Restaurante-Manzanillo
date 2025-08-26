@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: "actividades", element: <ActivitiesPage /> },
+      { path: "activities", element: <ActivitiesPage /> },
       { path: "cooperativa", element: <CooperativaPage /> },
       { path: "unauthorized", element: <UnauthorizedPage /> },
       { path: "menu/:categoryId", element: <CategoryMenuPage /> },

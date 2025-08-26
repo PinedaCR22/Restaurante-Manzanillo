@@ -1,5 +1,7 @@
 import Hero from "../sections/homepage/hero"
+import Manzanillo from "../sections/homepage/manzanillo"
 import Menu from "../sections/homepage/menu"
+import Mudecoop from "../sections/homepage/mudecoop"
 import ReservasPage from "../sections/homepage/reservas"
 
 const homepage = () => {
@@ -10,6 +12,10 @@ const homepage = () => {
     <Menu />
     <div className="h-12"></div>
     <ReservasPage />
+    <div className="h-12"></div>
+    <Mudecoop />
+    <div className="h-12"></div>
+    <Manzanillo />
     </>
   )
 }

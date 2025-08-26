@@ -22,7 +22,7 @@ export default function ReservasPage() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-2xl md:text-4xl font-extrabold text-white drop-shadow-lg text-center"
         >
-          Sección de reservas en construcción
+          Sección de reservaciones en línea en construcción
         </motion.h1>
       </div>
     </section>
