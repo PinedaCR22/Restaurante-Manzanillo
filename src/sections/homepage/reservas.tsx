@@ -3,7 +3,10 @@ import { motion } from "framer-motion";
 
 export default function ReservasPage() {
   return (
-    <section className="relative w-full h-[50vh] overflow-hidden">
+    <section
+      id="reservar"
+      className="relative w-full h-[50vh] overflow-hidden scroll-mt-24"
+    >
       {/* Imagen de fondo */}
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/1/1e/SITIO-EN-CONSTRUCCION.jpg"

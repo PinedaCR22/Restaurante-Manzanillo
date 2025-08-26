@@ -82,7 +82,7 @@ export default function Hero({
 
   return (
     <section
-      id="top"
+      id="hero"
       className="relative w-full h-[55vh] md:h-[60vh] lg:h-[65vh] overflow-hidden"
     >
       {/* Carrusel */}
