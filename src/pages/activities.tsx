@@ -1,6 +1,13 @@
+import Activities from "../sections/activities/activities"
+import Descriptions from "../sections/activities/descriptions"
+
 const activities = () => {
   return (
-    <div>activities</div>
+    <>
+    <Descriptions />
+    <Activities />
+    <div className="h-12"></div>
+    </>
   )
 }
 

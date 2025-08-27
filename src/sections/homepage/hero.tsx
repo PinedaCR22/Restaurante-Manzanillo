@@ -84,6 +84,7 @@ export default function Hero({
     <section
       id="hero"
       className="relative w-full h-[55vh] md:h-[60vh] lg:h-[65vh] overflow-hidden"
+      aria-label="Sección principal con imágenes destacadas"
     >
       {/* Carrusel */}
       <Swiper
@@ -97,10 +98,12 @@ export default function Hero({
         onSwiper={(sw) => (swiperRef.current = sw)}
       >
         {images.map((src, idx) => (
-          <SwiperSlide key={idx}>
+          <SwiperSlide key={idx} aria-roledescription="slide">
             <div
               className="w-full h-full bg-center bg-cover"
               style={{ backgroundImage: `url(${src})` }}
+              role="img"
+              aria-label="Imagen del restaurante flotante y su entorno"
             >
               {/* Gradiente + overlay para legibilidad */}
               <div className="absolute inset-0">
@@ -112,13 +115,13 @@ export default function Hero({
         ))}
       </Swiper>
 
-      {/* Texto centrado */}
+      {/* Texto centrado con fondo blur igual que Manzanillo */}
       <div className="absolute inset-0 z-10 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center text-white max-w-3xl"
+          className="backdrop-blur-md bg-black/25 border border-white/20 rounded-2xl px-6 py-5 shadow-[0_8px_30px_rgba(0,0,0,0.35)] text-center text-white max-w-3xl"
         >
           {/* Título animado palabra por palabra */}
           <AnimatedText
@@ -136,7 +139,7 @@ export default function Hero({
             duration={0.4}
           />
 
-          {/* Flecha hacia abajo debajo del subtítulo */}
+          {/* Flecha hacia abajo dentro del bloque */}
           <button
             onClick={handleScroll}
             aria-label="Bajar al contenido"
@@ -155,7 +158,7 @@ export default function Hero({
       {/* Flechas laterales sin círculos */}
       <button
         type="button"
-        aria-label="Anterior"
+        aria-label="Imagen anterior"
         onClick={() => swiperRef.current?.slidePrev()}
         className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 text-white hover:text-yellow-400 transition-colors"
       >
@@ -164,7 +167,7 @@ export default function Hero({
 
       <button
         type="button"
-        aria-label="Siguiente"
+        aria-label="Imagen siguiente"
         onClick={() => swiperRef.current?.slideNext()}
         className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 text-white hover:text-yellow-400 transition-colors"
       >
