@@ -14,7 +14,6 @@ const homepage = () => {
     <ReservasPage />
     <div className="h-12"></div>
     <Mudecoop />
-    <div className="h-12"></div>
     <Manzanillo />
     </>
   )

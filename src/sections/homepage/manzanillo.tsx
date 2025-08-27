@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaArrowDown } from "react-icons/fa";
+import { useCallback } from "react";
 
 export default function Manzanillo() {
   // usa las 5 imágenes que pasaste
@@ -16,16 +17,21 @@ export default function Manzanillo() {
   // dos pistas idénticas para lograr el bucle perfecto L→R
   const duration = 40; // ajusta la velocidad (mayor = más lento)
 
+  // Scroll suave hasta el botón "Conocer más"
+  const handleScroll = useCallback(() => {
+    const el = document.getElementById("manzanillo-btn");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   return (
     <section id="turismo" className="w-full py-10 px-4 md:px-6 scroll-mt-24">
       <div className="relative w-full h-[50vh] overflow-hidden rounded-xl shadow-lg">
-        {/* Pista A: de -100% → 0% (entra desde la izquierda y queda centrada) */}
+        {/* Pista A */}
         <motion.div
-          className="absolute inset-y-0 left-0 flex w-[200%]  /* 2x ancho para la duplicación */"
+          className="absolute inset-y-0 left-0 flex w-[200%]"
           animate={{ x: ["-100%", "0%"] }}
           transition={{ duration, ease: "linear", repeat: Infinity }}
         >
-          {/* Tira 1 */}
           <div className="flex h-full w-[100%]">
             {images.map((src, i) => (
               <img
@@ -37,7 +43,6 @@ export default function Manzanillo() {
               />
             ))}
           </div>
-          {/* Tira 2 (duplicada) */}
           <div className="flex h-full w-[100%]">
             {images.map((src, i) => (
               <img
@@ -51,13 +56,12 @@ export default function Manzanillo() {
           </div>
         </motion.div>
 
-        {/* Pista B: de -200% → -100% (siempre un paso atrás para bucle continuo) */}
+        {/* Pista B */}
         <motion.div
           className="absolute inset-y-0 left-0 flex w-[200%]"
           animate={{ x: ["-200%", "-100%"] }}
           transition={{ duration, ease: "linear", repeat: Infinity }}
         >
-          {/* Tira 1 */}
           <div className="flex h-full w-[100%]">
             {images.map((src, i) => (
               <img
@@ -69,7 +73,6 @@ export default function Manzanillo() {
               />
             ))}
           </div>
-          {/* Tira 2 (duplicada) */}
           <div className="flex h-full w-[100%]">
             {images.map((src, i) => (
               <img
@@ -83,7 +86,7 @@ export default function Manzanillo() {
           </div>
         </motion.div>
 
-        {/* Overlay para legibilidad + contenido (título, flecha, botón) */}
+        {/* Overlay + contenido */}
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 8 }}
@@ -100,16 +103,23 @@ export default function Manzanillo() {
             </h2>
           </motion.div>
 
-          <motion.div
-            aria-hidden
+          {/* Flecha con scroll */}
+          <button
+            onClick={handleScroll}
+            aria-label="Bajar hasta el botón"
             className="mt-3 text-white text-2xl"
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <FaArrowDown />
-          </motion.div>
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <FaArrowDown />
+            </motion.div>
+          </button>
 
+          {/* Botón */}
           <motion.div
+            id="manzanillo-btn"
             initial={{ opacity: 0, y: 6 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -125,7 +135,7 @@ export default function Manzanillo() {
           </motion.div>
         </div>
 
-        {/* Vignette para dar profundidad */}
+        {/* Vignette */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/25" />
       </div>
     </section>
