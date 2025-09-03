@@ -10,7 +10,9 @@ import AdminPage from "../pages/adminpage";
 import LoginPage from "../pages/loginpage";
 import NotFoundPage from "../pages/notfoundpage";
 import UnauthorizedPage from "../pages/unathorizable";
-import CategoryMenuPage from "../pages/CategoryMenuPage";
+import CategoryMenuPage from "../components/CategoryMenuPage";
+import ActivityDetailPage from "../components/Activitydetail";
+
 
 
 export const router = createBrowserRouter([
@@ -20,6 +22,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "activities", element: <ActivitiesPage /> },
+       { path: "activities/:activityId", element: <ActivityDetailPage /> },
       { path: "cooperativa", element: <CooperativaPage /> },
       { path: "unauthorized", element: <UnauthorizedPage /> },
       { path: "menu/:categoryId", element: <CategoryMenuPage /> },
