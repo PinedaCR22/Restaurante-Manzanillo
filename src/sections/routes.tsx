@@ -12,6 +12,7 @@ import NotFoundPage from "../pages/notfoundpage";
 import UnauthorizedPage from "../pages/unathorizable";
 import CategoryMenuPage from "../components/CategoryMenuPage";
 import ActivityDetailPage from "../components/Activitydetail";
+import GallerySection from "../components/gallerysection";
 
 
 
@@ -26,6 +27,8 @@ export const router = createBrowserRouter([
       { path: "cooperativa", element: <CooperativaPage /> },
       { path: "unauthorized", element: <UnauthorizedPage /> },
       { path: "menu/:categoryId", element: <CategoryMenuPage /> },
+      { path: "galeria", element: <GallerySection /> },
+
     ],
   },
 
