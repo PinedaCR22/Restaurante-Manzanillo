@@ -31,29 +31,32 @@ const DEFAULT: CoopItem[] = [
   {
     id: "reforestacion",
     name: "REFORESTACIÓN",
-    image: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1200&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "mudecoop-jr",
     name: "MUDECOOP JR",
-    image: "https://images.unsplash.com/photo-1604881991720-f91add269bed?q=80&w=1200&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1604881991720-f91add269bed?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "tour-de-manglar",
     name: "TOUR DE MANGLAR",
-    // 🔄 nueva URL más estable
-    image: "https://images.unsplash.com/photo-1517456793572-97f240c05be8?q=80&w=1200&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1517456793572-97f240c05be8?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "hist-mudecoop",
     name: "HIST. MUDECOOP",
-    // 🔄 nueva URL más estable
-    image: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=1200&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "hist-rest-flotante",
     name: "HIST. REST FLOTANTE",
-    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop",
   },
 ];
 
@@ -114,15 +117,21 @@ function CoperativesServices({
 
   const handleClick = (id: string) => {
     onSelectItem?.(id);
-    navigate(`/coperativeservices/${id}`);
+    // ✅ ruta corregida
+    navigate(`/cooperativa/${id}`);
   };
 
   return (
-    <section id="coperativeservices" className="w-full">
+    <section id="cooperativa" className="w-full">
       {/* Header (mismo estilo de títulos con línea) */}
       <div className="px-3 md:px-6">
         <div className="mx-auto rounded-xl bg-gray-100/80 shadow-sm backdrop-blur px-4 py-4 text-center">
-          <h2 className={clsx("text-xl md:text-2xl font-extrabold tracking-wide text-stone-800", titleClassName)}>
+          <h2
+            className={clsx(
+              "text-xl md:text-2xl font-extrabold tracking-wide text-stone-800",
+              titleClassName
+            )}
+          >
             {title}
           </h2>
           <div className="mt-3 h-[6px] w-full bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]" />
@@ -130,7 +139,12 @@ function CoperativesServices({
       </div>
 
       {/* Grid con “calles” */}
-      <motion.div variants={containerV} initial="hidden" animate="show" className="mt-6 w-full px-3 md:px-6">
+      <motion.div
+        variants={containerV}
+        initial="hidden"
+        animate="show"
+        className="mt-6 w-full px-3 md:px-6"
+      >
         <div className="grid grid-cols-2 md:grid-cols-6 gap-5 md:gap-7">
           {data.map((it, i) => (
             <motion.button

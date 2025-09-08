@@ -13,6 +13,11 @@ import UnauthorizedPage from "../pages/unathorizable";
 import CategoryMenuPage from "../components/CategoryMenuPage";
 import ActivityDetailPage from "../components/Activitydetail";
 import GallerySection from "../components/gallerysection";
+import MudecoopJRPage from "./cooperativa/mudecoopjr";
+import ReforestacionPage from "./cooperativa/reforestacion";
+import ManglarPage from "./cooperativa/manglar";
+import HistFlotantePage from "./cooperativa/histflotante";
+import HistMudecoopPage from "./cooperativa/histmudecoop";
 
 
 
@@ -28,7 +33,11 @@ export const router = createBrowserRouter([
       { path: "unauthorized", element: <UnauthorizedPage /> },
       { path: "menu/:categoryId", element: <CategoryMenuPage /> },
       { path: "galeria", element: <GallerySection /> },
-
+      { path: "cooperativa/mudecoop-jr", element: <MudecoopJRPage /> },
+      { path: "cooperativa/reforestacion", element: <ReforestacionPage /> },
+      { path: "cooperativa/tour-de-manglar", element: <ManglarPage /> },
+      { path: "cooperativa/hist-rest-flotante", element: <HistFlotantePage /> },
+      { path: "cooperativa/hist-mudecoop", element: <HistMudecoopPage /> },
     ],
   },
 
