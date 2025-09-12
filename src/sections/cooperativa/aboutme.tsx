@@ -6,7 +6,7 @@ const AboutMe: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const images = [
-    "https://scontent.fsjo14-1.fna.fbcdn.net/v/t39.30808-6/516498648_1179772304190407_6105943606169912598_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=-nq9Alhe-l8Q7kNvwFpJKC9&_nc_oc=AdkMvuAHMBwvxMRroaZgy2hiIdqLkGgpMAbX2nLG7WhY4e87rZPAfIXrcHa_xmS6hwQ&_nc_zt=23&_nc_ht=scontent.fsjo14-1.fna&_nc_gid=mKMF7HusHz5GFSCZqE-zzg&oh=00_AfWSVkkLdbEaZvonVuRruRC4q37vESdY3hDE6qdS7EV8UQ&oe=68B2C4CF",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiJDPfimU8Pec9gSRAwK6Gu_FN-ThV5jWXfQ&s",
   ];
 
   useEffect(() => {
