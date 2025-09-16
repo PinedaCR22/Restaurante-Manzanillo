@@ -238,7 +238,7 @@ export default function CategoryMenuPage() {
         <div className="mt-6 mb-10 flex justify-center">
           <motion.button
             type="button"
-            onClick={() => navigate("/cooperativa")}
+            onClick={() => navigate("/#menu")}
             whileHover={{ y: -1 }}
             whileTap={{ scale: 0.98 }}
             className="px-6 py-2 bg-gray-200 text-black hover:bg-gray-300 rounded-lg"
