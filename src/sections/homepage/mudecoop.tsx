@@ -60,7 +60,7 @@ const Mudecoop: React.FC = () => {
         transition={{ duration: 0.6, delay: 0.4 }}
       >
         <h2 className="text-3xl font-bold mb-2">
-          ¡Este restaurante fue posible gracias a Mudecoop R.L!
+          ¡Este restaurante fue posible gracias a la mano de obra de Mudecoop R.L!
         </h2>
         {/* Línea degradada */}
         <div className="mb-4 h-[6px] w-full bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]" />
