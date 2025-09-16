@@ -229,12 +229,17 @@ export default function ActivityDetailPage() {
 
         {/* Botón final */}
         <div className="mt-8 mb-12 flex justify-center">
-          <button
-            onClick={() => navigate("/activities")}
-            className="rounded-md bg-[#50ABD7] px-5 py-2.5 text-white font-semibold hover:bg-[#3f98c1]"
-          >
-            Volver a actividades
-          </button>
+          <div className="mt-6 mb-10 flex justify-center">
+  <motion.button
+    type="button"
+    onClick={() => navigate("/activities")}
+    whileHover={{ y: -1 }}
+    whileTap={{ scale: 0.98 }}
+    className="px-6 py-2 bg-gray-200 text-black hover:bg-gray-300 rounded-lg"
+  >
+    Volver a actividades
+  </motion.button>
+</div>
         </div>
       </div>
     </section>

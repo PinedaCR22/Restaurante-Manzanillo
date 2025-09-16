@@ -2,7 +2,7 @@ import React from "react";
 
 /**
  * DonCangrejo.tsx — Mascota del Restaurante Flotante (SVG + React)
- * Emotional Design (Norman): estados para mapear UX del chat.
+ * Incluye clases para animar ojos (blink) y pinzas (pinch).
  */
 
 export const DON_COLORS = {
@@ -28,31 +28,47 @@ export type DonCangrejoProps = {
   className?: string;
 };
 
-const Eye = ({ x, y, mood = "happy", colors = DON_COLORS }: any) => {
+const Eye = ({
+  x,
+  y,
+  mood = "happy",
+  colors = DON_COLORS,
+  className = "",
+}: {
+  x: number; y: number; mood?: DonMood; colors?: typeof DON_COLORS; className?: string;
+}) => {
   const pupil = { r: 2.2, fill: colors.eye };
   switch (mood) {
     case "sleep":
-      return <path d={`M${x - 8} ${y} q 8 4 16 0`} stroke={colors.eye} strokeWidth={2} fill="none" strokeLinecap="round" />;
+      return (
+        <g className={className}>
+          <path d={`M${x - 8} ${y} q 8 4 16 0`} stroke={colors.eye} strokeWidth={2} fill="none" strokeLinecap="round" />
+        </g>
+      );
     case "thinking":
-      return <circle cx={x} cy={y - 1} r={pupil.r} fill={pupil.fill} />;
+      return (
+        <g className={className}>
+          <circle cx={x} cy={y - 1} r={pupil.r} fill={pupil.fill} />
+        </g>
+      );
     case "warning":
       return (
-        <>
+        <g className={className}>
           <circle cx={x} cy={y} r={3.2} fill={colors.white} />
           <circle cx={x} cy={y} r={pupil.r} fill={pupil.fill} />
-        </>
+        </g>
       );
     default:
       return (
-        <>
+        <g className={className}>
           <circle cx={x} cy={y} r={3.2} fill={colors.white} />
           <circle cx={x} cy={y} r={pupil.r} fill={pupil.fill} />
-        </>
+        </g>
       );
   }
 };
 
-const Mouth = ({ mood = "happy" }: any) => {
+const Mouth = ({ mood = "happy" }: { mood?: DonMood }) => {
   switch (mood) {
     case "helpful":
       return <path d="M52 78 q 12 10 24 0" stroke="#3a120a" strokeWidth={3} fill="none" strokeLinecap="round" />;
@@ -69,14 +85,14 @@ const Mouth = ({ mood = "happy" }: any) => {
   }
 };
 
-const Cap = ({ colors = DON_COLORS }: any) => (
+const Cap = ({ colors = DON_COLORS }: { colors?: typeof DON_COLORS }) => (
   <g>
     <path d="M40 36 q 24 -18 48 0 l -4 6 q -20 -8 -40 0 z" fill={colors.sea} opacity={0.92} />
     <rect x="45" y="41" width="38" height="6" rx="3" fill={colors.wood} opacity={0.9} />
   </g>
 );
 
-const Mustache = ({ colors = DON_COLORS }: any) => (
+const Mustache = ({ colors = DON_COLORS }: { colors?: typeof DON_COLORS }) => (
   <g>
     <path d="M52 86 q 6 -6 12 0" stroke={colors.wood} strokeWidth={3} fill="none" strokeLinecap="round" />
     <path d="M64 86 q 6 -6 12 0" stroke={colors.wood} strokeWidth={3} fill="none" strokeLinecap="round" />
@@ -111,29 +127,46 @@ export const DonCangrejo: React.FC<DonCangrejoProps> = ({
 }) => {
   const C = { ...DON_COLORS, ...colors };
   return (
-    <svg width={size} height={size} viewBox="0 0 128 128" className={className} role="img" aria-label={title} xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 128 128"
+      className={className}
+      role="img"
+      aria-label={title}
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <title>{title}</title>
       <ellipse cx="64" cy="112" rx="34" ry="6" fill="#000" opacity={0.08} />
       <ellipse cx="64" cy="70" rx="34" ry="26" fill={C.shell} />
       <ellipse cx="64" cy="64" rx="22" ry="10" fill={C.highlight} opacity={0.9} />
+
+      {/* tallos */}
       <g stroke={C.shellDark} strokeWidth={3} strokeLinecap="round">
         <path d="M48 56 q 2 -8 10 -10" fill="none" />
         <path d="M80 56 q -2 -8 -10 -10" fill="none" />
       </g>
-      <Eye x={50} y={46} mood={mood} colors={C} />
-      <Eye x={78} y={46} mood={mood} colors={C} />
+
+      {/* ojos con parpadeo */}
+      <Eye x={50} y={46} mood={mood} colors={C} className="animate-crab-blink" />
+      <Eye x={78} y={46} mood={mood} colors={C} className="animate-crab-blink" />
+
+      {/* boca y bigote */}
       <Mouth mood={mood} />
       {mustache && <Mustache colors={C} />}
+
+      {/* patas */}
       <g stroke={C.shellDark} strokeWidth={4} strokeLinecap="round">
         <path d="M34 76 l -12 8" />
         <path d="M36 86 l -10 10" />
         <path d="M94 76 l 12 8" />
         <path d="M92 86 l 10 10" />
       </g>
-      <g fill={C.shell} stroke={C.shellDark} strokeWidth={2}>
-        <path d="M26 52c-6-6-8-14-5-19 6 0 12 6 14 12-4 2-7 4-9 7z" />
-        <path d="M102 52c6-6 8-14 5-19-6 0-12 6-14 12 4 2 7 4 9 7z" />
-      </g>
+
+      {/* pinzas con “pinch” */}
+      <path className="animate-claw-pinch" d="M26 52c-6-6-8-14-5-19 6 0 12 6 14 12-4 2-7 4-9 7z" fill={C.shell} stroke={C.shellDark} strokeWidth={2} />
+      <path className="animate-claw-pinch" d="M102 52c6-6 8-14 5-19-6 0-12 6-14 12 4 2 7 4 9 7z" fill={C.shell} stroke={C.shellDark} strokeWidth={2} />
+
       {cap && <Cap colors={C} />}
 
       {mood === "celebrate" && (

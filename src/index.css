@@ -3,3 +3,32 @@
 @import "swiper/css";
 @import "swiper/css/pagination";
 @import "swiper/css/effect-fade";
+
+/* === Animaciones Don Cangrejo === */
+@keyframes crab-bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-2px) rotate(1deg); }
+}
+
+@keyframes crab-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%          { transform: scaleY(0.05); }
+}
+
+@keyframes claw-pinch {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(-6deg); }
+}
+
+/* Utilidades “tailwind-like” para aplicar a nodos del SVG */
+.animate-crab-bob   { animation: crab-bob 2.4s ease-in-out infinite; }
+.animate-crab-blink { 
+  animation: crab-blink 4s ease-in-out infinite; 
+  transform-origin: center; 
+  transform-box: fill-box; /* <- importante para que el origen sea el ojo */
+}
+.animate-claw-pinch {
+  animation: claw-pinch 1.4s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}

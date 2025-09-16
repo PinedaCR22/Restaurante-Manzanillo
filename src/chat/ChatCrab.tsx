@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { DonCangrejo, DonCangrejoLogoMark } from "./DonCangrejo";
+import { DonCangrejo } from "./DonCangrejo";
 
 // ========= Tipos =========
 export type ChatCrabMessage = {
@@ -15,30 +15,12 @@ export type ChatCrabProps = {
   accent?: string;        // color acento (botón, burbuja user)
   headerColor?: string;   // color del header
   position?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
-  offset?: { x?: number; y?: number }; // ahora opcional
+  offset?: { x?: number; y?: number }; // opcional
   initialOpen?: boolean;
   initialMessages?: ChatCrabMessage[];
   onSend?: (text: string) => Promise<ChatCrabMessage | void> | ChatCrabMessage | void;
   botMood?: "happy" | "helpful" | "thinking" | "celebrate" | "warning" | "sleep";
 };
-
-// ========= Badge opcional (tipo logo de Meta) =========
-export const CrabBadge: React.FC<{ label?: string; onClick?: () => void }> = ({
-  label = "Don Cangrejo",
-  onClick,
-}) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className="group inline-flex items-center gap-2 rounded-full border border-neutral-200/60 bg-white/80 backdrop-blur px-3 py-1 shadow-sm hover:shadow transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400"
-    aria-label="Abrir chat"
-  >
-    <span className="inline-flex items-center justify-center rounded-full p-1 bg-orange-50 group-hover:bg-orange-100 transition">
-      <DonCangrejoLogoMark />
-    </span>
-    <span className="text-sm font-medium text-neutral-700">{label}</span>
-  </button>
-);
 
 // ========= Botón flotante (launcher) =========
 const Launcher: React.FC<{
@@ -47,8 +29,8 @@ const Launcher: React.FC<{
   offset?: ChatCrabProps["offset"]; // opcional
   accent: string;
   unread?: boolean;
-}> = ({ onClick, position, offset, accent, unread }) => {
-  // Defaults aunque offset sea undefined
+  open?: boolean; // para ocultarlo cuando el chat está abierto
+}> = ({ onClick, position, offset, accent, unread, open }) => {
   const { x = 20, y = 20 } = offset ?? {};
 
   const corner = useMemo(() => {
@@ -66,13 +48,16 @@ const Launcher: React.FC<{
       onClick={onClick}
       aria-label="Abrir chat Don Cangrejo"
       style={corner}
-      className="group rounded-full shadow-lg border border-neutral-200 bg-white/95 backdrop-blur p-3 hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-offset-2"
+      className={`group rounded-full shadow-lg border border-neutral-200 bg-white/95 backdrop-blur p-3 transition
+                  focus:outline-none focus:ring-2 focus:ring-offset-2
+                  ${open ? "opacity-0 pointer-events-none" : "opacity-100"}`}
     >
       <div
-        className="relative grid place-items-center rounded-full size-12 md:size-14"
-        style={{ background: accent + "1A" }} // 10% tint
+        className="relative grid place-items-center rounded-full size-12 md:size-14 overflow-hidden"
+        style={{ background: accent + "1A" }}  // 10% tint
       >
-        <DonCangrejoLogoMark />
+        {/* Mascota animada dentro del botón */}
+        <DonCangrejo mood="happy" size={40} className="animate-crab-bob" />
         {unread && (
           <span className="absolute -top-0.5 -right-0.5 inline-flex items-center justify-center rounded-full text-[10px] font-bold px-1.5 py-0.5 bg-red-500 text-white shadow">
             1
@@ -159,14 +144,18 @@ const ChatPanel: React.FC<{
       {/* Panel */}
       <div
         ref={panelRef}
-        className={`absolute w-full sm:w-[26rem] md:w-[28rem] h-[85svh] sm:h-[34rem] rounded-t-2xl sm:rounded-2xl shadow-xl border border-neutral-200 bg-white flex flex-col transition-transform duration-300 ease-out
-        ${open ? "translate-y-0" : "translate-y-full"}
-        bottom-0 right-0 sm:bottom-6 sm:right-6`}
+        className={`absolute w-full sm:w-[26rem] md:w-[28rem] h-[85svh] sm:h-[34rem]
+                    bg-white flex flex-col transition-all duration-300 ease-out
+                    bottom-0 right-0 sm:bottom-6 sm:right-6
+                    ${open
+                      ? "translate-y-0 opacity-100 rounded-t-2xl sm:rounded-2xl shadow-xl border border-neutral-200"
+                      : "translate-y-full opacity-0 pointer-events-none rounded-t-2xl sm:rounded-2xl shadow-none border-0"}`}
         style={{ zIndex: 70 }}
       >
         {/* Header */}
         <div className="rounded-t-2xl px-4 py-3 flex items-center gap-3 text-white" style={{ background: headerColor }}>
           <div className="shrink-0 grid place-items-center rounded-full bg-white/15 p-1">
+            {/* Mascota también en el header (sin bobbing para no distraer) */}
             <DonCangrejo mood={botMood} size={28} />
           </div>
           <div className="flex-1 min-w-0">
@@ -230,7 +219,7 @@ const ChatPanel: React.FC<{
             />
             <button
               onClick={handleSend}
-              className="shrink-0 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm focus:outline-none focus:ring-2"
+              className="relative z-20 shrink-0 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm focus:outline-none focus:ring-2"
               style={{ background: accent }}
             >
               Enviar
@@ -306,14 +295,12 @@ const ChatCrabWidget: React.FC<ChatCrabProps> = ({
   return (
     <>
       <Launcher
-        onClick={() => {
-          setOpen(true);
-          setUnread(false);
-        }}
+        onClick={() => { setOpen(true); setUnread(false); }}
         position={position!}
         offset={offset}
         accent={accent}
         unread={unread}
+        open={open}   // => se oculta cuando el chat está abierto
       />
 
       <ChatPanel
@@ -332,18 +319,3 @@ const ChatCrabWidget: React.FC<ChatCrabProps> = ({
 };
 
 export default ChatCrabWidget;
-
-/**
- * Uso típico en tu layout:
- * 
- * import ChatCrabWidget from "@/chat/ChatCrab";
- * 
- * <ChatCrabWidget
- *   title="Don Cangrejo — Chat"
- *   subtitle="Te ayudo con reservas y mareas"
- *   accent="#0D784A"
- *   headerColor="#443314"
- *   position="bottom-right"
- *   offset={{ x: 20, y: 20 }}
- * />
- */

@@ -43,7 +43,7 @@ export default function Gallery() {
         <div className="text-center">
           <Link to="/galeria" className="inline-block">
             <button className="px-5 py-2 bg-[#50ABD7] text-white rounded hover:bg-[#3f98c1] transition">
-              Ver más
+              Conocer más
             </button>
           </Link>
         </div>
