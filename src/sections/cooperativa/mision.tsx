@@ -13,14 +13,14 @@ const CARDS: Card[] = [
   {
     titulo: 'Misión',
     contenido:
-      'Nuestra misión es promover el turismo rural comunitario de manera amigable con el ambiente, contribuyendo integralmente al crecimiento y desarrollo económico y educativo de nuestras asociadas, sus familias y las comunidades aledañas. A través de nuestros proyectos de reforestación del manglar, granjas marinas de camarón y nuestro restaurante flotante, buscamos fortalecer el vínculo entre la comunidad y la naturaleza, generando ingresos sostenibles y mejorando la calidad de vida local.',
+      'Nuestra misión es promover el turismo rural comunitario de manera amigable con el ambiente, contribuyendo integralmente al crecimiento y desarrollo económico y educativo de nuestras asociadas, sus familias y las comunidades aledañas. Buscamos fortalecer el vínculo entre la comunidad y la naturaleza, generando ingresos sostenibles y mejorando la calidad de vida local.',
     multimedia:
       'https://www.costaricacinefest.go.cr/sites/default/files/styles/resumen/public/media/img/principal/poster_wotm.jpg',
   },
   {
     titulo: 'Visión',
     contenido:
-      'Aspiramos a ser la empresa líder en turismo y desarrollo sostenible en el sector de Manzanillo de Puntarenas, ofreciendo servicios de muy alta calidad y seguridad que satisfagan a nuestros clientes. Nos comprometemos a ser reconocidos por nuestras iniciativas ambientales y comunitarias, destacando en la reforestación de manglares, producción sostenible de camarones y experiencias culinarias únicas en nuestro restaurante flotante.',
+      'Aspiramos a ser la empresa líder en turismo y desarrollo sostenible en el sector de Manzanillo de Puntarenas, ofreciendo servicios de muy alta calidad y seguridad que satisfagan a nuestros clientes. Nos comprometemos a ser reconocidos por nuestras iniciativas ambientales y comunitarias.',
     multimedia:
       'https://lavozcooperativa.com/wp-content/uploads/2022/08/Mudecoop-2.jpeg',
   },
