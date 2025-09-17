@@ -64,7 +64,7 @@ export default function LoginForm() {
           placeholder="tucorreo@ejemplo.com"
           required
           className="w-full h-12 rounded-xl border border-neutral-300 px-4 outline-none
-                     focus:border-[#50ABD7] focus:ring-2 focus:ring-[#50ABD7]/30 transition
+                     focus:border-[#0D784A] focus:ring-2 focus:ring-[#0D784A]/30 transition
                      text-[15px]"
         />
       </div>
@@ -84,7 +84,7 @@ export default function LoginForm() {
             required
             minLength={8}
             className="w-full h-12 rounded-xl border border-neutral-300 pl-4 pr-12 outline-none
-                       focus:border-[#50ABD7] focus:ring-2 focus:ring-[#50ABD7]/30 transition
+                       focus:border-[#0D784A] focus:ring-2 focus:ring-[#0D784A]/30 transition
                        text-[15px]"
           />
           <button
@@ -108,6 +108,11 @@ export default function LoginForm() {
               </svg>
             )}
           </button>
+          <p className="mt-3 text-center text-sm">
+            <a href="/forgot-password" className="text-[#C58940] hover:underline">
+              ¿Olvidaste tu contraseña?
+            </a>
+          </p>
         </div>
       </div>
 
@@ -115,7 +120,7 @@ export default function LoginForm() {
         type="submit"
         disabled={submitting}
         className="w-full h-12 rounded-xl px-5 font-semibold text-white
-                   bg-[#0D784A] hover:bg-[#0b6a41] disabled:opacity-50
+                   bg-[#0D784A] hover:bg-[#0B6A41] disabled:opacity-50
                    shadow-[0_8px_18px_-6px_rgba(13,120,74,0.45)] transition text-base"
       >
         {submitting ? 'Accediendo…' : 'Acceder al Sistema'}

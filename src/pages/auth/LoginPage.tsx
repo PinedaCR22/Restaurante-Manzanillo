@@ -25,7 +25,7 @@ export default function LoginPage() {
       </div>
 
       {/* DERECHA: tarjeta compacta */}
-      <div className="flex items-center justify-center p-6 md:p-12 bg-[#F7FAF7]">
+      <div className="flex items-center justify-center p-6 md:p-12 bg-[#F8FAF8]">
         <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 p-8">
           <div className="flex items-center gap-3 mb-6">
             <img
