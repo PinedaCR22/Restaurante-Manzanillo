@@ -9,7 +9,7 @@ type Props = {
   fallback?: ReactNode;
 };
 
-export default function ProtectedRoute({ children, redirectTo = '/admin/auth/login', fallback = null }: Props) {
+export default function ProtectedRoute({ children, redirectTo = '/login', fallback = null }: Props) {
   const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
 
