@@ -66,7 +66,7 @@ const AboutMe: React.FC = () => {
         </p>
 
         <p className="text-lg">
-          En el año 2007 se cambió la visión y se fundó la cooperativa{" "}
+          En el año 2007 se fundó la cooperativa{" "}
           <strong>MUDECOOP</strong> (Mujeres de Manzanillo en Desarrollo con su
           Cooperativa) con el objetivo de brindar fuentes de empleo a las
           mujeres de la comunidad.

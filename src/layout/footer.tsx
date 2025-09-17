@@ -1,4 +1,40 @@
+// src/sections/footer.tsx
+import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa6";
+
+type QuickLink = { label: string; hash: `#${string}` };
+
+const quickLinks: QuickLink[] = [
+  { label: "Menú", hash: "#menu" },
+  { label: "Reservar", hash: "#reservar" },
+  { label: "Mudecoop", hash: "#mudecoop" },
+  { label: "Turismo", hash: "#turismo" },
+];
+
+// misma función que en Navbar
+function smoothScrollTo(hash: string) {
+  const el = document.querySelector(hash);
+  if (!el) return;
+  (el as HTMLElement).scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 export default function Footer() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/" && location.hash) {
+      requestAnimationFrame(() => smoothScrollTo(location.hash));
+    }
+  }, [location.pathname, location.hash]);
+
+  const handleClick = (e: React.MouseEvent, hash: string) => {
+    if (location.pathname === "/") {
+      e.preventDefault();
+      smoothScrollTo(hash);
+    }
+  };
+
   return (
     <footer className="bg-[#443314] text-white shadow">
       <div className="max-w-6xl mx-auto px-4 py-10 text-center">
@@ -22,19 +58,57 @@ export default function Footer() {
           <div className="max-w-xs">
             <h2 className="text-white font-semibold mb-3">Enlaces rápidos</h2>
             <ul className="space-y-2 text-sm">
-              <li><a href="/menu" className="hover:underline">Menú</a></li>
-              <li><a href="/reservar" className="hover:underline">Reservar</a></li>
-              <li><a href="/cooperativa" className="hover:underline">Mudecoop</a></li>
-              <li><a href="/actividades" className="hover:underline">Turismo</a></li>
+              {quickLinks.map((link) => (
+                <li key={link.hash}>
+                  <Link
+                    to={`/${link.hash}`}
+                    className="hover:underline"
+                    onClick={(e) => handleClick(e, link.hash)}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Columna 3 */}
-          <div className="max-w-xs">
+          <div className="max-w-xs flex flex-col items-center">
             <h2 className="text-white font-semibold mb-3">Contacto</h2>
             <p className="text-sm">Manzanillo, Puntarenas, CR</p>
             <p className="text-sm">Tel: +506 8800-0312</p>
-            <p className="text-sm">mudecooprl@outlook.com</p>
+            <p className="text-sm mb-4">mudecooprl@outlook.com</p>
+
+            {/* Íconos redes sociales */}
+            <div className="flex gap-4 mt-2">
+              <a
+                href="https://www.facebook.com/share/1APa66YtqP/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="hover:text-[#50ABD7] transition"
+              >
+                <FaFacebook size={22} />
+              </a>
+              <a
+                href="https://www.instagram.com/mudecooprl?igsh=MTUzOGFhdXprZ2tuOQ=="
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="hover:text-[#FBB517] transition"
+              >
+                <FaInstagram size={22} />
+              </a>
+              <a
+                href="https://www.tiktok.com/@mudecoop?_t=ZM-8zoJFky7l5B&_r=1"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok"
+                className="hover:text-[#0D784A] transition"
+              >
+                <FaTiktok size={22} />
+              </a>
+            </div>
           </div>
         </div>
       </div>

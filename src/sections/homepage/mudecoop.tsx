@@ -67,8 +67,7 @@ const Mudecoop: React.FC = () => {
 
         <p className="text-lg mb-6">
           MUDECOOP promueve el desarrollo cooperativo y comunitario, conectando a los visitantes
-          con iniciativas locales que impulsan el bienestar social, la educación y el turismo
-          responsable. Descubre nuestros programas, experiencias y cómo puedes formar parte.
+          con iniciativas locales que impulsan el bienestar social. Descubre nuestros programas, experiencias y cómo puedes formar parte.
         </p>
 
         <button
