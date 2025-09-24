@@ -5,16 +5,20 @@ export interface TimeSlot {
   id: string;
 }
 
+export type TableLocation = "terraza" | "interior" | "privada" | "bar";
+
 export interface TableInfo {
   id: number;
   seats: number;
   available: boolean;
-  location?: string;
+  location?: TableLocation;
 }
+
+export type StepTitle = "Fecha y Hora" | "Mesa" | "Datos" | "Confirmación";
 
 export interface ReservationStep {
   step: number;
-  title: string;
+  title: StepTitle;
   completed: boolean;
   active: boolean;
 }
@@ -43,23 +47,25 @@ export interface ReservationContextType {
   resetReservation: () => void;
 }
 
-// API Response types para futuros endpoints
+/* ---------- API types (backend) ---------- */
+export type ISODateString = string;
+
 export interface ApiTimeSlot {
   id: string;
   time: string;
   available: boolean;
-  date: string;
+  date: ISODateString;
 }
 
 export interface ApiTable {
   id: number;
-  capacity: number;
+  capacity: number; // se mapea a TableInfo.seats en el front
   available: boolean;
-  location: string;
+  location: TableLocation | string; // si el backend devuelve string libre, lo normalizamos
 }
 
 export interface ReservationRequest {
-  date: string;
+  date: ISODateString;
   time: string;
   guests: number;
   tableId: number;
@@ -72,8 +78,8 @@ export interface ReservationRequest {
 export interface ReservationResponse {
   id: string;
   confirmationNumber: string;
-  status: 'confirmed' | 'pending' | 'cancelled';
-  date: string;
+  status: "confirmed" | "pending" | "cancelled";
+  date: ISODateString;
   time: string;
   guests: number;
   customerName: string;

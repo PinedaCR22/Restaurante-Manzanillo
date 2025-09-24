@@ -1,13 +1,13 @@
-// components/reservations/ReservationPage.tsx
-import React from 'react';
+import React from "react";
+import { CheckCircle, Calendar, MapPin, User, FileCheck, Sparkles } from "lucide-react";
+import ReservationCalendar from "../../components/reservations/ReservationCalendar";
+import ReservationForm from "../../components/reservations/ReservationForm";
+import ReservationMap from "../../components/reservations/ReservationMap";
+import type { ReservationStep } from "../../types/reservation";
+import { ReservationProvider, useReservation } from "./reservationpage";
 
-import { CheckCircle, Calendar, MapPin, User, FileCheck, Sparkles } from 'lucide-react';
-import ReservationCalendar from '../../components/reservations/ReservationCalendar';
-import ReservationForm from '../../components/reservations/ReservationForm';
-import ReservationMap from '../../components/reservations/ReservationMap';
-import { ReservationProvider, useReservation } from './reservationpage';
 
-// Componente de confirmación
+/* ----------------- Confirmación ----------------- */
 const ReservationConfirmation: React.FC = () => {
   const { reservationData, submitReservation, resetReservation } = useReservation();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -20,28 +20,25 @@ const ReservationConfirmation: React.FC = () => {
     setIsSubmitting(false);
   };
 
-  const formatDate = (date: Date | null): string => {
-    if (!date) return '';
-    return new Intl.DateTimeFormat('es-ES', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }).format(date);
-  };
+  const formatDate = (date: Date | null): string =>
+    date
+      ? new Intl.DateTimeFormat("es-CR", { weekday: "long", year: "numeric", month: "long", day: "numeric" }).format(
+          date
+        )
+      : "";
 
   if (isConfirmed) {
     return (
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto text-center">
         <div className="mb-6">
-          <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+          <CheckCircle className="w-16 h-16 text-[#50ABD7] mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-800 mb-2">¡Reserva Confirmada!</h2>
           <p className="text-gray-600">Tu mesa ha sido reservada exitosamente</p>
         </div>
 
-        <div className="bg-green-50 rounded-lg p-6 mb-6">
-          <h3 className="font-semibold text-green-800 mb-3">Detalles de tu reserva:</h3>
-          <div className="space-y-2 text-green-700">
+        <div className="bg-blue-50 rounded-lg p-6 mb-6">
+          <h3 className="font-semibold text-[#50ABD7] mb-3">Detalles de tu reserva:</h3>
+          <div className="space-y-2 text-blue-700">
             <p><strong>Fecha:</strong> {formatDate(reservationData.date)}</p>
             <p><strong>Hora:</strong> {reservationData.time}</p>
             <p><strong>Mesa:</strong> #{reservationData.tableId}</p>
@@ -56,7 +53,7 @@ const ReservationConfirmation: React.FC = () => {
 
         <button
           onClick={resetReservation}
-          className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors"
+          className="bg-[#50ABD7] text-white px-6 py-3 rounded-lg hover:bg-[#3f98c1] transition-colors"
         >
           Nueva Reserva
         </button>
@@ -75,16 +72,16 @@ const ReservationConfirmation: React.FC = () => {
         <div className="space-y-6">
           <div className="border rounded-lg p-4">
             <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
-              <Calendar className="w-5 h-5 mr-2 text-red-500" />
+              <Calendar className="w-5 h-5 mr-2 text-[#50ABD7]" />
               Fecha y Hora
             </h3>
             <p className="text-gray-600">{formatDate(reservationData.date)}</p>
-            <p className="font-medium text-red-600">{reservationData.time}</p>
+            <p className="font-medium text-[#50ABD7]">{reservationData.time}</p>
           </div>
 
           <div className="border rounded-lg p-4">
             <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
-              <MapPin className="w-5 h-5 mr-2 text-red-500" />
+              <MapPin className="w-5 h-5 mr-2 text-[#50ABD7]" />
               Mesa
             </h3>
             <p className="text-gray-600">Mesa #{reservationData.tableId}</p>
@@ -95,7 +92,7 @@ const ReservationConfirmation: React.FC = () => {
         <div className="space-y-6">
           <div className="border rounded-lg p-4">
             <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
-              <User className="w-5 h-5 mr-2 text-red-500" />
+              <User className="w-5 h-5 mr-2 text-[#50ABD7]" />
               Información de Contacto
             </h3>
             <p className="text-gray-600">{reservationData.customerInfo.fullName}</p>
@@ -122,60 +119,56 @@ const ReservationConfirmation: React.FC = () => {
         <button
           onClick={handleConfirm}
           disabled={isSubmitting}
-          className={`
-            flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-200
-            ${isSubmitting
-              ? 'bg-gray-400 text-white cursor-not-allowed'
-              : 'bg-red-500 text-white hover:bg-red-600 shadow-md hover:shadow-lg'
-            }
-          `}
+          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
+            isSubmitting
+              ? "bg-gray-400 text-white cursor-not-allowed"
+              : "bg-[#50ABD7] text-white hover:bg-[#3f98c1] shadow-md hover:shadow-lg"
+          }`}
         >
-          {isSubmitting ? 'Confirmando...' : 'Confirmar Reserva'}
+          {isSubmitting ? "Confirmando..." : "Confirmar Reserva"}
         </button>
       </div>
     </div>
   );
 };
 
-// Componente de progreso
+/* ----------------- Barra de pasos (in-file) ----------------- */
 const ProgressSteps: React.FC = () => {
   const { steps } = useReservation();
-  
-  const stepIcons = [Calendar, MapPin, User, FileCheck, CheckCircle];
+  const filteredSteps = steps.filter((s: ReservationStep) => s.step <= 4);
+  const stepIcons = [Calendar, MapPin, User, FileCheck];
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
       <div className="flex items-center justify-between">
-        {steps.map((step, index) => {
+        {filteredSteps.map((step: ReservationStep, index: number) => {
           const Icon = stepIcons[index];
           return (
             <div key={step.step} className="flex items-center">
-              <div className={`
-                flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-200
-                ${step.completed 
-                  ? 'bg-green-500 border-green-500 text-white' 
-                  : step.active 
-                    ? 'bg-red-500 border-red-500 text-white' 
-                    : 'bg-gray-100 border-gray-300 text-gray-400'
-                }
-              `}>
-                {step.completed ? (
-                  <CheckCircle className="w-5 h-5" />
-                ) : (
-                  <Icon className="w-5 h-5" />
-                )}
+              <div
+                className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-200 ${
+                  step.completed
+                    ? "border-[#FBB517] bg-white text-[#50ABD7]"
+                    : step.active
+                    ? "bg-[#FBB517] border-[#FBB517] text-gray-900"
+                    : "bg-gray-100 border-gray-300 text-gray-400"
+                }`}
+              >
+                {step.completed ? <CheckCircle className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
               </div>
-              <span className={`
-                ml-3 text-sm font-medium
-                ${step.active ? 'text-red-600' : step.completed ? 'text-green-600' : 'text-gray-400'}
-              `}>
+              <span
+                className={`ml-3 text-sm font-medium ${
+                  step.active ? "text-[#FBB517]" : step.completed ? "text-[#50ABD7]" : "text-gray-400"
+                }`}
+              >
                 {step.title}
               </span>
-              {index < steps.length - 1 && (
-                <div className={`
-                  ml-4 w-12 h-0.5 transition-colors duration-200
-                  ${step.completed ? 'bg-green-500' : 'bg-gray-300'}
-                `} />
+              {index < filteredSteps.length - 1 && (
+                <div
+                  className={`ml-4 w-12 h-0.5 transition-colors duration-200 ${
+                    step.completed ? "bg-[#FBB517]" : "bg-gray-300"
+                  }`}
+                />
               )}
             </div>
           );
@@ -185,7 +178,7 @@ const ProgressSteps: React.FC = () => {
   );
 };
 
-// Componente interno que usa el contexto
+/* ----------------- Contenido principal ----------------- */
 const ReservationContent: React.FC = () => {
   const { currentStep } = useReservation();
 
@@ -199,8 +192,6 @@ const ReservationContent: React.FC = () => {
         return <ReservationForm />;
       case 4:
         return <ReservationConfirmation />;
-      case 5:
-        return <ReservationConfirmation />;
       default:
         return <ReservationCalendar />;
     }
@@ -209,10 +200,9 @@ const ReservationContent: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2 flex items-center justify-center">
-            <Sparkles className="w-8 h-8 mr-3 text-red-500" />
+            <Sparkles className="w-8 h-8 mr-3 text-[#50ABD7]" />
             Reserva tu Mesa
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
@@ -220,23 +210,17 @@ const ReservationContent: React.FC = () => {
           </p>
         </div>
 
-        {/* Progress Steps */}
         <ProgressSteps />
-
-        {/* Current Step Content */}
         {renderCurrentStep()}
       </div>
     </div>
   );
 };
 
-// Componente principal exportado
-const ReservationPage: React.FC = () => {
-  return (
-    <ReservationProvider>
-      <ReservationContent />
-    </ReservationProvider>
-  );
-};
+const ReservationPage: React.FC = () => (
+  <ReservationProvider>
+    <ReservationContent />
+  </ReservationProvider>
+);
 
 export default ReservationPage;
