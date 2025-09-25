@@ -85,22 +85,26 @@ export default function MudecoopJRPage() {
       {/* Ancho completo sin max-w */}
       <div className="w-full px-3 sm:px-6 lg:px-10 py-8 lg:py-12 space-y-8">
         {/* Card 1 — imagen izquierda */}
-        <InfoCard
-          title="Historia de MUDECOOP JR"
+         <InfoCard
+          title="MUDECOOP JR: origen e identidad"
           paragraphs={[
-            "MUDECOOP JR promueve la participación de la niñez y juventud en actividades comunitarias con enfoque en liderazgo, cultura y sostenibilidad.",
-            "A través de talleres y experiencias guiadas, buscamos formar valores de cooperación y pertenencia a la comunidad.",
+            "Nace para incluir a niñas y niños de Manzanillo en actividades comunitarias con foco ambiental y valores de liderazgo.",
+            "Tras una primera convocatoria, quedaron 20 niñas y se consolidó el nombre MUDECOOP JR.",
+            "Gracias a la gestión vinculada a “Mujeres de Manglar” se obtuvo apoyo para alimentación, hidratación y equipo en cada jornada.",
+            "Coordinación: Marixa Obando, Alexandra Sánchez y Ana Cecilia (alimentación). Todas las participantes son de Manzanillo y alrededores."
           ]}
           images={[imgCard1]}
         />
 
         {/* Card 2 — imagen derecha */}
-        <InfoCard
+       <InfoCard
           reverse
-          title="¿Qué incluye y cómo participar?"
+          title="Actividades que realizan"
           paragraphs={[
-            "Talleres educativos y culturales, dinámicas recreativas y acompañamiento de instructores locales.",
-            "Sesiones regulares los sábados de 9:00 a 13:00. Cupo limitado a 20 participantes por grupo.",
+            "Actividades: recolección de propágulos, vivero y reforestación en un área exclusiva de MUDECOOP JR; educación sobre la importancia del manglar.",
+            "Formación personal: autoestima, autocuidado y trabajo en equipo. Actividades recreativas como fútbol, voleibol y pintura, además de celebraciones puntuales.",
+            "Frecuencia: una vez al mes. Cupo: 20 niñas, organizadas en dos grupos de 10 para mejor acompañamiento.",
+            "Logística: se proveen equipo básico, hidratación y alimentación durante las jornadas."
           ]}
           images={[imgCard2]}
         />

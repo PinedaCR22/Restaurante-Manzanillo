@@ -50,11 +50,42 @@ export const ACTIVITY_DETAILS: Record<string, ActivityDetail> = {
     cover: fallbackCover("malecon"),
     description:
       "El malecón de Manzanillo es un punto histórico y emblemático que funcionó durante décadas como puerto de carga y descarga de ganado, café, oro, granos y pasajeros. Su rampa y bodegas, como la conocida Casa Verde, eran clave para almacenar y embarcar productos cuando no existían carreteras establecidas. Antiguamente conocido como Puerto Iglesias, conectaba Manzanillo con Puntarenas y servía como centro de intercambio comercial y social de la región.",
-    includes: ["Actualmente el malecón conserva su rampa de cemento y sigue siendo utilizado como puerto no oficial para el traslado de mercancías, ganado y pasajeros en pangas, especialmente los viernes cuando llegan grandes embarcaciones con insumos. A diferencia de otras comunidades vecinas, Manzanillo cuenta con infraestructura establecida que facilita el acceso directo desde buses y vehículos, reduciendo riesgos y tiempos para los viajeros. Además, el área es hábitat de una rica flora y fauna: pelícanos, garzas, espátulas rosadas, martín peña, monos congos, pizotes, cocodrilos, mantarrayas e incluso avistamientos ocasionales de delfines y ballenas."],
-    schedules: [{ day: "Todos los días", hours: "6:00–18:00" }],
-    contacts: [{ label: "Turismo local", value: "+506 6000-6000", href: "tel:+50660006000" }],
+    includes: [
+      "Rampa de cemento en uso; punto de embarque y desembarque no oficial.",
+      "Acceso más seguro y directo que playas vecinas para abordar pangas.",
+      "Flora y fauna frecuente como pelícanos, garzas/espátulas rosadas, monos, congo, pizotes, cocodrilos y mantarrayas; avistamientos ocasionales de delfines/ballenas."
+    ],
+    schedules: [
+      { day: "Visita recomendada", hours: "06:00–18:00 (luz día)" },
+      { day: "Operación de pangas", hours: "sujeta a marea; verificar tabla de mareas del día" }
+    ],
+    contacts: [
+      { label: "Contacto y reservas", value: "Según entrevistas con lideres locales; coordinar en el mismo sitio o con referentes comunitarios." }
+    ],
     gallery: [fallbackCover("malecon"), fallbackCover("malecon")],
   },
+
+    // ========= MANZANILLO CENTRO =========
+  "manzanillo-centro": {
+    id: "manzanillo-centro",
+    title: "MANZANILLO CENTRO",
+    cover: fallbackCover("manzanillo-centro"),
+    description:
+      "Comunidad costera de 1.000 habitantes (300 familias). La pesca artesanal es la actividad principal; parte de la población trabaja en fincas cercanas o se desplaza a otras localidades. Cuenta con servicios básicos (escuela, colegio, CEN, EBAIS, salón comunal, iglesia, plaza deportiva y redondel), aunque algunos operan de forma intermitente.",
+    includes: [
+      "EBAIS para Manzanillo/Don Garito cada 15 días (atención limitada; emergencias suelen trasladarse a clínicas de Chómez o Colorado).",
+      "Traslados también por panga hacia zonas como Nicoya, dependientes de la marea."
+    ],
+    schedules: [
+      { day: "Buses (Lun–Sáb)", hours: "05:30, 06:40, 08:30, 11:30, 13:30 y 15:30 (último)" },
+      { day: "Domingos", hours: "Servicio reducido; confirmar en terminal de Chómez/Colorado" }
+    ],
+    contacts: [
+      { label: "Contacto y reservas", value: "Información basada en entrevistas comunitarias; coordinar con comité local o lideres de MUDECOOP en el salón comunal." }
+    ],
+    gallery: [fallbackCover("manzanillo-centro")],
+  },
+
 
   // ========= JUEGOS TRADICIONALES =========
   "juegos-tradicionales": {
@@ -109,19 +140,6 @@ export const ACTIVITY_DETAILS: Record<string, ActivityDetail> = {
     schedules: [{ day: "Mié / Sáb / Dom", hours: "7:00–10:30" }],
     contacts: [{ label: "WhatsApp", value: "+506 7300-7300", href: "https://wa.me/50673007300" }],
     gallery: [fallbackCover("tours-en-bici"), fallbackCover("tours-en-bici")],
-  },
-
-  // ========= MANZANILLO CENTRO =========
-  "manzanillo-centro": {
-    id: "manzanillo-centro",
-    title: "MANZANILLO CENTRO",
-    cover: fallbackCover("manzanillo-centro"),
-    description:
-      "Manzanillo Centro es una comunidad costera con alrededor de mil habitantes distribuidos en unas 300 familias. La principal actividad económica es la pesca artesanal, aunque algunas personas trabajan en fincas cercanas o se desplazan a otras localidades para conseguir empleo. La zona carece de fábricas propias y depende de recursos limitados, lo que hace que muchas familias tengan que buscar oportunidades fuera del lugar.",
-    includes: ["En el pueblo se pueden encontrar servicios básicos como escuelas, colegio, CEN, EVAIS, salón comunal, iglesia, plaza deportiva y redondel, aunque algunos funcionan de forma intermitente. El EVAIS atiende únicamente ciertos días (miércoles para Manzanillo y jueves para Don Garito cada 15 días), por lo que ante emergencias la comunidad suele acudir a clínicas en Chómez o Colorado. Además del transporte terrestre, se utilizan pangas para trasladarse a otras zonas como Nicoya."],
-    schedules: [{ day: "Lunes a Domingo", hours: "9:00–12:00" }],
-    contacts: [{ label: "Información", value: "centro@manzanillo.cr", href: "mailto:centro@manzanillo.cr" }],
-    gallery: [fallbackCover("manzanillo-centro")],
   },
 
   // ========= PESCA ARTESANAL =========
