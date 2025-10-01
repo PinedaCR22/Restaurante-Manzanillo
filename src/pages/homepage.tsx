@@ -8,16 +8,16 @@ import Reservas from "../sections/homepage/reservas"
 
 const homepage = () => {
   return (
-    <>
+    <main className="bg-app text-app">
     <Hero />
-    <div className="h-12"></div>
+    <div className="h-12 bg-app" />
     <Menu />
-    <div className="h-12"></div>
+    <div className="h-12 bg-app" />
     <Reservas />
-    <div className="h-12"></div>
+    <div className="h-12 bg-app" />
     <Mudecoop />
     <Manzanillo />
-    </>
+  </main>
   )
 }
 

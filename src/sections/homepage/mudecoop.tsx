@@ -21,7 +21,7 @@ const Mudecoop: React.FC = () => {
   return (
     <motion.div
       id="mudecoop"
-      className="w-full flex flex-col md:flex-row items-center py-16 px-8 bg-white text-gray-900 scroll-mt-24"
+      className="w-full flex flex-col md:flex-row items-center py-16 px-8 bg-app text-app scroll-mt-24"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -67,7 +67,8 @@ const Mudecoop: React.FC = () => {
 
         <p className="text-lg mb-6">
           MUDECOOP promueve el desarrollo cooperativo y comunitario, conectando a los visitantes
-          con iniciativas locales que impulsan el bienestar social. Descubre nuestros programas, experiencias y cómo puedes formar parte.
+          con iniciativas locales que impulsan el bienestar social. Descubre nuestros programas,
+          experiencias y cómo puedes formar parte.
         </p>
 
         <button

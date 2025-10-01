@@ -1,4 +1,3 @@
-// src/sections/home/Mision.tsx
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
@@ -30,11 +29,14 @@ export default function Mision() {
   const loopMode = CARDS.length > 1;
 
   return (
-    <section id="mision" className="bg-gray-50 p-4 md:p-8 mb-5 flex justify-center">
+    <section
+      id="mision"
+      className="bg-app p-4 md:p-8 mb-5 flex justify-center transition-colors"
+    >
       <div className="w-full max-w-[1800px] relative min-h-[520px] md:min-h-[600px] grid place-items-center">
         {/* Flechas */}
         <button
-          className="custom-prev absolute top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-900 z-20 left-2 md:left-8"
+          className="custom-prev absolute top-1/2 -translate-y-1/2 text-muted hover:text-app z-20 left-2 md:left-8 transition-colors"
           aria-label="Anterior"
           type="button"
         >
@@ -42,7 +44,7 @@ export default function Mision() {
         </button>
 
         <button
-          className="custom-next absolute top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-900 z-20 right-2 md:right-8"
+          className="custom-next absolute top-1/2 -translate-y-1/2 text-muted hover:text-app z-20 right-2 md:right-8 transition-colors"
           aria-label="Siguiente"
           type="button"
         >
@@ -60,13 +62,15 @@ export default function Mision() {
           pagination={{ clickable: true }}
           autoplay={{ delay: 12000, disableOnInteraction: false }}
           className="w-full"
+          style={{ ['--swiper-theme-color' as any]: '#50ABD7' }}
         >
           {CARDS.map((d, i) => (
             <SwiperSlide key={`${d.titulo}-${i}`} className="w-full grid place-items-center">
               <div
-                className="relative w-full md:w-[85vw] max-w-[1200px] bg-white rounded-lg shadow
+                className="relative w-full md:w-[85vw] max-w-[1200px] bg-card rounded-lg shadow
                            p-8 md:p-16 overflow-hidden flex flex-col justify-center items-center
-                           min-h-[420px] md:min-h-[520px] mx-auto"
+                           min-h-[420px] md:min-h-[520px] mx-auto
+                           border border-gray-200 dark:border-gray-700 transition-colors"
               >
                 {/* Marca de agua */}
                 {d.multimedia && (
@@ -77,10 +81,21 @@ export default function Mision() {
                   />
                 )}
 
+                {/* Overlay para mejorar legibilidad en modo oscuro */}
+                <div 
+                  className="absolute inset-0 pointer-events-none transition-opacity"
+                  style={{ 
+                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                    opacity: document.documentElement.classList.contains('dark') ? 1 : 0
+                  }}
+                />
+
                 {/* Contenido */}
                 <div className="relative z-10 max-w-[900px] text-center mx-auto space-y-5">
-                  <h2 className="text-2xl md:text-3xl font-bold text-black">{d.titulo}</h2>
-                  <p className="text-black/90 text-[15px] md:text-lg leading-relaxed">
+                  <h2 className="text-2xl md:text-3xl font-bold text-app">
+                    {d.titulo}
+                  </h2>
+                  <p className="text-app text-[15px] md:text-lg leading-relaxed opacity-90">
                     {d.contenido}
                   </p>
                 </div>

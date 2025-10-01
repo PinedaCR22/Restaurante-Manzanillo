@@ -12,7 +12,6 @@ import {
 import { useReservation } from "../../sections/homepage/reservationpage";
 import type { TableInfo } from "../../types/reservation";
 
-
 /** Brand colors */
 const BLUE = "#50ABD7";
 
@@ -101,7 +100,7 @@ const ReservationMap: React.FC = () => {
     return tables.filter((t) => t.seats >= req);
   }, [tables, filterByCapacity, reservationData.guests]);
 
-  /** Agrupación por ubicación dinámica (no hardcodea secciones vacías) */
+  /** Agrupación por ubicación dinámica */
   const locations = useMemo(() => {
     const set = new Set<string>();
     for (const t of filteredTables) if (t.location) set.add(t.location);
@@ -119,8 +118,11 @@ const ReservationMap: React.FC = () => {
     if (isSelected)
       return "p-4 border-2 rounded-lg transition-all duration-200 text-center shadow-md outline-none";
     if (!table.available)
-      return "p-4 border-2 rounded-lg transition-all duration-200 text-center bg-gray-200 border-gray-300 text-gray-500 cursor-not-allowed";
-    return "p-4 border-2 rounded-lg transition-all duration-200 text-center bg-white border-gray-300 text-gray-700 hover:border-gray-400 outline-none";
+      return "p-4 border-2 rounded-lg transition-all duration-200 text-center cursor-not-allowed opacity-60 " +
+        "bg-card border-[color:color-mix(in srgb,var(--fg) 16%,transparent)] text-muted";
+    return "p-4 border-2 rounded-lg transition-all duration-200 text-center outline-none " +
+      "bg-card text-app border-[color:color-mix(in srgb,var(--fg) 18%,transparent)] " +
+      "hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]";
   };
 
   const handleTableSelect = (tableId: number) => {
@@ -145,25 +147,23 @@ const ReservationMap: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-6xl mx-auto">
+      <div className="bg-card text-app rounded-lg shadow-lg p-6 max-w-6xl mx-auto border border-[color:color-mix(in srgb,var(--fg) 12%,transparent)]">
         <div className="text-center py-12">
           <div
             className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4"
             style={{ borderColor: BLUE }}
           />
-          <p className="text-gray-600">Cargando disponibilidad de mesas...</p>
+          <p className="text-muted">Cargando disponibilidad de mesas...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-6xl mx-auto">
+    <div className="bg-card text-app rounded-lg shadow-lg p-6 max-w-6xl mx-auto border border-[color:color-mix(in srgb,var(--fg) 12%,transparent)]">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          Selecciona tu Mesa
-        </h2>
-        <p className="text-gray-600">
+        <h2 className="text-2xl font-bold mb-2">Selecciona tu Mesa</h2>
+        <p className="text-muted">
           Elige la mesa perfecta para tu experiencia gastronómica
         </p>
       </div>
@@ -171,11 +171,11 @@ const ReservationMap: React.FC = () => {
       <div className="grid lg:grid-cols-4 gap-6">
         {/* Sidebar resumen */}
         <div className="lg:col-span-1">
-          <div className="bg-gray-50 rounded-lg p-4 sticky top-4">
-            <h3 className="font-semibold text-gray-800 mb-3">Tu Reserva</h3>
+          <div className="rounded-lg p-4 sticky top-4 bg-card border border-[color:color-mix(in srgb,var(--fg) 12%,transparent)]">
+            <h3 className="font-semibold mb-3">Tu Reserva</h3>
 
             <div className="space-y-2 text-sm">
-              <div className="flex items-center text-gray-600">
+              <div className="flex items-center text-muted">
                 <Calendar className="w-4 h-4 mr-2" />
                 <span>
                   {reservationData.date
@@ -188,11 +188,11 @@ const ReservationMap: React.FC = () => {
                     : "—"}
                 </span>
               </div>
-              <div className="flex items-center text-gray-600">
+              <div className="flex items-center text-muted">
                 <Clock className="w-4 h-4 mr-2" />
                 <span>{reservationData.time || "—"}</span>
               </div>
-              <div className="flex items-center text-gray-600">
+              <div className="flex items-center text-muted">
                 <Users className="w-4 h-4 mr-2" />
                 <span>
                   {reservationData.guests}{" "}
@@ -202,15 +202,18 @@ const ReservationMap: React.FC = () => {
             </div>
 
             {selectedTable != null && (
-              <div className="mt-4 p-3 rounded-lg" style={{ background: "#EFF6FF" }}>
-                <h4 className="font-medium text-gray-800 mb-1">
-                  Mesa Seleccionada
-                </h4>
+              <div
+                className="mt-4 p-3 rounded-lg"
+                style={{
+                  background: "color-mix(in srgb, var(--fg) 10%, transparent)",
+                }}
+              >
+                <h4 className="font-medium mb-1">Mesa Seleccionada</h4>
                 <p className="text-sm" style={{ color: BLUE }}>
                   Mesa #{selectedTable} -{" "}
                   {tables.find((t) => t.id === selectedTable)?.seats} asientos
                 </p>
-                <p className="text-xs text-gray-600 mt-1">
+                <p className="text-xs text-muted mt-1">
                   {
                     titleByLocation[
                       tables.find((t) => t.id === selectedTable)?.location || ""
@@ -221,21 +224,21 @@ const ReservationMap: React.FC = () => {
             )}
 
             {/* Filtro de capacidad */}
-            <div className="mt-4 p-3 border rounded-lg">
+            <div className="mt-4 p-3 border rounded-lg border-[color:color-mix(in srgb,var(--fg) 16%,transparent)]">
               <label className="flex items-center space-x-2 text-sm">
                 <input
                   type="checkbox"
                   checked={filterByCapacity}
                   onChange={(e) => setFilterByCapacity(e.target.checked)}
-                  className="rounded border-gray-300 focus:ring-2"
+                  className="rounded border-[color:color-mix(in srgb,var(--fg) 30%,transparent)] focus:ring-2"
                   style={{ accentColor: BLUE }}
                 />
                 <span>Solo mostrar mesas adecuadas</span>
               </label>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-muted mt-1">
                 Filtra por capacidad mínima requerida
               </p>
-              <div className="mt-2 text-xs text-gray-600">
+              <div className="mt-2 text-xs text-muted">
                 {filteredTables.length} mesa
                 {filteredTables.length === 1 ? "" : "s"} disponibles según tu
                 selección
@@ -244,20 +247,18 @@ const ReservationMap: React.FC = () => {
 
             {/* Leyenda */}
             <div className="mt-4">
-              <h4 className="font-medium text-gray-800 mb-2 text-sm">
-                Leyenda
-              </h4>
+              <h4 className="font-medium mb-2 text-sm">Leyenda</h4>
               <div className="space-y-2 text-xs">
                 <div className="flex items-center">
                   <CheckCircle className="w-4 h-4 mr-2" style={{ color: BLUE }} />
                   <span>Seleccionada</span>
                 </div>
                 <div className="flex items-center">
-                  <CircleDot className="w-4 h-4 text-green-600 mr-2" />
+                  <CircleDot className="w-4 h-4 mr-2" style={{ color: "#16a34a" }} />
                   <span>Disponible</span>
                 </div>
                 <div className="flex items-center">
-                  <XCircle className="w-4 h-4 text-gray-400 mr-2" />
+                  <XCircle className="w-4 h-4 mr-2" style={{ color: "color-mix(in srgb, var(--fg) 35%, transparent)" as any }} />
                   <span>Ocupada</span>
                 </div>
               </div>
@@ -273,14 +274,12 @@ const ReservationMap: React.FC = () => {
               if (byLoc.length === 0) return null;
 
               return (
-                <section key={loc} className="border rounded-lg p-4">
+                <section key={loc} className="border rounded-lg p-4 border-[color:color-mix(in srgb,var(--fg) 16%,transparent)]">
                   <div className="flex items-center mb-4">
                     <MapPin className="w-5 h-5 mr-2" style={{ color: BLUE }} />
                     <div>
-                      <h3 className="font-semibold text-gray-800">
-                        {titleByLocation[loc] || loc}
-                      </h3>
-                      <p className="text-sm text-gray-600">
+                      <h3 className="font-semibold">{titleByLocation[loc] || loc}</h3>
+                      <p className="text-sm text-muted">
                         {descByLocation[loc] || ""}
                       </p>
                     </div>
@@ -314,9 +313,7 @@ const ReservationMap: React.FC = () => {
                               }
                             }}
                           >
-                            <div className="font-medium">
-                              Mesa #{table.id}
-                            </div>
+                            <div className="font-medium">Mesa #{table.id}</div>
                             <div className="text-sm flex items-center justify-center mt-1">
                               <Users className="w-3 h-3 mr-1" />
                               {table.seats}
@@ -330,7 +327,13 @@ const ReservationMap: React.FC = () => {
                               />
                             )}
                             {!table.available && !isSelected && (
-                              <XCircle className="w-4 h-4 mx-auto mt-2 text-gray-400" />
+                              <XCircle
+                                className="w-4 h-4 mx-auto mt-2"
+                                style={{
+                                  color:
+                                    "color-mix(in srgb, var(--fg) 35%, transparent)",
+                                }}
+                              />
                             )}
                           </button>
                         </div>
@@ -344,12 +347,13 @@ const ReservationMap: React.FC = () => {
 
           {/* Vacío / sin resultados */}
           {filteredTables.length === 0 && (
-            <div className="text-center py-12 border-2 border-dashed border-gray-300 rounded-lg mt-6">
-              <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-600 mb-2">
-                No hay mesas disponibles
-              </h3>
-              <p className="text-gray-500 mb-4">
+            <div className="text-center py-12 border-2 border-dashed rounded-lg mt-6 border-[color:color-mix(in srgb,var(--fg) 20%,transparent)]">
+              <Users
+                className="w-12 h-12 mx-auto mb-4"
+                style={{ color: "color-mix(in srgb, var(--fg) 35%, transparent)" as any }}
+              />
+              <h3 className="text-lg font-medium mb-2">No hay mesas disponibles</h3>
+              <p className="text-muted mb-4">
                 Para {reservationData.guests}{" "}
                 {reservationData.guests === 1 ? "persona" : "personas"} en este
                 horario
@@ -365,10 +369,12 @@ const ReservationMap: React.FC = () => {
           )}
 
           {/* Botones de acción */}
-          <div className="flex space-x-4 mt-8">
+          <div className="flex gap-4 mt-8">
             <button
               onClick={handleBack}
-              className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-200 font-medium"
+              className="flex-1 py-3 px-4 rounded-lg font-medium transition
+                         border border-[color:color-mix(in srgb,var(--fg) 18%,transparent)]
+                         text-app hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]"
               type="button"
             >
               Volver
@@ -379,10 +385,16 @@ const ReservationMap: React.FC = () => {
               className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
                 selectedTable != null
                   ? "text-white shadow-md hover:shadow-lg"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "cursor-not-allowed opacity-70"
               }`}
               style={
-                selectedTable != null ? { backgroundColor: BLUE } : undefined
+                selectedTable != null
+                  ? { backgroundColor: BLUE }
+                  : {
+                      backgroundColor:
+                        "color-mix(in srgb, var(--fg) 18%, transparent)",
+                      color: "var(--fg)",
+                    }
               }
               type="button"
             >

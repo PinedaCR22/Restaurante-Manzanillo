@@ -21,7 +21,7 @@ const Descriptions: React.FC = () => {
   return (
     <motion.div
       id="descriptions"
-      className="w-full flex flex-col md:flex-row items-center py-16 px-8 bg-white text-gray-900 scroll-mt-24"
+      className="w-full flex flex-col md:flex-row items-center py-16 px-8 bg-app text-app scroll-mt-24"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -63,7 +63,7 @@ const Descriptions: React.FC = () => {
           ¡Bienvenido a la comunidad de Manzanillo, Puntarenas!
         </h2>
 
-        <p className="text-lg">
+        <p className="text-lg text-app">
           Manzanillo es un lugar lleno de tradición, hospitalidad y cultura costera. 
           Su gente impulsa el turismo sostenible y comunitario, compartiendo experiencias 
           auténticas que van desde la pesca artesanal hasta las celebraciones locales. 
