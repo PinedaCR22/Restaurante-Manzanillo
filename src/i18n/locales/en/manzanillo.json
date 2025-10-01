@@ -1,0 +1,18 @@
+{
+  "title": {
+    "line1": "Discover everything Manzanillo",
+    "line2": "has to offer!"
+  },
+  "cta": {
+    "more": "Learn more"
+  },
+  "alt": {
+    "image": "Manzanillo {{index}}",
+    "duplicate": "Manzanillo duplicate {{index}}"
+  },
+  "aria": {
+    "section": "Tourism section with animated Manzanillo gallery",
+    "scrollDown": "Scroll down to the button",
+    "cta": "Open Manzanillo activities"
+  }
+}

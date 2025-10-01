@@ -1,15 +1,16 @@
 // src/sections/navbar.tsx
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
-type Item = { label: string; hash: `#${string}` };
+type Item = { key: string; hash: `#${string}` };
 
 const items: Item[] = [
-  { label: "Inicio",   hash: "#hero" },
-  { label: "Menú",     hash: "#menu" },
-  { label: "Reservar", hash: "#reservar" },
-  { label: "Mudecoop", hash: "#mudecoop" },
-  { label: "Turismo",  hash: "#turismo" },
+  { key: "inicio",   hash: "#hero" },
+  { key: "menu",     hash: "#menu" },
+  { key: "reservar", hash: "#reservar" },
+  { key: "mudecoop", hash: "#mudecoop" },
+  { key: "turismo",  hash: "#turismo" },
 ];
 
 function smoothScrollTo(hash: string) {
@@ -20,6 +21,7 @@ function smoothScrollTo(hash: string) {
 
 export default function Navbar() {
   const location = useLocation();
+  const { t } = useTranslation("navbar"); // 👈 usar namespace navbar
 
   useEffect(() => {
     if (location.pathname === "/" && location.hash) {
@@ -27,7 +29,6 @@ export default function Navbar() {
     }
   }, [location.pathname, location.hash]);
 
-  // Reemplazamos colores fijos por variables y helpers
   const linkBase =
     "rounded-xl px-3 py-1.5 text-app hover-bg-card focus-ring " +
     "transition-colors duration-200 ease-out " +
@@ -44,7 +45,7 @@ export default function Navbar() {
           {items.map((it) => (
             <Link
               key={it.hash}
-              to={`/${it.hash}`}               // si NO estamos en "/", react-router navega y el useEffect hace el scroll
+              to={`/${it.hash}`}
               className={linkBase}
               onClick={(e) => {
                 if (location.pathname === "/") {
@@ -53,12 +54,11 @@ export default function Navbar() {
                 }
               }}
             >
-              {it.label}
+              {t(it.key)}
             </Link>
           ))}
         </div>
       </div>
-      {/* línea degradada (sin cambios) */}
       <div className="h-[6px] w-full bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]" />
     </nav>
   );
