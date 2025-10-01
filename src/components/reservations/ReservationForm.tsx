@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { User, Mail, Phone, MessageSquare, AlertCircle } from "lucide-react";
 import { useReservation } from "../../sections/homepage/reservationpage";
 
-
 /** Brand colors */
 const BLUE = "#50ABD7";
 
@@ -109,37 +108,38 @@ const ReservationForm: React.FC = () => {
 
   const getInputClassName = (field: keyof FormErrors) => {
     const base =
-      "w-full p-3 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2";
-    const error = "border-red-300 focus:ring-red-500 focus:border-red-500";
-    const normal = `border-gray-300 focus:ring-[${BLUE}] focus:border-[${BLUE}]`;
+      "w-full p-3 rounded-lg transition-all duration-200 focus:outline-none";
+    const error =
+      "border border-red-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-app text-app";
+    const normal =
+      "border border-[color:color-mix(in srgb,var(--fg) 18%,transparent)] " +
+      "focus:ring-2 focus:ring-[color:color-mix(in srgb,var(--fg) 30%,transparent)] " +
+      "focus:border-[color:color-mix(in srgb,var(--fg) 30%,transparent)] " +
+      "bg-app text-app placeholder-[color:color-mix(in srgb,var(--fg) 40%,transparent)]";
     return `${base} ${errors[field] ? error : normal}`;
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
+    <div className="bg-card text-app rounded-lg shadow-lg p-6 max-w-4xl mx-auto border border-[color:color-mix(in srgb,var(--fg) 12%,transparent)]">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          Información de Contacto
-        </h2>
-        <p className="text-gray-600">Completa tus datos para confirmar</p>
+        <h2 className="text-2xl font-bold mb-2">Información de Contacto</h2>
+        <p className="text-muted">Completa tus datos para confirmar</p>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Resumen */}
-        <div className="bg-gray-50 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
-            Resumen de Reserva
-          </h3>
+        <div className="rounded-lg p-6 bg-card border border-[color:color-mix(in srgb,var(--fg) 12%,transparent)]">
+          <h3 className="text-lg font-semibold mb-4">Resumen de Reserva</h3>
 
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600">Fecha:</span>
+              <span className="text-muted">Fecha:</span>
               <span className="font-medium" style={{ color: BLUE }}>
                 {formatDate(reservationData.date)}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Hora:</span>
+              <span className="text-muted">Hora:</span>
               <span
                 className="font-medium text-white px-2 py-1 rounded text-sm"
                 style={{ background: BLUE }}
@@ -148,10 +148,13 @@ const ReservationForm: React.FC = () => {
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Comensales:</span>
+              <span className="text-muted">Comensales:</span>
               <span
                 className="font-medium px-2 py-1 rounded text-sm"
-                style={{ background: "#EFF6FF", color: BLUE }}
+                style={{
+                  background: "color-mix(in srgb, var(--fg) 12%, transparent)",
+                  color: BLUE,
+                }}
               >
                 {reservationData.guests}{" "}
                 {reservationData.guests === 1 ? "persona" : "personas"}
@@ -159,7 +162,13 @@ const ReservationForm: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg text-sm text-blue-700">
+          <div
+            className="mt-6 p-4 rounded-lg text-sm"
+            style={{
+              background: "color-mix(in srgb, #50ABD7 14%, transparent)",
+              color: "#50ABD7",
+            }}
+          >
             <div className="flex items-start space-x-2">
               <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
               <div>
@@ -181,7 +190,7 @@ const ReservationForm: React.FC = () => {
             <div>
               <label
                 htmlFor="fullName"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium mb-2"
               >
                 <User className="inline w-4 h-4 mr-1" />
                 Nombre completo *
@@ -201,7 +210,7 @@ const ReservationForm: React.FC = () => {
               {errors.fullName && (
                 <p
                   id="error-fullName"
-                  className="mt-1 text-sm text-red-600 flex items-center"
+                  className="mt-1 text-sm text-red-500 flex items-center"
                 >
                   <AlertCircle className="w-4 h-4 mr-1" />
                   {errors.fullName}
@@ -211,10 +220,7 @@ const ReservationForm: React.FC = () => {
 
             {/* Email */}
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
+              <label htmlFor="email" className="block text-sm font-medium mb-2">
                 <Mail className="inline w-4 h-4 mr-1" />
                 Email *
               </label>
@@ -233,7 +239,7 @@ const ReservationForm: React.FC = () => {
               {errors.email && (
                 <p
                   id="error-email"
-                  className="mt-1 text-sm text-red-600 flex items-center"
+                  className="mt-1 text-sm text-red-500 flex items-center"
                 >
                   <AlertCircle className="w-4 h-4 mr-1" />
                   {errors.email}
@@ -243,10 +249,7 @@ const ReservationForm: React.FC = () => {
 
             {/* Teléfono */}
             <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
+              <label htmlFor="phone" className="block text-sm font-medium mb-2">
                 <Phone className="inline w-4 h-4 mr-1" />
                 Teléfono *
               </label>
@@ -266,7 +269,7 @@ const ReservationForm: React.FC = () => {
               {errors.phone && (
                 <p
                   id="error-phone"
-                  className="mt-1 text-sm text-red-600 flex items-center"
+                  className="mt-1 text-sm text-red-500 flex items-center"
                 >
                   <AlertCircle className="w-4 h-4 mr-1" />
                   {errors.phone}
@@ -278,7 +281,7 @@ const ReservationForm: React.FC = () => {
             <div>
               <label
                 htmlFor="specialRequests"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium mb-2"
               >
                 <MessageSquare className="inline w-4 h-4 mr-1" />
                 Peticiones especiales
@@ -291,25 +294,27 @@ const ReservationForm: React.FC = () => {
                 }
                 placeholder="Alergias, celebraciones, preferencias de mesa..."
                 rows={4}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--blue)] focus:border-[color:var(--blue)] resize-none transition-all duration-200"
-                style={
-                  {
-                    "--blue": BLUE,
-                  } as React.CSSProperties
-                }
+                className="w-full p-3 rounded-lg resize-none transition-all duration-200
+                           bg-app text-app
+                           border border-[color:color-mix(in srgb,var(--fg) 18%,transparent)]
+                           focus:ring-2 focus:ring-[color:color-mix(in srgb,var(--fg) 30%,transparent)]
+                           focus:border-[color:color-mix(in srgb,var(--fg) 30%,transparent)]
+                           placeholder-[color:color-mix(in srgb,var(--fg) 40%,transparent)]"
                 maxLength={300}
               />
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-muted">
                 Opcional - máx. 300 caracteres
               </p>
             </div>
 
             {/* Botones */}
-            <div className="flex space-x-4 pt-4">
+            <div className="flex gap-4 pt-4">
               <button
                 type="button"
                 onClick={handleBack}
-                className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition"
+                className="flex-1 py-3 px-4 rounded-lg font-medium transition
+                           border border-[color:color-mix(in srgb,var(--fg) 18%,transparent)]
+                           text-app hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]"
               >
                 Volver
               </button>
@@ -318,19 +323,17 @@ const ReservationForm: React.FC = () => {
                 disabled={isValidating}
                 className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
                   isValidating
-                    ? "bg-gray-400 text-white cursor-not-allowed"
+                    ? "cursor-not-allowed opacity-70"
                     : "text-white shadow-md hover:shadow-lg"
                 }`}
-                style={
-                  !isValidating ? { backgroundColor: BLUE } : undefined
-                }
+                style={!isValidating ? { backgroundColor: BLUE } : undefined}
               >
                 {isValidating ? "Validando..." : "Continuar"}
               </button>
             </div>
           </form>
 
-          <p className="mt-4 text-xs text-gray-500 text-center">
+          <p className="mt-4 text-xs text-muted text-center">
             * Campos obligatorios. Recibirás confirmación por email.
           </p>
         </div>

@@ -36,7 +36,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#443314] text-white shadow">
+    <footer className="bg-brand text-white shadow">
       <div className="max-w-6xl mx-auto px-4 py-10 text-center">
         {/* Logo arriba */}
         <img
@@ -48,15 +48,15 @@ export default function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 justify-items-center">
           {/* Columna 1 */}
           <div className="max-w-xs">
-            <h2 className="text-white font-semibold mb-3">Rest. Manzanillo</h2>
-            <p className="text-sm leading-relaxed">
+            <h2 className="font-semibold mb-3">Rest. Manzanillo</h2>
+            <p className="text-sm leading-relaxed text-white/90">
               Restaurante flotante en Manzanillo. Ecoturismo y gastronomía sostenible.
             </p>
           </div>
 
           {/* Columna 2 */}
           <div className="max-w-xs">
-            <h2 className="text-white font-semibold mb-3">Enlaces rápidos</h2>
+            <h2 className="font-semibold mb-3">Enlaces rápidos</h2>
             <ul className="space-y-2 text-sm">
               {quickLinks.map((link) => (
                 <li key={link.hash}>
@@ -74,10 +74,10 @@ export default function Footer() {
 
           {/* Columna 3 */}
           <div className="max-w-xs flex flex-col items-center">
-            <h2 className="text-white font-semibold mb-3">Contacto</h2>
-            <p className="text-sm">Manzanillo, Puntarenas, CR</p>
-            <p className="text-sm">Tel: +506 8800-0312</p>
-            <p className="text-sm mb-4">mudecooprl@outlook.com</p>
+            <h2 className="font-semibold mb-3">Contacto</h2>
+            <p className="text-sm text-white/90">Manzanillo, Puntarenas, CR</p>
+            <p className="text-sm text-white/90">Tel: +506 8800-0312</p>
+            <p className="text-sm text-white/90 mb-4">mudecooprl@outlook.com</p>
 
             {/* Íconos redes sociales */}
             <div className="flex gap-4 mt-2">
@@ -113,7 +113,10 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white text-center text-sm py-4">
+      <div
+        className="text-center text-sm py-4 border-t"
+        style={{ borderColor: "color-mix(in srgb, #ffffff 35%, transparent)" }}
+      >
         © {new Date().getFullYear()} MUDECOOP R.L. – Todos los derechos reservados.
       </div>
     </footer>

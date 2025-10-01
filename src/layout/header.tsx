@@ -16,10 +16,10 @@ export default function Header() {
       (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     setTheme(initial);
   }, []);
+
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === "dark") root.classList.add("dark");
-    else root.classList.remove("dark");
+    root.classList.toggle("dark", theme === "dark");
     localStorage.setItem("theme", theme);
   }, [theme]);
 
@@ -28,16 +28,16 @@ export default function Header() {
     const stored = (localStorage.getItem("lang") as Lang) || "es";
     setLang(stored);
   }, []);
+
   useEffect(() => {
     localStorage.setItem("lang", lang);
   }, [lang]);
 
-  const toggleTheme = () =>
-    setTheme((t) => (t === "dark" ? "light" : "dark"));
+  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
   const toggleLang = () => setLang((l) => (l === "es" ? "en" : "es"));
 
   return (
-    <header className="bg-[#443314] text-white shadow">
+    <header className="bg-brand text-white shadow">
       <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2 px-3 sm:px-6 py-2.5 sm:py-4">
         {/* Logo + nombre */}
         <Link to="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
@@ -46,26 +46,13 @@ export default function Header() {
             alt="MUDECOOP"
             className="h-10 w-10 sm:h-14 sm:w-14 object-contain rounded-full shrink-0"
           />
-          <span
-            className="
-              font-extrabold tracking-wide leading-tight
-              text-[clamp(1rem,5vw,1.75rem)]
-              whitespace-normal break-words
-            "
-          >
+          <span className="font-extrabold tracking-wide leading-tight text-[clamp(1rem,5vw,1.75rem)] whitespace-normal break-words">
             REST. MANZANILLO
           </span>
         </Link>
 
         {/* Acciones: idioma, tema, usuario */}
-        <div
-          className="
-            flex items-center gap-1.5 sm:gap-2
-            basis-full sm:basis-auto
-            justify-end sm:justify-end
-            order-2 sm:order-none
-          "
-        >
+        <div className="flex items-center gap-1.5 sm:gap-2 basis-full sm:basis-auto justify-end order-2 sm:order-none">
           {/* Idioma CR/US */}
           <button
             type="button"

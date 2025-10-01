@@ -7,11 +7,11 @@ export default function Gallery() {
   const preview = GALLERY_IMAGES.slice(0, 8);
 
   return (
-    <section className="w-full bg-gray-100 py-16">
+    <section className="w-full bg-app py-16">
       <div className="max-w-7xl mx-auto px-4">
         {/* ===== Header con el MISMO estilo que Activities ===== */}
-        <div className="mx-auto rounded-xl bg-gray-100/80 shadow-sm backdrop-blur px-4 py-4 text-center">
-          <h2 className="text-xl md:text-2xl font-extrabold tracking-wide text-stone-800">
+        <div className="mx-auto rounded-xl bg-app/80 shadow-sm backdrop-blur px-4 py-4 text-center">
+          <h2 className="text-xl md:text-2xl font-extrabold tracking-wide text-app">
             ¡Nuestra galería!
           </h2>
           <div className="mt-3 h-[6px] w-full bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]" />

@@ -4,7 +4,6 @@ import { ChevronLeft, ChevronRight, Clock, Users } from "lucide-react";
 import { useReservation } from "../../sections/homepage/reservationpage";
 import type { TimeSlot } from "../../types/reservation";
 
-
 /** Utils */
 const BLUE = "#50ABD7";
 
@@ -77,9 +76,8 @@ const ReservationCalendar: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
 
-  /** When month changes and selectedDate goes out of view, do nothing; keep selection persistent */
+  /** Default selected date = today (not earlier than today) */
   useEffect(() => {
-    // If no selected date yet, default to today (not earlier than today)
     if (!selectedDate) {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -155,16 +153,12 @@ const ReservationCalendar: React.FC = () => {
   });
   const weekdayShort = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
-  const isToday = (d: Date) =>
-    d.toDateString() === new Date().toDateString();
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
+    <div className="bg-card text-app rounded-lg shadow-lg p-6 max-w-4xl mx-auto border border-[color:color-mix(in srgb,var(--fg) 12%,transparent)]">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          Selecciona Fecha y Hora
-        </h2>
-        <p className="text-gray-600">
+        <h2 className="text-2xl font-bold mb-2">Selecciona Fecha y Hora</h2>
+        <p className="text-muted">
           Disfruta de una experiencia gastronómica única en nuestro restaurante
         </p>
       </div>
@@ -179,7 +173,7 @@ const ReservationCalendar: React.FC = () => {
                   new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1)
                 )
               }
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-2 rounded-full transition-colors hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]"
               aria-label="Mes anterior"
               type="button"
             >
@@ -194,7 +188,7 @@ const ReservationCalendar: React.FC = () => {
                   new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1)
                 )
               }
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-2 rounded-full transition-colors hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]"
               aria-label="Mes siguiente"
               type="button"
             >
@@ -206,7 +200,7 @@ const ReservationCalendar: React.FC = () => {
             {weekdayShort.map((day) => (
               <div
                 key={day}
-                className="text-center text-sm font-medium text-gray-500 p-2"
+                className="text-center text-sm font-medium text-muted p-2"
               >
                 {day}
               </div>
@@ -228,21 +222,15 @@ const ReservationCalendar: React.FC = () => {
                   aria-pressed={selected}
                   className={`
                     p-2 text-sm rounded-lg transition-all duration-200 outline-none
-                    ${
-                      !isCurrentMonth
-                        ? "text-gray-300 cursor-not-allowed"
-                        : disabled
-                        ? "text-gray-300 cursor-not-allowed"
-                        : selected
-                        ? `bg-[${BLUE}] text-white shadow-md`
-                        : "text-gray-700 hover:bg-gray-100"
-                    }
-                    ${isToday(date) && !selected ? "ring-1 ring-gray-300" : ""}
+                    ${!isCurrentMonth ? "opacity-50 cursor-not-allowed text-muted"
+                      : disabled ? "opacity-60 cursor-not-allowed text-muted"
+                      : selected ? "text-white shadow-md"
+                      : "hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]"}
                   `}
                   style={
                     selected
-                      ? { backgroundColor: BLUE, color: "#fff" }
-                      : undefined
+                      ? { backgroundColor: BLUE }
+                      : { color: "var(--fg)" }
                   }
                 >
                   {date.getDate()}
@@ -258,7 +246,7 @@ const ReservationCalendar: React.FC = () => {
           <div className="mb-6">
             <label
               htmlFor="guests"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-app mb-2"
             >
               <Users className="inline w-4 h-4 mr-1" />
               Número de comensales
@@ -267,12 +255,11 @@ const ReservationCalendar: React.FC = () => {
               id="guests"
               value={guests}
               onChange={(e) => setGuests(Number(e.target.value))}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[color:var(--blue)] focus:border-[color:var(--blue)]"
-              style={
-                {
-                  "--blue": BLUE,
-                } as React.CSSProperties
-              }
+              className="w-full p-3 rounded-lg bg-app text-app
+                         border border-[color:color-mix(in srgb,var(--fg) 18%,transparent)]
+                         focus:outline-none focus:ring-2
+                         focus:ring-[color:color-mix(in srgb,var(--fg) 30%,transparent)]
+                         focus:border-[color:color-mix(in srgb,var(--fg) 30%,transparent)]"
               aria-label="Número de comensales"
             >
               {[...Array(12)].map((_, i) => (
@@ -286,7 +273,7 @@ const ReservationCalendar: React.FC = () => {
           {/* Time Selection */}
           {selectedDate && (
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium text-app mb-3">
                 <Clock className="inline w-4 h-4 mr-1" />
                 Horarios disponibles
               </label>
@@ -294,9 +281,7 @@ const ReservationCalendar: React.FC = () => {
               <div className="space-y-4">
                 {/* Almuerzo */}
                 <div>
-                  <h4 className="text-sm font-medium text-gray-600 mb-2">
-                    Almuerzo
-                  </h4>
+                  <h4 className="text-sm font-medium text-muted mb-2">Almuerzo</h4>
                   <div className="grid grid-cols-3 gap-2">
                     {timeSlots
                       .filter((s) => {
@@ -314,19 +299,13 @@ const ReservationCalendar: React.FC = () => {
                             aria-pressed={selected}
                             className={`
                               p-2 text-sm rounded-lg border transition-all duration-200 outline-none
-                              ${
-                                !slot.available
-                                  ? "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200"
-                                  : selected
-                                  ? "text-white border-transparent shadow-md"
-                                  : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
-                              }
+                              ${!slot.available
+                                ? "cursor-not-allowed opacity-60 text-muted border-[color:color-mix(in srgb,var(--fg) 12%,transparent)]"
+                                : selected
+                                ? "text-white border-transparent shadow-md"
+                                : "bg-card text-app border-[color:color-mix(in srgb,var(--fg) 18%,transparent)] hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]"}
                             `}
-                            style={
-                              selected
-                                ? { backgroundColor: BLUE }
-                                : undefined
-                            }
+                            style={selected ? { backgroundColor: BLUE } : undefined}
                           >
                             {slot.time}
                           </button>
@@ -337,7 +316,7 @@ const ReservationCalendar: React.FC = () => {
 
                 {/* Cena */}
                 <div>
-                  <h4 className="text-sm font-medium text-gray-600 mb-2">Cena</h4>
+                  <h4 className="text-sm font-medium text-muted mb-2">Cena</h4>
                   <div className="grid grid-cols-3 gap-2">
                     {timeSlots
                       .filter((s) => parseInt(s.time.split(":")[0]) >= 19)
@@ -352,19 +331,13 @@ const ReservationCalendar: React.FC = () => {
                             aria-pressed={selected}
                             className={`
                               p-2 text-sm rounded-lg border transition-all duration-200 outline-none
-                              ${
-                                !slot.available
-                                  ? "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200"
-                                  : selected
-                                  ? "text-white border-transparent shadow-md"
-                                  : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
-                              }
+                              ${!slot.available
+                                ? "cursor-not-allowed opacity-60 text-muted border-[color:color-mix(in srgb,var(--fg) 12%,transparent)]"
+                                : selected
+                                ? "text-white border-transparent shadow-md"
+                                : "bg-card text-app border-[color:color-mix(in srgb,var(--fg) 18%,transparent)] hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]"}
                             `}
-                            style={
-                              selected
-                                ? { backgroundColor: BLUE }
-                                : undefined
-                            }
+                            style={selected ? { backgroundColor: BLUE } : undefined}
                           >
                             {slot.time}
                           </button>
@@ -382,16 +355,14 @@ const ReservationCalendar: React.FC = () => {
             disabled={!selectedDate || !selectedTime}
             className={`
               w-full py-3 px-4 rounded-lg font-medium transition-all duration-200
-              ${
-                selectedDate && selectedTime
-                  ? "text-white shadow-md hover:shadow-lg"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }
+              ${selectedDate && selectedTime
+                ? "text-white shadow-md hover:shadow-lg"
+                : "cursor-not-allowed opacity-70"}
             `}
             style={
               selectedDate && selectedTime
                 ? { backgroundColor: BLUE }
-                : undefined
+                : { backgroundColor: "color-mix(in srgb, var(--fg) 18%, transparent)", color: "var(--fg)" }
             }
           >
             Continuar

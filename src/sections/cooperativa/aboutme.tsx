@@ -19,7 +19,7 @@ const AboutMe: React.FC = () => {
   return (
     <motion.div
       id="aboutme"
-      className="w-full flex flex-col md:flex-row items-center py-16 px-8 bg-white text-gray-900 scroll-mt-24"
+      className="w-full flex flex-col md:flex-row items-center py-16 px-8 bg-app text-app scroll-mt-24"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -59,13 +59,13 @@ const AboutMe: React.FC = () => {
       >
         <h2 className="text-3xl font-bold mb-4">Historia de Mudecoop</h2>
 
-        <p className="text-lg mb-3">
+        <p className="text-lg mb-3 text-app">
           En el año 2000 se fundó una asociación de mujeres de la zona de
           Manzanillo, Puntarenas llamada <strong>ASOMUPROMA</strong> (Asociación
           de Mujeres por el Progreso de Manzanillo).
         </p>
 
-        <p className="text-lg">
+        <p className="text-lg text-app">
           En el año 2007 se fundó la cooperativa{" "}
           <strong>MUDECOOP</strong> (Mujeres de Manzanillo en Desarrollo con su
           Cooperativa) con el objetivo de brindar fuentes de empleo a las

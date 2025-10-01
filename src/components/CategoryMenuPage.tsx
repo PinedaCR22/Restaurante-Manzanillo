@@ -91,8 +91,8 @@ export default function CategoryMenuPage() {
 
   if (!category) {
     return (
-      <div className="max-w-6xl mx-auto p-6">
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-stone-700">
+      <div className="max-w-6xl mx-auto p-6 bg-app text-app">
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center">
           Categoría no encontrada.
         </motion.p>
         <div className="mt-4 flex justify-center">
@@ -110,7 +110,7 @@ export default function CategoryMenuPage() {
   }
 
   return (
-    <section className="w-full">
+    <section className="w-full bg-app text-app">
       {/* Portada */}
       <div
         className="relative w-full h-[50vh] overflow-hidden"
@@ -159,9 +159,9 @@ export default function CategoryMenuPage() {
           whileInView="show"
           viewport={{ once: true, amount: 0.6 }}
           variants={cardIn}
-          className="max-w-6xl mx-auto rounded-xl bg-gray-100/80 shadow-sm backdrop-blur px-4 py-3 text-center"
+          className="max-w-6xl mx-auto rounded-xl bg-card shadow-sm backdrop-blur px-4 py-3 text-center"
         >
-          <h2 className="text-base md:text-lg font-extrabold tracking-wide text-stone-800 uppercase">
+          <h2 className="text-base md:text-lg font-extrabold tracking-wide text-app uppercase">
             {category.name}
           </h2>
           <motion.div
@@ -189,14 +189,14 @@ export default function CategoryMenuPage() {
               whileHover={{ y: -2 }}
               transition={{ type: "tween", ease: easeBezier, duration: 0.25 }}
             >
-              <div className="text-[0.95rem] font-semibold text-stone-800">
+              <div className="text-[0.95rem] font-semibold text-app">
                 {item.name}
               </div>
-              <div className="mt-1 flex items-center text-stone-600">
+              <div className="mt-1 flex items-center text-muted">
                 <span className="text-sm">{item.description ?? ""}</span>
-                <span className="mx-2 flex-1 border-b border-dotted border-stone-300 translate-y-[3px]" />
+                <span className="mx-2 flex-1 border-b border-dotted border-[color:color-mix(in srgb,var(--fg) 30%,transparent)] translate-y-[3px]" />
                 {item.price && (
-                  <span className="text-sm font-semibold text-stone-800">
+                  <span className="text-sm font-semibold text-app">
                     {item.price}
                   </span>
                 )}
@@ -213,8 +213,8 @@ export default function CategoryMenuPage() {
           viewport={{ once: true, amount: 0.25 }}
           className="max-w-6xl mx-auto mt-8"
         >
-          <div className="rounded-lg border border-stone-200 bg-white/70 shadow-sm p-4">
-            <h3 className="text-sm md:text-base font-bold text-stone-800">
+          <div className="rounded-lg border border-[color:color-mix(in srgb,var(--fg) 16%,transparent)] bg-card shadow-sm p-4">
+            <h3 className="text-sm md:text-base font-bold text-app">
               Normativas del Restaurante Flotante
             </h3>
             <motion.ul
@@ -222,19 +222,19 @@ export default function CategoryMenuPage() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="mt-3 grid gap-2 text-sm text-stone-700 sm:grid-cols-2"
+              className="mt-3 grid gap-2 text-sm text-app sm:grid-cols-2"
             >
               {NORMATIVAS.map((rule, idx) => (
                 <motion.li key={idx} variants={listItem} className="flex gap-2 items-start">
                   <span className="mt-[6px] inline-block size-1.5 rounded-full bg-[#0D784A]" />
-                  <span>{rule}</span>
+                  <span className="text-muted">{rule}</span>
                 </motion.li>
               ))}
             </motion.ul>
           </div>
         </motion.section>
 
-        {/* Botón gris */}
+        {/* Botón gris (sin cambios de color) */}
         <div className="mt-6 mb-10 flex justify-center">
           <motion.button
             type="button"
