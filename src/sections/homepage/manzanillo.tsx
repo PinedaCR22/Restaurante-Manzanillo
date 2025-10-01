@@ -1,21 +1,23 @@
-// src/sections/home/Manzanillo.tsx
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaArrowDown } from "react-icons/fa";
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Manzanillo() {
+  const { t } = useTranslation("manzanillo");
+
   // usa las 5 imágenes que pasaste
   const images = [
     "https://www.malpaisbeach.com/wp-content/uploads/2012/06/manzanillo-640px.jpg",
     "https://production-uploads.fastly.propertybase.com/assets/uploads/post/featured_image/56728/1c262a553ba18f575c3b5d341aa83cf9.jpg",
     "https://i.ytimg.com/vi/_CuxsZnmhLg/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGGUgWShUMA8=&rs=AOn4CLA7_9UbdvXwtkD7HCXQ6xDK7Q4KwA",
     "https://mariscossegura.wordpress.com/wp-content/uploads/2013/07/la-costa-_41.jpg",
-    "https://i.pinimg.com/736x/a9/42/41/a94241793884ea258f6865acbeee05ae.jpg",
+    "https://i.pinimg.com/736x/a9/42/41/a94241793884ea258f6865acbeee05ae.jpg"
   ];
 
   // dos pistas idénticas para lograr el bucle perfecto L→R
-  const duration = 40; // ajusta la velocidad (mayor = más lento)
+  const duration = 40; // mayor = más lento
 
   // Scroll suave hasta el botón "Conocer más"
   const handleScroll = useCallback(() => {
@@ -24,7 +26,11 @@ export default function Manzanillo() {
   }, []);
 
   return (
-    <section id="turismo" className="w-full py-10 px-4 md:px-6 scroll-mt-24">
+    <section
+      id="turismo"
+      className="w-full py-10 px-4 md:px-6 scroll-mt-24"
+      aria-label={t("aria.section")}
+    >
       <div className="relative w-full h-[50vh] overflow-hidden rounded-xl shadow-lg">
         {/* Pista A */}
         <motion.div
@@ -37,7 +43,7 @@ export default function Manzanillo() {
               <img
                 key={`a1-${i}`}
                 src={src}
-                alt={`Manzanillo ${i + 1}`}
+                alt={t("alt.image", { index: i + 1 })}
                 className="h-full w-auto object-cover select-none pointer-events-none"
                 draggable={false}
               />
@@ -48,7 +54,7 @@ export default function Manzanillo() {
               <img
                 key={`a2-${i}`}
                 src={src}
-                alt={`Manzanillo dup ${i + 1}`}
+                alt={t("alt.duplicate", { index: i + 1 })}
                 className="h-full w-auto object-cover select-none pointer-events-none"
                 draggable={false}
               />
@@ -67,7 +73,7 @@ export default function Manzanillo() {
               <img
                 key={`b1-${i}`}
                 src={src}
-                alt={`Manzanillo ${i + 1}`}
+                alt={t("alt.image", { index: i + 1 })}
                 className="h-full w-auto object-cover select-none pointer-events-none"
                 draggable={false}
               />
@@ -78,7 +84,7 @@ export default function Manzanillo() {
               <img
                 key={`b2-${i}`}
                 src={src}
-                alt={`Manzanillo dup ${i + 1}`}
+                alt={t("alt.duplicate", { index: i + 1 })}
                 className="h-full w-auto object-cover select-none pointer-events-none"
                 draggable={false}
               />
@@ -96,17 +102,17 @@ export default function Manzanillo() {
             className="backdrop-blur-md bg-black/25 border border-white/20 rounded-2xl px-5 py-4 shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
           >
             <h2 className="text-white text-xl md:text-3xl font-extrabold drop-shadow-[0_3px_6px_rgba(0,0,0,0.6)]">
-              ¡Descubre todo lo que Manzanillo
+              {t("title.line1")}
             </h2>
             <h2 className="text-white text-xl md:text-3xl font-extrabold drop-shadow-[0_3px_6px_rgba(0,0,0,0.6)]">
-              tiene para ofrecerte!
+              {t("title.line2")}
             </h2>
           </motion.div>
 
           {/* Flecha con scroll */}
           <button
             onClick={handleScroll}
-            aria-label="Bajar hasta el botón"
+            aria-label={t("aria.scrollDown")}
             className="mt-3 text-white text-2xl"
           >
             <motion.div
@@ -129,8 +135,9 @@ export default function Manzanillo() {
             <Link
               to="/activities"
               className="rounded-full bg-[#50ABD7]/90 hover:bg-[#3f98c1] text-white px-6 py-2 font-semibold shadow-lg border border-white/30 backdrop-blur-md"
+              aria-label={t("aria.cta")}
             >
-              Conocer más
+              {t("cta.more")}
             </Link>
           </motion.div>
         </div>

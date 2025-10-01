@@ -1,0 +1,12 @@
+{
+  "title": "This restaurant was made possible thanks to the work of Mudecoop R.L!",
+  "description": "MUDECOOP promotes cooperative and community development, connecting visitors with local initiatives that foster social well-being. Discover our programs, experiences, and how you can take part.",
+  "cta": {
+    "more": "Learn more"
+  },
+  "aria": {
+    "section": "Section about Mudecoop with image and description",
+    "imageAlt": "Representative image of Mudecoop",
+    "cta": "Open Mudecoop cooperative information"
+  }
+}

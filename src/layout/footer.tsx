@@ -2,17 +2,17 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 
-type QuickLink = { label: string; hash: `#${string}` };
+type QuickLink = { key: string; hash: `#${string}` };
 
 const quickLinks: QuickLink[] = [
-  { label: "Menú", hash: "#menu" },
-  { label: "Reservar", hash: "#reservar" },
-  { label: "Mudecoop", hash: "#mudecoop" },
-  { label: "Turismo", hash: "#turismo" },
+  { key: "menu",     hash: "#menu" },
+  { key: "reservar", hash: "#reservar" },
+  { key: "mudecoop", hash: "#mudecoop" },
+  { key: "turismo",  hash: "#turismo" }
 ];
 
-// misma función que en Navbar
 function smoothScrollTo(hash: string) {
   const el = document.querySelector(hash);
   if (!el) return;
@@ -21,6 +21,8 @@ function smoothScrollTo(hash: string) {
 
 export default function Footer() {
   const location = useLocation();
+  const { t } = useTranslation("footer");
+  const { t: tNav } = useTranslation("navbar"); // reutilizamos etiquetas del navbar
 
   useEffect(() => {
     if (location.pathname === "/" && location.hash) {
@@ -48,15 +50,15 @@ export default function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 justify-items-center">
           {/* Columna 1 */}
           <div className="max-w-xs">
-            <h2 className="font-semibold mb-3">Rest. Manzanillo</h2>
+            <h2 className="font-semibold mb-3">{t("title")}</h2>
             <p className="text-sm leading-relaxed text-white/90">
-              Restaurante flotante en Manzanillo. Ecoturismo y gastronomía sostenible.
+              {t("description")}
             </p>
           </div>
 
           {/* Columna 2 */}
           <div className="max-w-xs">
-            <h2 className="font-semibold mb-3">Enlaces rápidos</h2>
+            <h2 className="font-semibold mb-3">{t("quickLinksTitle")}</h2>
             <ul className="space-y-2 text-sm">
               {quickLinks.map((link) => (
                 <li key={link.hash}>
@@ -65,7 +67,7 @@ export default function Footer() {
                     className="hover:underline"
                     onClick={(e) => handleClick(e, link.hash)}
                   >
-                    {link.label}
+                    {tNav(link.key)}
                   </Link>
                 </li>
               ))}
@@ -74,10 +76,14 @@ export default function Footer() {
 
           {/* Columna 3 */}
           <div className="max-w-xs flex flex-col items-center">
-            <h2 className="font-semibold mb-3">Contacto</h2>
-            <p className="text-sm text-white/90">Manzanillo, Puntarenas, CR</p>
-            <p className="text-sm text-white/90">Tel: +506 8800-0312</p>
-            <p className="text-sm text-white/90 mb-4">mudecooprl@outlook.com</p>
+            <h2 className="font-semibold mb-3">{t("contactTitle")}</h2>
+            <p className="text-sm text-white/90">{t("address")}</p>
+            <p className="text-sm text-white/90">
+              {t("phoneLabel")}: +506 8800-0312
+            </p>
+            <p className="text-sm text-white/90 mb-4">
+              {t("emailLabel")}: mudecooprl@outlook.com
+            </p>
 
             {/* Íconos redes sociales */}
             <div className="flex gap-4 mt-2">
@@ -117,7 +123,7 @@ export default function Footer() {
         className="text-center text-sm py-4 border-t"
         style={{ borderColor: "color-mix(in srgb, #ffffff 35%, transparent)" }}
       >
-        © {new Date().getFullYear()} MUDECOOP R.L. – Todos los derechos reservados.
+        © {new Date().getFullYear()} MUDECOOP R.L. – {t("rights")}
       </div>
     </footer>
   );
