@@ -1,20 +1,14 @@
 // src/sections/home/AboutMe.tsx
-import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCmsSection, useCmsSelectors } from "../../hooks/public/useCmsPublic";
 
-const AboutMe: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default function AboutMe() {
+  const { data, loading } = useCmsSection("mudecoop");
+  const { findByTitle, first, getImageUrl } = useCmsSelectors(data ?? null);
 
-  const images = [
-    "https://scontent.fsjo14-1.fna.fbcdn.net/v/t39.30808-6/516498648_1179772304190407_6105943606169912598_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=-nq9Alhe-l8Q7kNvwFpJKC9&_nc_oc=AdkMvuAHMBwvxMRroaZgy2hiIdqLkGgpMAbX2nLG7WhY4e87rZPAfIXrcHa_xmS6hwQ&_nc_zt=23&_nc_ht=scontent.fsjo14-1.fna&_nc_gid=mKMF7HusHz5GFSCZqE-zzg&oh=00_AfWSVkkLdbEaZvonVuRruRC4q37vESdY3hDE6qdS7EV8UQ&oe=68B2C4CF",
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [images.length]);
+  // bloque preferido: el que tenga "Historia"; si no existe, el primero
+  const historia = findByTitle("historia") ?? first;
+  const img = getImageUrl(historia);
 
   return (
     <motion.div
@@ -36,9 +30,9 @@ const AboutMe: React.FC = () => {
         <div className="w-full max-w-md md:max-w-full overflow-hidden rounded-lg shadow-lg aspect-[2/1]">
           <AnimatePresence mode="wait">
             <motion.img
-              key={images[currentIndex]}
-              src={images[currentIndex]}
-              alt="Historia de Mudecoop"
+              key={img || "fallback"}
+              src={img || "https://via.placeholder.com/1200x600?text=Mudecoop"}
+              alt={historia?.title ?? "Historia de Mudecoop"}
               className="w-full h-full object-cover"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -57,23 +51,13 @@ const AboutMe: React.FC = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.4 }}
       >
-        <h2 className="text-3xl font-bold mb-4">Historia de Mudecoop</h2>
-
-        <p className="text-lg mb-3">
-          En el año 2000 se fundó una asociación de mujeres de la zona de
-          Manzanillo, Puntarenas llamada <strong>ASOMUPROMA</strong> (Asociación
-          de Mujeres por el Progreso de Manzanillo).
-        </p>
-
-        <p className="text-lg">
-          En el año 2007 se cambió la visión y se fundó la cooperativa{" "}
-          <strong>MUDECOOP</strong> (Mujeres de Manzanillo en Desarrollo con su
-          Cooperativa) con el objetivo de brindar fuentes de empleo a las
-          mujeres de la comunidad.
-        </p>
+        <h2 className="text-3xl font-bold mb-4">{historia?.title ?? "Historia de Mudecoop"}</h2>
+        {loading ? (
+          <p className="text-lg opacity-70">Cargando…</p>
+        ) : (
+          <p className="text-lg whitespace-pre-line">{historia?.body ?? ""}</p>
+        )}
       </motion.div>
     </motion.div>
   );
-};
-
-export default AboutMe;
+}

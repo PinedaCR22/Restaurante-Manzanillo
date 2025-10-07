@@ -2,8 +2,7 @@
 import LoginForm from "../../components/admin/auth/LoginForm";
 
 const logoSrc = "https://i.ibb.co/b5ZY3Rb9/mudecoop.webp";
-const heroSrc =
-  "https://elguardian.cr/wp-content/uploads/2024/02/Restaurantes-Granjas-flotantes-Golfo-Nicoya-3.jpg";
+const heroSrc = "/restaurante-flotante.jpeg";
 
 export default function LoginPage() {
   return (

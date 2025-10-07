@@ -1,8 +1,8 @@
 // src/hooks/useDishEditor.ts
 import { useState } from "react";
-import type { Dish } from "../types/menu/dish";
-import type { DishEditorForm } from "../types/menu/forms";
-import { MenuService } from "../services/menu/menu.service";
+import type { Dish } from "../../types/menu/dish";
+import type { DishEditorForm } from "../../types/menu/forms";
+import { MenuService } from "../../services/menu/menu.service";
 
 type Params = {
   reloadDishes: () => Promise<void> | void;

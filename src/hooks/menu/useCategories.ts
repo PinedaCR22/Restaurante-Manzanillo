@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
-import type { Category } from "../types/menu/category";
-import { MenuService } from "../services/menu/menu.service";
+import type { Category } from "../../types/menu/category";
+import { MenuService } from "../../services/menu/menu.service";
 
 export function useCategories() {
   const [categories, setCategories] = useState<Category[]>([]);

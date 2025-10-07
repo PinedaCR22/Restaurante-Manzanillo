@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { useCategories } from "../../hooks/useCategories";
-import { useDishes } from "../../hooks/useDishes";
+import { useCategories } from "../../hooks/menu/useCategories";
+import { useDishes } from "../../hooks/menu/useDishes";
 import DishCard from "../../components/admin/menu/DishCard";
 import DishModal from "../../components/admin/menu/DishModal";
 import CategoryModal from "../../components/admin/menu/CategoryModal";
-import { useCategoryEditor } from "../../hooks/useCategoryEditor";
-import { useDishEditor } from "../../hooks/useDishEditor";
+import { useCategoryEditor } from "../../hooks/menu/useCategoryEditor";
+import { useDishEditor } from "../../hooks/menu/useDishEditor";
 import CategoryCards from "../../components/admin/menu/CategoryCards";
 import SearchBar from "../../components/admin/menu/SearchBar";
 import Pagination from "../../components/admin/menu/Pagination";
@@ -120,13 +120,13 @@ export default function AdminMenuPage() {
         <h2 className="mb-3 text-2xl font-bold text-[#0D784A]">Categorías</h2>
 
         <CategoryCards
-          categories={pagedCategories}             // 👈 page-sliced
+          categories={pagedCategories}            
           selected={selectedCat}
           counts={counts}
           onSelect={handleSelectCategory}
           onEditCategory={openEditCategoryById}
           onDeleteCategory={deleteCategoryById}
-          showAllCard={catPage === 1}              // 👈 “Todos” solo en página 1
+          showAllCard={catPage === 1}              
         />
 
         {totalCatPages > 1 && (
