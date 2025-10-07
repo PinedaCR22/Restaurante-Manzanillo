@@ -7,15 +7,16 @@ export default function Descriptions() {
   const { first, getImageUrl } = useCmsSelectors(data ?? null);
 
   const img = getImageUrl(first);
-  const titulo = first?.title ?? "¡Bienvenido a la comunidad de Manzanillo, Puntarenas!";
+  const titulo =
+    first?.title ?? "¡Bienvenido a la comunidad de Manzanillo, Puntarenas!";
   const texto =
     first?.body ??
-    "Manzanillo es un lugar lleno de tradición, hospitalidad y cultura costera...";
+    "Manzanillo es un lugar lleno de tradición, hospitalidad y cultura costera. Su gente impulsa el turismo sostenible y comunitario, compartiendo experiencias auténticas que van desde la pesca artesanal hasta las celebraciones locales. Ven y descubre cómo esta comunidad fortalece sus raíces mientras abre las puertas al mundo.";
 
   return (
     <motion.div
       id="descriptions"
-      className="w-full flex flex-col md:flex-row items-center py-16 px-8 bg-white text-gray-900 scroll-mt-24"
+      className="w-full flex flex-col md:flex-row items-center py-16 px-8 bg-app text-app scroll-mt-24"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -54,7 +55,9 @@ export default function Descriptions() {
         transition={{ duration: 0.6, delay: 0.4 }}
       >
         <h2 className="text-3xl font-bold mb-4">{titulo}</h2>
-        <p className="text-lg whitespace-pre-line">{loading ? "Cargando…" : texto}</p>
+        <p className="text-lg text-app whitespace-pre-line">
+          {loading ? "Cargando…" : texto}
+        </p>
       </motion.div>
     </motion.div>
   );

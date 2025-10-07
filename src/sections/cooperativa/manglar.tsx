@@ -87,21 +87,23 @@ export default function ManglarPage() {
       <div className="w-full px-3 sm:px-6 lg:px-10 py-8 lg:py-12 space-y-8">
         {/* Card 1 — imagen izquierda */}
         <InfoCard
-          title="Tour de manglar"
+          title="Tour de manglar en Manzanillo"
           paragraphs={[
-            "Explora los canales del manglar de Manzanillo en una experiencia de baja intensidad y alto aprendizaje. Observa aves, cangrejos, peces y la dinámica de las raíces aéreas que protegen nuestra costa.",
-            "Durante el recorrido se interpretan los servicios ecosistémicos del manglar: protección costera, captura de carbono y crianza de especies marinas.",
+            "Al llegar, recibirás una bienvenida y una charla introductoria sobre la importancia del ecosistema de manglar y cómo contribuirás durante la visita.",
+            "Se entrega el equipo necesario (botas, guantes, bolsas) para la caminata y recolección de residuos. En el área de siembra conocerás los propágulos y el proceso de reforestación.",
+            "El proyecto inició en 2016 con Fundación Neotrópica y posteriormente se fortaleció con apoyo técnico de la Alianza de Mujeres de Costa Rica, que capacitó en codificación y cuidado de plántulas."
           ]}
           images={[imgCard1]}
         />
 
         {/* Card 2 — imagen derecha */}
-        <InfoCard
+          <InfoCard
           reverse
           title="¿Qué incluye y cómo participar?"
           paragraphs={[
-            "Incluye guía local certificado, charla de seguridad, chaleco salvavidas y navegación en embarcación o kayak según condiciones de marea.",
-            "Los horarios dependen de la marea (mañana o tarde). Cupo recomendado: hasta 12 personas por guía. Sugerimos traer agua, bloqueador, repelente, gorra y ropa que se pueda mojar.",
+            "Incluye charla guiada, equipo básico, acompañamiento de mujeres de la cooperativa y actividades prácticas de recolección, vivero y reforestación.",
+            "La experiencia se adapta a grupos estudiantiles, comunitarios o turistas. Se recomienda llevar ropa cómoda, bloqueador, gorra y ropa de cambio.",
+            "Los horarios dependen de la marea; se sugiere coordinar entre 8:00 y 16:00 para aprovechar la marea baja y evitar el sol del mediodía."
           ]}
           images={[imgCard2]}
         />

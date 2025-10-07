@@ -87,21 +87,36 @@ export default function HistMudecoopPage() {
       <div className="w-full px-3 sm:px-6 lg:px-10 py-8 lg:py-12 space-y-8">
         {/* Card 1 — imagen izquierda */}
         <InfoCard
-          title="Historia de MUDECOOP"
+          title="Orígenes: de SUMUPROMA a MUDECOOP"
           paragraphs={[
-            "Conoce los orígenes de MUDECOOP: desde las primeras iniciativas de organización de mujeres en Manzanillo hasta la consolidación de la cooperativa.",
-            "Repasamos hitos, desafíos y logros que impulsaron empleo local, liderazgo femenino y proyectos de impacto comunitario.",
+            "En el año 2000 nace SUMUPROMA, una asociación de ~60 mujeres que se organizaron para crear empleo en un contexto costero con pocas oportunidades laborales para ellas.",
+            "Impulsaron proyectos iniciales como hidroponía y la construcción del redondel de Manzanillo, gestionando actividades culturales para generar ingresos.",
+            "Tras el fin de concesiones y la salida de muchas socias (2007), ingresó un nuevo grupo que mantuvo viva la organización y, años después, se consolidó la cooperativa: MUDECOOP (2017)."
           ]}
           images={[imgCard1]}
         />
 
         {/* Card 2 — imagen derecha */}
-        <InfoCard
+          <InfoCard
           reverse
-          title="Recuerdos, voces y aprendizajes"
+          title="Línea de tiempo: proyectos y aprendizajes"
           paragraphs={[
-            "La visita integra relatos orales, material fotográfico y testimonios de socias fundadoras para comprender la evolución de la cooperativa.",
-            "Profundizamos en el modelo solidario, la participación intergeneracional y el enfoque de sostenibilidad aplicado en la comunidad.",
+            "2000–2006: Hidroponía y redondel; organización de turnos y actividades culturales.",
+            "2007–2015: Intento de Centro Turístico Verde Mar (bar La Ruana) que no prosperó por limitaciones de crédito y formalización.",
+            "2016: Reforestación de manglar junto a Fundación Neotrópica; se estructuran viveros y protocolos de cuidado.",
+            "2021: Construcción de la panga con acompañamiento del prof. Álvaro (UNA), fortaleciendo capacidades técnicas.",
+            "Actualidad: Proyección turística y comunitaria desde Manzanillo, preparando nuevas etapas (restaurante flotante en articulación con el parque marino)."
+          ]}
+          images={[imgCard2, imgCard1]}
+        />
+
+        <InfoCard
+          title="Organización, ingreso y acciones comunitarias"
+          paragraphs={[
+            "Ingreso de nuevas socias bajo contrato y período de prueba de 3 meses para asegurar compromiso y buenas prácticas.",
+            "Actividades económicas complementarias: venta de comida rápida con horarios extendidos según temporada y carga operativa.",
+            "Enfoque comunitario: MUDECOOP Jr donde trabajan en reforestación, educación ambiental y formación en autoestima y autocuidado.",
+            "Por la magnitud de los proyectos en curso, la incorporación de nuevas personas está temporalmente cerrada para resguardar recursos y asegurar una implementación responsable."
           ]}
           images={[imgCard2]}
         />

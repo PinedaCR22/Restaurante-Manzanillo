@@ -53,13 +53,13 @@ function Menu({
   };
 
   return (
-    <section id="menu" className="w-full">
+    <section id="menu" className="anchor-offset w-full bg-app text-app">
       {/* Título + línea degradada */}
       <div className="px-3 md:px-6">
-        <div className="mx-auto rounded-xl bg-gray-100/80 shadow-sm backdrop-blur px-4 py-4 text-center">
+        <div className="mx-auto rounded-xl bg-card shadow-sm backdrop-blur px-4 py-4 text-center">
           <h2
             className={clsx(
-              "text-xl md:text-2xl font-extrabold tracking-wide text-stone-800",
+              "text-xl md:text-2xl font-extrabold tracking-wide",
               titleClassName
             )}
           >
@@ -88,30 +88,44 @@ function Menu({
                 onClick={() => handleClick(cat.id)}
                 aria-label={`Abrir categoría ${cat.name}`}
                 className={clsx(
-                  "group rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden",
-                  "transition hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500",
-                  // Desktop: cards más largos y centrados en su columna
+                  // contenedor
+                  "group rounded-xl overflow-hidden shadow-sm transition hover:shadow-md focus:outline-none",
+                  // fondo + borde que respetan tema
+                  "bg-card border",
+                  "border-[color:color-mix(in srgb,var(--fg) 14%,transparent)]",
+                  // ring accesible
+                  "focus-visible:ring-2 focus-visible:ring-offset-2",
+                  "focus-visible:ring-[color:color-mix(in srgb,var(--fg) 30%, transparent)]",
+                  "focus-visible:ring-offset-[color:var(--bg)]",
+                  // tamaño
                   "w-full md:max-w-[320px] lg:max-w-[340px] xl:max-w-[360px] md:justify-self-center",
-                  // Móvil: si es último impar → centrado (mismo tamaño)
+                  // móvil último impar centrado
                   isOddLastOnMobile && "col-span-2 justify-self-center md:col-span-1"
                 )}
               >
                 <div className="aspect-[5/3] w-full overflow-hidden">
-  <img
-    src={cat.image}
-    alt={cat.name}
-    loading="lazy"
-    decoding="async"
-    referrerPolicy="no-referrer"
-    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-  />
-</div>
-
+                  <img
+                    src={cat.image}
+                    alt={cat.name}
+                    loading="lazy"
+                    decoding="async"
+                    referrerPolicy="no-referrer"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
 
                 <div className="p-2 md:p-3">
-                  <span className="block rounded-md px-3 py-1 text-center text-sm font-semibold text-white transition-colors bg-[#50ABD7] group-hover:bg-[#3f98c1]">
-                    {cat.name}
-                  </span>
+                  <span
+  className="
+    block rounded-md px-3 py-1 text-center text-sm font-semibold text-white
+    transition-colors
+  "
+  style={{
+    background: "#50ABD7", // azul fijo
+  }}
+>
+  {cat.name}
+</span>
                 </div>
               </motion.button>
             );

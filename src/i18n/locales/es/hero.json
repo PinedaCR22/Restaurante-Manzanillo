@@ -1,0 +1,12 @@
+{
+  "title": "Bienvenidos al restaurante flotante de Manzanillo",
+  "subtitle": "Sabores del mar y experiencias de ecoturismo en el Golfo de Nicoya.",
+  "aria": {
+    "section": "Sección principal con imágenes destacadas",
+    "slide": "diapositiva",
+    "heroImage": "Imagen del restaurante flotante y su entorno",
+    "scrollDown": "Bajar al contenido",
+    "prev": "Imagen anterior",
+    "next": "Imagen siguiente"
+  }
+}

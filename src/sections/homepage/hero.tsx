@@ -1,4 +1,4 @@
-// Hero.tsx
+// src/sections/Hero.tsx
 import { useRef } from "react";
 import { motion, type Variants } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -6,18 +6,14 @@ import { FaArrowDown } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
-
-// Asegúrate de importar estilos globales de Swiper en tu app (p. ej. en main.tsx):
-// import "swiper/css";
-// import "swiper/css/pagination";
-// import "swiper/css/effect-fade";
+import { useTranslation } from "react-i18next";
 
 type HeroProps = {
   images?: string[];
   scrollTargetId?: string;
 };
 
-/** AnimatedText: anima PALABRA por PALABRA con stagger (evita cortes dentro de palabras) */
+// AnimatedText: anima PALABRA por PALABRA
 function AnimatedText({
   text,
   className,
@@ -31,31 +27,14 @@ function AnimatedText({
 }) {
   const container: Variants = {
     hidden: {},
-    show: {
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: delay,
-      },
-    },
+    show: { transition: { staggerChildren: 0.08, delayChildren: delay } },
   };
-
   const word: Variants = {
     hidden: { y: 14, opacity: 0 },
-    show: {
-      y: 0,
-      opacity: 1,
-      transition: { duration, ease: [0.16, 1, 0.3, 1], type: "tween" },
-    },
+    show: { y: 0, opacity: 1, transition: { duration, ease: [0.16, 1, 0.3, 1], type: "tween" } },
   };
-
   return (
-    <motion.span
-      className={className}
-      variants={container}
-      initial="hidden"
-      animate="show"
-      aria-label={text}
-    >
+    <motion.span className={className} variants={container} initial="hidden" animate="show" aria-label={text}>
       {text.split(" ").map((w, i) => (
         <motion.span key={`${w}-${i}`} variants={word} className="inline-block mr-2">
           {w}
@@ -69,10 +48,11 @@ export default function Hero({
   images = [
     "https://media.foodandtravel.mx/wp-content/uploads/2024/02/Experiencias-gastronomicas-Costa-Rica-Isla-Venado-Restaurante-Flotante.jpg",
     "https://revistamagisteriocr.com/wp-content/uploads/2024/05/RM11-1.png",
-    "https://www.periodicomensaje.com/images/bote_granja2.jpg",
+    "https://www.periodicomensaje.com/images/bote_granja2.jpg"
   ],
   scrollTargetId = "menu",
 }: HeroProps) {
+  const { t } = useTranslation("hero");
   const swiperRef = useRef<SwiperType | null>(null);
 
   const handleScroll = () => {
@@ -84,7 +64,7 @@ export default function Hero({
     <section
       id="hero"
       className="relative w-full h-[55vh] md:h-[60vh] lg:h-[65vh] overflow-hidden"
-      aria-label="Sección principal con imágenes destacadas"
+      aria-label={t("aria.section")}
     >
       {/* Carrusel */}
       <Swiper
@@ -98,14 +78,13 @@ export default function Hero({
         onSwiper={(sw) => (swiperRef.current = sw)}
       >
         {images.map((src, idx) => (
-          <SwiperSlide key={idx} aria-roledescription="slide">
+          <SwiperSlide key={idx} aria-roledescription={t("aria.slide")}>
             <div
               className="w-full h-full bg-center bg-cover"
               style={{ backgroundImage: `url(${src})` }}
               role="img"
-              aria-label="Imagen del restaurante flotante y su entorno"
+              aria-label={t("aria.heroImage")}
             >
-              {/* Gradiente + overlay para legibilidad */}
               <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/35 to-black/60" />
                 <div className="absolute inset-0 bg-black/10" />
@@ -115,7 +94,7 @@ export default function Hero({
         ))}
       </Swiper>
 
-      {/* Texto centrado con fondo blur igual que Manzanillo */}
+      {/* Texto centrado */}
       <div className="absolute inset-0 z-10 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
@@ -123,42 +102,35 @@ export default function Hero({
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="backdrop-blur-md bg-black/25 border border-white/20 rounded-2xl px-6 py-5 shadow-[0_8px_30px_rgba(0,0,0,0.35)] text-center text-white max-w-3xl"
         >
-          {/* Título animado palabra por palabra */}
           <AnimatedText
-            text="Bienvenidos al restaurante flotante de Manzanillo"
+            text={t("title")}
             className="block text-3xl md:text-5xl font-extrabold leading-tight drop-shadow-[0_3px_6px_rgba(0,0,0,0.6)]"
             delay={0.15}
             duration={0.45}
           />
-
-          {/* Subtítulo animado palabra por palabra */}
           <AnimatedText
-            text="Sabores del mar y experiencias de ecoturismo en el Golfo de Nicoya."
+            text={t("subtitle")}
             className="block mt-3 md:mt-4 text-base md:text-lg opacity-95 leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]"
             delay={0.35}
             duration={0.4}
           />
 
-          {/* Flecha hacia abajo dentro del bloque */}
           <button
             onClick={handleScroll}
-            aria-label="Bajar al contenido"
+            aria-label={t("aria.scrollDown")}
             className="mt-6 flex justify-center w-full text-white text-3xl"
           >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-            >
+            <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}>
               <FaArrowDown />
             </motion.div>
           </button>
         </motion.div>
       </div>
 
-      {/* Flechas laterales sin círculos */}
+      {/* Flechas laterales */}
       <button
         type="button"
-        aria-label="Imagen anterior"
+        aria-label={t("aria.prev")}
         onClick={() => swiperRef.current?.slidePrev()}
         className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 text-white hover:text-yellow-400 transition-colors"
       >
@@ -167,7 +139,7 @@ export default function Hero({
 
       <button
         type="button"
-        aria-label="Imagen siguiente"
+        aria-label={t("aria.next")}
         onClick={() => swiperRef.current?.slideNext()}
         className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 text-white hover:text-yellow-400 transition-colors"
       >

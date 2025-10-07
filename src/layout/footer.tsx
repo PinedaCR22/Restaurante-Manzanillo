@@ -1,6 +1,44 @@
+// src/sections/footer.tsx
+import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
+
+type QuickLink = { key: string; hash: `#${string}` };
+
+const quickLinks: QuickLink[] = [
+  { key: "menu",     hash: "#menu" },
+  { key: "reservar", hash: "#reservar" },
+  { key: "mudecoop", hash: "#mudecoop" },
+  { key: "turismo",  hash: "#turismo" }
+];
+
+function smoothScrollTo(hash: string) {
+  const el = document.querySelector(hash);
+  if (!el) return;
+  (el as HTMLElement).scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 export default function Footer() {
+  const location = useLocation();
+  const { t } = useTranslation("footer");
+  const { t: tNav } = useTranslation("navbar"); // reutilizamos etiquetas del navbar
+
+  useEffect(() => {
+    if (location.pathname === "/" && location.hash) {
+      requestAnimationFrame(() => smoothScrollTo(location.hash));
+    }
+  }, [location.pathname, location.hash]);
+
+  const handleClick = (e: React.MouseEvent, hash: string) => {
+    if (location.pathname === "/") {
+      e.preventDefault();
+      smoothScrollTo(hash);
+    }
+  };
+
   return (
-    <footer className="bg-[#443314] text-white shadow">
+    <footer className="bg-brand text-white shadow">
       <div className="max-w-6xl mx-auto px-4 py-10 text-center">
         {/* Logo arriba */}
         <img
@@ -12,35 +50,80 @@ export default function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 justify-items-center">
           {/* Columna 1 */}
           <div className="max-w-xs">
-            <h2 className="text-white font-semibold mb-3">Rest. Manzanillo</h2>
-            <p className="text-sm leading-relaxed">
-              Restaurante flotante en Manzanillo. Ecoturismo y gastronomía sostenible.
+            <h2 className="font-semibold mb-3">{t("title")}</h2>
+            <p className="text-sm leading-relaxed text-white/90">
+              {t("description")}
             </p>
           </div>
 
           {/* Columna 2 */}
           <div className="max-w-xs">
-            <h2 className="text-white font-semibold mb-3">Enlaces rápidos</h2>
+            <h2 className="font-semibold mb-3">{t("quickLinksTitle")}</h2>
             <ul className="space-y-2 text-sm">
-              <li><a href="/menu" className="hover:underline">Menú</a></li>
-              <li><a href="/reservar" className="hover:underline">Reservar</a></li>
-              <li><a href="/cooperativa" className="hover:underline">Mudecoop</a></li>
-              <li><a href="/actividades" className="hover:underline">Turismo</a></li>
+              {quickLinks.map((link) => (
+                <li key={link.hash}>
+                  <Link
+                    to={`/${link.hash}`}
+                    className="hover:underline"
+                    onClick={(e) => handleClick(e, link.hash)}
+                  >
+                    {tNav(link.key)}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Columna 3 */}
-          <div className="max-w-xs">
-            <h2 className="text-white font-semibold mb-3">Contacto</h2>
-            <p className="text-sm">Manzanillo, Puntarenas, CR</p>
-            <p className="text-sm">Tel: +506 8800-0312</p>
-            <p className="text-sm">mudecooprl@outlook.com</p>
+          <div className="max-w-xs flex flex-col items-center">
+            <h2 className="font-semibold mb-3">{t("contactTitle")}</h2>
+            <p className="text-sm text-white/90">{t("address")}</p>
+            <p className="text-sm text-white/90">
+              {t("phoneLabel")}: +506 8800-0312
+            </p>
+            <p className="text-sm text-white/90 mb-4">
+              {t("emailLabel")}: mudecooprl@outlook.com
+            </p>
+
+            {/* Íconos redes sociales */}
+            <div className="flex gap-4 mt-2">
+              <a
+                href="https://www.facebook.com/share/1APa66YtqP/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="hover:text-[#50ABD7] transition"
+              >
+                <FaFacebook size={22} />
+              </a>
+              <a
+                href="https://www.instagram.com/mudecooprl?igsh=MTUzOGFhdXprZ2tuOQ=="
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="hover:text-[#FBB517] transition"
+              >
+                <FaInstagram size={22} />
+              </a>
+              <a
+                href="https://www.tiktok.com/@mudecoop?_t=ZM-8zoJFky7l5B&_r=1"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok"
+                className="hover:text-[#0D784A] transition"
+              >
+                <FaTiktok size={22} />
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-white text-center text-sm py-4">
-        © {new Date().getFullYear()} MUDECOOP R.L. – Todos los derechos reservados.
+      <div
+        className="text-center text-sm py-4 border-t"
+        style={{ borderColor: "color-mix(in srgb, #ffffff 35%, transparent)" }}
+      >
+        © {new Date().getFullYear()} MUDECOOP R.L. – {t("rights")}
       </div>
     </footer>
   );

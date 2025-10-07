@@ -1,0 +1,12 @@
+{
+  "title": "Welcome to Manzanillo’s floating restaurant",
+  "subtitle": "Sea flavors and ecotourism experiences in the Gulf of Nicoya",
+  "aria": {
+    "section": "Main section with featured images",
+    "slide": "slide",
+    "heroImage": "Floating restaurant and surroundings image",
+    "scrollDown": "Scroll to content",
+    "prev": "Previous image",
+    "next": "Next image"
+  }
+}

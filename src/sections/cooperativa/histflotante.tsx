@@ -86,25 +86,41 @@ export default function HistFlotantePage() {
       {/* Ancho completo sin max-w */}
       <div className="w-full px-3 sm:px-6 lg:px-10 py-8 lg:py-12 space-y-8">
         {/* Card 1 — imagen izquierda */}
+                {/* Card 1 — Origen y selección del proyecto (imagen izquierda) */}
         <InfoCard
-          title="Historia del restaurante flotante"
+          title="Cómo nació el restaurante flotante"
           paragraphs={[
-            "Conoce el origen del restaurante flotante de Manzanillo: una iniciativa local que aprovechó la calma de la bahía y la cultura pesquera para crear un espacio único sobre el agua.",
-            "El recorrido aborda anécdotas de la comunidad, técnicas tradicionales y cómo el proyecto impulsó empleo para mujeres y familias de la zona.",
+            "La idea surge en 2021, cuando en gestiones con el INA conocen a José Antonio Lee (Parque Marino). El proyecto estaba dirigido principalmente a pescadores, pero MUDECOOP aplicó y superó los requisitos administrativos y de pólizas.",
+            "A inicios de 2023 la cooperativa fue seleccionada: la primera cooperativa de mujeres en recibir un restaurante flotante (a Chira se le asignó la 2.ª etapa con granjas y una plataforma de bodega).",
+            "La construcción inició el 15 de noviembre de 2023; aunque hubo atrasos por trámites (SICOP), el equipo aprovechó para capacitarse y fortalecer el diseño único de la estructura."
           ]}
           images={[imgCard1]}
         />
 
+
         {/* Card 2 — imagen derecha */}
+                {/* Card 2 — Construcción, estructura y sostenibilidad (imagen derecha) */}
         <InfoCard
           reverse
-          title="Experiencia y legado"
+          title="Construcción y diseño de la plataforma"
           paragraphs={[
-            "La visita incluye una narrativa guiada sobre los sabores marinos, la logística de operar en el agua y las medidas de seguridad aplicadas en su momento.",
-            "Cerramos con una mirada al legado: educación ambiental, turismo responsable y el papel del restaurante en la identidad de Manzanillo.",
+            "Participaron ~14 mujeres y 6 hombres: ellas se formaron en fibra de vidrio y ellos en construcción; el trabajo fue colaborativo y escalonado.",
+            "Salón principal de 10×10 m (capacidad práctica 30–40 personas por grupo), con 4 plataformas; la cocina se sostiene en 3 plataformas. Cada plataforma soporta hasta 7 toneladas.",
+            "Incluye biojardinera (piedra, arena, botellas y microorganismos) para tratar aguas residuales y grasas, reduciendo contaminación; además, jardín con servicios sanitarios y área técnica.",
+            "Se inician 5 granjas: curvina, camarón blanco/yumbo y potencialmente, mejillones y otros moluscos."
           ]}
-          images={[imgCard2]}
+          images={[imgCard2, imgCard1]}
         />
+                {/* Card 3 — Operación y visión comunitaria (imagen izquierda) */}
+        <InfoCard
+          title="Operación y futuro compartido"
+          paragraphs={[
+            "Operación con enfoque comunitario: mujeres en cocina y atención; colaboradores (pescadores) en manejo de pangas, cuidado de granjas y elaboración de alimento para peces/camarón.",
+            "La visión no es acaparar tours, sino articular con la comunidad: si una persona con panga cumple requisitos, que ofrezca el tour; promover cabinas y servicios locales para distribuir beneficios."
+          ]}
+          images={[imgCard1]}
+        />
+
 
         {/* -------- Formulario (card de tamaño GRANDE como acordamos) -------- */}
         <motion.article

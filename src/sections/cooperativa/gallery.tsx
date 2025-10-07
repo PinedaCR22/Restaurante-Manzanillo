@@ -12,14 +12,17 @@ export default function Gallery() {
   // Top-8 para el preview
   const items: PreviewItem[] = images
     .slice(0, 8)
-    .map((img) => ({ id: String(img.id), src: resolveImageUrl(img.filePath) ?? "" }));
+    .map((img) => ({
+      id: String(img.id),
+      src: resolveImageUrl(img.filePath) ?? "",
+    }));
 
   return (
-    <section className="w-full bg-gray-100 py-16">
+    <section className="w-full bg-app py-16">
       <div className="max-w-7xl mx-auto px-4">
-        {/* Header */}
-        <div className="mx-auto rounded-xl bg-gray-100/80 shadow-sm backdrop-blur px-4 py-4 text-center">
-          <h2 className="text-xl md:text-2xl font-extrabold tracking-wide text-stone-800">
+        {/* Header (estilo actualizado y título dinámico) */}
+        <div className="mx-auto rounded-xl bg-app/80 shadow-sm backdrop-blur px-4 py-4 text-center">
+          <h2 className="text-xl md:text-2xl font-extrabold tracking-wide text-app">
             {gallery?.title ?? "¡Nuestra galería!"}
           </h2>
           <div className="mt-3 h-[6px] w-full bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]" />
@@ -62,7 +65,7 @@ export default function Gallery() {
         <div className="text-center">
           <Link to="/galeria" className="inline-block">
             <button className="px-5 py-2 bg-[#50ABD7] text-white rounded hover:bg-[#3f98c1] transition">
-              Ver más
+              Conocer más
             </button>
           </Link>
         </div>
