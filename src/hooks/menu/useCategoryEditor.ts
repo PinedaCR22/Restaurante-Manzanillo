@@ -1,7 +1,7 @@
 import { useState } from "react";
-import type { Category } from "../types/menu/category";
-import { MenuService } from "../services/menu/menu.service";
-import { getErrorMessage } from "../helpers/error";
+import type { Category } from "../../types/menu/category";
+import { MenuService } from "../../services/menu/menu.service";
+import { getErrorMessage } from "../../helpers/error";
 
 export function useCategoryEditor({
   reloadCats,

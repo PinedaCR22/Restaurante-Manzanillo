@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { Dish } from "../types/menu/dish";
-import { MenuService } from "../services/menu/menu.service";
+import type { Dish } from "../../types/menu/dish";
+import { MenuService } from "../../services/menu/menu.service";
 
 export function useDishes() {
   const [dishes, setDishes] = useState<Dish[]>([]);

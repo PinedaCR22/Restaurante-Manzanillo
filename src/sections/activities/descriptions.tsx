@@ -1,22 +1,17 @@
 // src/sections/home/Descriptions.tsx
-import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCmsSection, useCmsSelectors } from "../../hooks/public/useCmsPublic";
 
-const Descriptions: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default function Descriptions() {
+  const { data, loading } = useCmsSection("turismo");
+  const { first, getImageUrl } = useCmsSelectors(data ?? null);
 
-  const images = [
-    "https://www.malpaisbeach.com/wp-content/uploads/2012/06/manzanillo-640px.jpg",
-    "https://i.ytimg.com/vi/_CuxsZnmhLg/maxresdefault.jpg",
-    "https://mariscossegura.wordpress.com/wp-content/uploads/2013/07/la-costa-_41.jpg",
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [images.length]);
+  const img = getImageUrl(first);
+  const titulo =
+    first?.title ?? "¡Bienvenido a la comunidad de Manzanillo, Puntarenas!";
+  const texto =
+    first?.body ??
+    "Manzanillo es un lugar lleno de tradición, hospitalidad y cultura costera. Su gente impulsa el turismo sostenible y comunitario, compartiendo experiencias auténticas que van desde la pesca artesanal hasta las celebraciones locales. Ven y descubre cómo esta comunidad fortalece sus raíces mientras abre las puertas al mundo.";
 
   return (
     <motion.div
@@ -38,9 +33,9 @@ const Descriptions: React.FC = () => {
         <div className="w-full max-w-md md:max-w-full overflow-hidden rounded-lg shadow-lg aspect-[2/1]">
           <AnimatePresence mode="wait">
             <motion.img
-              key={images[currentIndex]}
-              src={images[currentIndex]}
-              alt="Comunidad de Manzanillo"
+              key={img || "fallback"}
+              src={img || "https://via.placeholder.com/1200x600?text=Turismo"}
+              alt={titulo}
               className="w-full h-full object-cover"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -59,20 +54,11 @@ const Descriptions: React.FC = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.4 }}
       >
-        <h2 className="text-3xl font-bold mb-4">
-          ¡Bienvenido a la comunidad de Manzanillo, Puntarenas!
-        </h2>
-
-        <p className="text-lg text-app">
-          Manzanillo es un lugar lleno de tradición, hospitalidad y cultura costera. 
-          Su gente impulsa el turismo sostenible y comunitario, compartiendo experiencias 
-          auténticas que van desde la pesca artesanal hasta las celebraciones locales. 
-          Ven y descubre cómo esta comunidad fortalece sus raíces mientras abre las puertas 
-          al mundo.
+        <h2 className="text-3xl font-bold mb-4">{titulo}</h2>
+        <p className="text-lg text-app whitespace-pre-line">
+          {loading ? "Cargando…" : texto}
         </p>
       </motion.div>
     </motion.div>
   );
-};
-
-export default Descriptions;
+}
