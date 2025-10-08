@@ -39,8 +39,8 @@ function clsx(...c: Array<string | false | null | undefined>) {
 
 function layoutClasses(index: number, lastIndex: number) {
   const base =
-    "group rounded-xl border border-white bg-white shadow-sm overflow-hidden transition " +
-    "hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500";
+    "group rounded-xl border border-white bg-white shadow-sm overflow-hidden transition hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 " +
+    "dark:bg-[var(--card)] dark:border-[color-mix(in_srgb,var(--fg)_15%,transparent)] dark:focus-visible:ring-[color-mix(in_srgb,var(--fg)_40%,transparent)]";
 
   const mobile = index === lastIndex ? "col-span-2" : "col-span-1";
 
@@ -56,7 +56,7 @@ function layoutClasses(index: number, lastIndex: number) {
 
 function aspectClasses(index: number, lastIndex: number) {
   return clsx(
-    "w-full overflow-hidden bg-gray-100",
+    "w-full overflow-hidden bg-gray-100 dark:bg-[color-mix(in_srgb,var(--card)_80%,black_10%)]",
     index === lastIndex ? "aspect-[16/7] md:aspect-[5/3]" : "aspect-[5/3]"
   );
 }
@@ -92,21 +92,34 @@ function CoperativesServices({
   };
 
   return (
-    <section id="cooperativa" className="w-full">
+    <section id="cooperativa" className="w-full bg-app text-app">
+      {/* HEADER */}
       <div className="px-3 md:px-6">
-        <div className="mx-auto rounded-xl bg-gray-100/80 shadow-sm backdrop-blur px-4 py-4 text-center">
+        <div
+          className="
+            mx-auto rounded-xl bg-card shadow-sm backdrop-blur px-4 py-4 text-center
+            dark:bg-[color-mix(in_srgb,var(--card)_90%,black_10%)]
+          "
+        >
           <h2
             className={clsx(
-              "text-xl md:text-2xl font-extrabold tracking-wide text-stone-800",
+              "text-xl md:text-2xl font-extrabold tracking-wide text-app",
               titleClassName
             )}
           >
             {title}
           </h2>
-          <div className="mt-3 h-[6px] w-full bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]" />
+          <div
+            className="
+              mt-3 h-[6px] w-full
+              bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]
+              dark:from-[#56B5FF] dark:via-[#FFD75E] dark:to-[#2ECC71]
+            "
+          />
         </div>
       </div>
 
+      {/* GRID */}
       <motion.div
         variants={containerV}
         initial="hidden"
@@ -134,8 +147,14 @@ function CoperativesServices({
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
-              <div className="p-2 md:p-3 border-t border-white">
-                <span className="block rounded-md px-3 py-1 text-center text-[12px] md:text-sm font-semibold text-white uppercase tracking-wide transition-colors bg-[#50ABD7] group-hover:bg-[#3f98c1]">
+              <div className="p-2 md:p-3 border-t border-white dark:border-[color-mix(in_srgb,var(--fg)_15%,transparent)]">
+                <span
+                  className="
+                    block rounded-md px-3 py-1 text-center text-[12px] md:text-sm font-semibold uppercase tracking-wide text-white
+                    bg-[#50ABD7] group-hover:bg-[#3f98c1]
+                    dark:bg-[#56B5FF] dark:group-hover:bg-[#3E9BE0]
+                  "
+                >
                   {it.name}
                 </span>
               </div>

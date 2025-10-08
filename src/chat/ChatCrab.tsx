@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { DonCangrejo } from "./DonCangrejo";
 
-// ========= Tipos =========
+/* ========= Tipos ========= */
 export type ChatCrabMessage = {
   id: string;
   role: "user" | "assistant";
@@ -22,14 +22,14 @@ export type ChatCrabProps = {
   botMood?: "happy" | "helpful" | "thinking" | "celebrate" | "warning" | "sleep";
 };
 
-// ========= Botón flotante (launcher) =========
+/* ========= Botón flotante (launcher) ========= */
 const Launcher: React.FC<{
   onClick: () => void;
   position: NonNullable<ChatCrabProps["position"]>;
-  offset?: ChatCrabProps["offset"]; // opcional
+  offset?: ChatCrabProps["offset"];
   accent: string;
   unread?: boolean;
-  open?: boolean; // para ocultarlo cuando el chat está abierto
+  open?: boolean;
 }> = ({ onClick, position, offset, accent, unread, open }) => {
   const { x = 20, y = 20 } = offset ?? {};
 
@@ -48,16 +48,26 @@ const Launcher: React.FC<{
       onClick={onClick}
       aria-label="Abrir chat Don Cangrejo"
       style={corner}
-      className={`group rounded-full shadow-lg border border-neutral-200 bg-white/95 backdrop-blur p-3 transition
+      className={`group rounded-full shadow-lg border border-[color-mix(in srgb, var(--fg) 20%, transparent)]
+                  bg-[var(--card)] backdrop-blur p-3 transition
                   focus:outline-none focus:ring-2 focus:ring-offset-2
                   ${open ? "opacity-0 pointer-events-none" : "opacity-100"}`}
     >
       <div
-        className="relative grid place-items-center rounded-full size-12 md:size-14 overflow-hidden"
-        style={{ background: accent + "1A" }}  // 10% tint
+        className="relative grid place-items-center rounded-full size-12 md:size-14 overflow-hidden
+                   border border-[color-mix(in srgb, var(--fg) 25%, transparent)]"
+        // Fondo adaptado a tema
+        style={{ background: "var(--card)" }}
       >
-        {/* Mascota animada dentro del botón */}
+        {/* Mascota */}
         <DonCangrejo mood="happy" size={40} className="animate-crab-bob" />
+
+        {/* halo suave en hover */}
+        <span
+          className="pointer-events-none absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition"
+          style={{ boxShadow: `0 0 0 6px ${accent}1A inset` }}
+        />
+
         {unread && (
           <span className="absolute -top-0.5 -right-0.5 inline-flex items-center justify-center rounded-full text-[10px] font-bold px-1.5 py-0.5 bg-red-500 text-white shadow">
             1
@@ -68,7 +78,9 @@ const Launcher: React.FC<{
   );
 };
 
-// ========= Panel del chat =========
+
+
+/* ========= Panel del chat ========= */
 const ChatPanel: React.FC<{
   open: boolean;
   onClose: () => void;
@@ -95,7 +107,7 @@ const ChatPanel: React.FC<{
   const listRef = useRef<HTMLDivElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
 
-  // Accesibilidad: ESC, focus trap
+  /* Accesibilidad: ESC y focus trap */
   useEffect(() => {
     if (!open) return;
     inputRef.current?.focus();
@@ -108,9 +120,11 @@ const ChatPanel: React.FC<{
         const firstEl = focusables[0];
         const lastEl = focusables[focusables.length - 1];
         if (e.shiftKey && document.activeElement === firstEl) {
-          lastEl?.focus(); e.preventDefault();
+          lastEl?.focus();
+          e.preventDefault();
         } else if (!e.shiftKey && document.activeElement === lastEl) {
-          firstEl?.focus(); e.preventDefault();
+          firstEl?.focus();
+          e.preventDefault();
         }
       }
     };
@@ -118,7 +132,7 @@ const ChatPanel: React.FC<{
     return () => document.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  // Auto scroll al final
+  /* Auto scroll */
   useEffect(() => {
     if (!open) return;
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
@@ -145,17 +159,19 @@ const ChatPanel: React.FC<{
       <div
         ref={panelRef}
         className={`absolute w-full sm:w-[26rem] md:w-[28rem] h-[85svh] sm:h-[34rem]
-                    bg-white flex flex-col transition-all duration-300 ease-out
+                    bg-[var(--card)] flex flex-col transition-all duration-300 ease-out
                     bottom-0 right-0 sm:bottom-6 sm:right-6
                     ${open
-                      ? "translate-y-0 opacity-100 rounded-t-2xl sm:rounded-2xl shadow-xl border border-neutral-200"
+                      ? "translate-y-0 opacity-100 rounded-t-2xl sm:rounded-2xl shadow-xl border border-neutral-200 dark:border-neutral-700"
                       : "translate-y-full opacity-0 pointer-events-none rounded-t-2xl sm:rounded-2xl shadow-none border-0"}`}
         style={{ zIndex: 70 }}
       >
         {/* Header */}
-        <div className="rounded-t-2xl px-4 py-3 flex items-center gap-3 text-white" style={{ background: headerColor }}>
+        <div
+          className="rounded-t-2xl px-4 py-3 flex items-center gap-3 text-white"
+          style={{ background: headerColor }}
+        >
           <div className="shrink-0 grid place-items-center rounded-full bg-white/15 p-1">
-            {/* Mascota también en el header (sin bobbing para no distraer) */}
             <DonCangrejo mood={botMood} size={28} />
           </div>
           <div className="flex-1 min-w-0">
@@ -172,13 +188,17 @@ const ChatPanel: React.FC<{
         </div>
 
         {/* Mensajes */}
-        <div ref={listRef} className="flex-1 overflow-auto px-3 py-4 space-y-3">
+        <div
+          ref={listRef}
+          className="flex-1 overflow-auto px-3 py-4 space-y-3 text-[var(--fg)]"
+        >
           {messages.length === 0 ? (
-            <div className="h-full grid place-items-center text-center text-neutral-500 px-6">
+            <div className="h-full grid place-items-center text-center text-muted px-6">
               <div>
                 <DonCangrejo size={40} className="mx-auto mb-2" />
                 <p className="text-sm">
-                  ¡Hola! Soy <span className="font-semibold">Don Cangrejo</span>. Te ayudo con reservas, mareas y dudas del restaurante flotante.
+                  ¡Hola! Soy <span className="font-semibold">Don Cangrejo</span>.  
+                  Te ayudo con reservas, mareas y dudas del restaurante flotante.
                 </p>
                 <p className="text-xs mt-1">Escribe tu pregunta abajo para comenzar.</p>
               </div>
@@ -188,10 +208,17 @@ const ChatPanel: React.FC<{
               <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
                   className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm shadow-sm border
-                  ${m.role === "user" ? "bg-[var(--accent-50)] border-[var(--accent-200)]" : "bg-white border-neutral-200"}`}
+                  ${
+                    m.role === "user"
+                      ? "bg-[var(--accent-50)] border-[var(--accent-200)]"
+                      : "bg-[var(--card)] border-neutral-300 dark:border-neutral-600"
+                  }`}
                   style={
                     m.role === "user"
-                      ? { ["--accent-50" as any]: accent + "1A", ["--accent-200" as any]: accent + "66" }
+                      ? {
+                          ["--accent-50" as any]: accent + "1A",
+                          ["--accent-200" as any]: accent + "66",
+                        }
                       : undefined
                   }
                 >
@@ -203,7 +230,7 @@ const ChatPanel: React.FC<{
         </div>
 
         {/* Composer */}
-        <div className="p-3 border-t border-neutral-200">
+        <div className="p-3 border-t border-neutral-200 dark:border-neutral-700 bg-[var(--bg)]">
           <div className="flex items-end gap-2">
             <textarea
               ref={inputRef}
@@ -214,7 +241,7 @@ const ChatPanel: React.FC<{
               onKeyDown={(e) => {
                 if ((e.ctrlKey || e.metaKey) && e.key === "Enter") handleSend();
               }}
-              className="flex-1 resize-none rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[var(--accent)]"
+              className="flex-1 resize-none rounded-xl border border-neutral-300 dark:border-neutral-600 bg-[var(--card)] px-3 py-2 text-sm text-[var(--fg)] outline-none focus:ring-2 focus:ring-[var(--accent)]"
               style={{ ["--accent" as any]: accent }}
             />
             <button
@@ -225,24 +252,24 @@ const ChatPanel: React.FC<{
               Enviar
             </button>
           </div>
-          <p className="text-[11px] text-neutral-500 mt-1">Ctrl/⌘ + Enter para enviar</p>
+          <p className="text-[11px] text-muted mt-1">Ctrl/⌘ + Enter para enviar</p>
         </div>
       </div>
     </div>
   );
 };
 
-// ========= Demo por defecto =========
+/* ========= Mensajes demo ========= */
 const defaultDemo: ChatCrabMessage[] = [
   { id: "1", role: "assistant", text: "¡Pura vida! ¿Reservamos o quieres ver horarios?" },
   { id: "2", role: "user", text: "Reserva para 4 mañana 7pm." },
   { id: "3", role: "assistant", text: "Con gusto. ¿Nombre y teléfono de contacto?" },
 ];
 
-// ========= Widget principal =========
+/* ========= Widget principal ========= */
 const ChatCrabWidget: React.FC<ChatCrabProps> = ({
-  title = "Don Cangrejo (Chat)",
-  subtitle = "En línea • Tiempo de espera ~1 min",
+  title = "Don Cangrejo — Chat",
+  subtitle = "Puedo ayudarte con reservas y mareas",
   accent = "#0D784A",
   headerColor = "#443314",
   position = "bottom-right",
@@ -295,12 +322,15 @@ const ChatCrabWidget: React.FC<ChatCrabProps> = ({
   return (
     <>
       <Launcher
-        onClick={() => { setOpen(true); setUnread(false); }}
+        onClick={() => {
+          setOpen(true);
+          setUnread(false);
+        }}
         position={position!}
         offset={offset}
         accent={accent}
         unread={unread}
-        open={open}   // => se oculta cuando el chat está abierto
+        open={open}
       />
 
       <ChatPanel
