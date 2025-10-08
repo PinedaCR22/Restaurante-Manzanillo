@@ -33,7 +33,9 @@ function InfoCard({
 
   return (
     <motion.article
-      className="w-full rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden"
+      className="w-full rounded-xl border border-gray-200 overflow-hidden shadow-sm
+                 bg-card text-app 
+                 dark:border-[color-mix(in_srgb,var(--fg)_20%,transparent)]"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -64,9 +66,9 @@ function InfoCard({
         {/* Texto (padding compacto) */}
         <div className={`p-6 md:p-8 ${reverse ? "md:order-1" : "md:order-2"} flex items-center`}>
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-3">{title}</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 text-app">{title}</h2>
             {paragraphs.map((p, i) => (
-              <p key={i} className="text-base md:text-lg mb-2.5 text-gray-800">
+              <p key={i} className="text-base md:text-lg mb-2.5 text-app">
                 {p}
               </p>
             ))}
@@ -82,7 +84,7 @@ export default function ManglarPage() {
   const navigate = useNavigate();
 
   return (
-    <section className="w-full">
+    <section className="w-full bg-app text-black dark:text-white">
       {/* Ancho completo sin max-w */}
       <div className="w-full px-3 sm:px-6 lg:px-10 py-8 lg:py-12 space-y-8">
         {/* Card 1 — imagen izquierda */}
@@ -97,7 +99,7 @@ export default function ManglarPage() {
         />
 
         {/* Card 2 — imagen derecha */}
-          <InfoCard
+        <InfoCard
           reverse
           title="¿Qué incluye y cómo participar?"
           paragraphs={[
@@ -111,7 +113,9 @@ export default function ManglarPage() {
         {/* -------- Formulario (card de tamaño GRANDE como acordamos) -------- */}
         <motion.article
           id="contacto-manglar"
-          className="w-full rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden"
+          className="w-full rounded-xl border border-gray-200 bg-card shadow-sm overflow-hidden
+                     text-app
+                     dark:border-[color-mix(in_srgb,var(--fg)_20%,transparent)]"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -131,7 +135,7 @@ export default function ManglarPage() {
 
             {/* Form derecha */}
             <div className="p-6 md:p-10">
-              <h3 className="text-2xl md:text-3xl font-bold mb-6 leading-tight text-center">
+              <h3 className="text-2xl md:text-3xl font-bold mb-6 leading-tight text-center text-app">
                 <span className="block">¡Ponte en contacto con nosotros</span>
                 <span className="block">para conocer más!</span>
               </h3>
@@ -144,7 +148,7 @@ export default function ManglarPage() {
                 className="space-y-4"
               >
                 <div>
-                  <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="nombre" className="block text-sm font-medium text-app">
                     Nombre
                   </label>
                   <input
@@ -153,12 +157,16 @@ export default function ManglarPage() {
                     type="text"
                     required
                     placeholder="Tu nombre"
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2
+                               bg-card text-app placeholder:text-gray-500
+                               focus:outline-none focus:ring-2 focus:ring-sky-500
+                               dark:placeholder:text-gray-400
+                               dark:border-[color-mix(in_srgb,var(--fg)_25%,transparent)]"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="actividad" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="actividad" className="block text-sm font-medium text-app">
                     Actividad
                   </label>
                   <input
@@ -167,12 +175,16 @@ export default function ManglarPage() {
                     type="text"
                     required
                     placeholder="Tour de manglar u otra actividad"
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2
+                               bg-card text-app placeholder:text-gray-500
+                               focus:outline-none focus:ring-2 focus:ring-sky-500
+                               dark:placeholder:text-gray-400
+                               dark:border-[color-mix(in_srgb,var(--fg)_25%,transparent)]"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="mensaje" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="mensaje" className="block text-sm font-medium text-app">
                     Mensaje
                   </label>
                   <textarea
@@ -181,7 +193,11 @@ export default function ManglarPage() {
                     required
                     rows={8}
                     placeholder="Cuéntanos cuántas personas, fecha deseada y cualquier detalle relevante…"
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2
+                               bg-card text-app placeholder:text-gray-500
+                               focus:outline-none focus:ring-2 focus:ring-sky-500
+                               dark:placeholder:text-gray-400
+                               dark:border-[color-mix(in_srgb,var(--fg)_25%,transparent)]"
                   />
                 </div>
 
@@ -196,7 +212,8 @@ export default function ManglarPage() {
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2 rounded-lg bg-[#50ABD7] text-white font-semibold hover:bg-[#3f98c1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-500"
+                    className="px-6 py-2 rounded-lg bg-[#50ABD7] text-white font-semibold hover:bg-[#3f98c1]
+                               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-500"
                   >
                     Enviar
                   </button>

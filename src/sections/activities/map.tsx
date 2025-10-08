@@ -7,19 +7,37 @@ const MapaSection = () => {
   return (
     <motion.section
       id="mapa"
-      className="w-full px-3 sm:px-4 md:px-6 lg:px-8"
+      className="w-full bg-app text-app px-3 sm:px-4 md:px-6 lg:px-8"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.7 }}
     >
-      {/* Header - consistente con Activities */}
+      {/* Header - ahora igual al del Menu */}
       <div className="mx-auto max-w-6xl">
-        <div className="rounded-xl bg-gray-100/80 shadow-sm backdrop-blur px-3 sm:px-5 md:px-6 py-3 sm:py-4 text-center">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide text-stone-800">
+        <div
+          className="
+            rounded-xl bg-card shadow-sm backdrop-blur px-3 sm:px-5 md:px-6 py-3 sm:py-4 text-center
+            dark:bg-[color-mix(in_srgb,var(--card)_90%,black_10%)]
+          "
+        >
+          <h2
+            className="
+              text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide 
+              text-app
+            "
+          >
             ¡ENCUÉNTRANOS EN GOOGLE MAPS!
           </h2>
-          <div className="mt-3 h-[3px] sm:h-[4px] md:h-[6px] w-full bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]" />
+
+          {/* Línea degradada igual que el Menu */}
+          <div
+            className="
+              mt-3 h-[3px] sm:h-[4px] md:h-[6px] w-full
+              bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]
+              dark:from-[#56B5FF] dark:via-[#FFD75E] dark:to-[#2ECC71]
+            "
+          />
         </div>
       </div>
 
@@ -31,8 +49,7 @@ const MapaSection = () => {
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.5, delay: 0.15 }}
       >
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
-          {/* En móvil 4:3 para mayor altura, en >=sm 16:9 */}
+        <div className="bg-card rounded-xl shadow-md overflow-hidden">
           <div className="relative w-full aspect-[4/3] sm:aspect-video min-h-[260px]">
             <iframe
               title="Mapa de Manzanillo, Puntarenas"

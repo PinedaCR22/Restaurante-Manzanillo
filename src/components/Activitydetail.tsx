@@ -1,4 +1,4 @@
-// src/components/Activitydetail.tsx
+// src/components/Activitydetail.tsx 
 import { useMemo, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, type Variants } from "framer-motion";
@@ -120,14 +120,12 @@ export default function ActivityDetailPage() {
     <section className="w-full">
       {/* ====== Portada 50vh ====== */}
       <div className="relative w-full h-[50vh] overflow-hidden">
-        {/* Importante: aplicar backgroundImage al div que sí tiene bg-cover */}
         <div
           className="absolute inset-0 bg-center bg-cover"
           style={{ backgroundImage: `url(${cover})` }}
           role="img"
           aria-label={title}
         />
-        {/* Overlays para legibilidad */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/35 to-black/60" />
           <div className="absolute inset-0 bg-black/10" />
@@ -166,8 +164,13 @@ export default function ActivityDetailPage() {
       {/* ====== Contenido ====== */}
       <div ref={contentRef} className="px-3 md:px-6 mt-4">
         {/* Franja/separador con línea degradada */}
-        <div className="mx-auto rounded-xl bg-gray-100/80 shadow-sm backdrop-blur px-4 py-3 text-center">
-          <h2 className="text-base md:text-lg font-extrabold tracking-wide text-stone-800 uppercase">
+        <div
+          className="
+            mx-auto rounded-xl bg-card shadow-sm backdrop-blur px-4 py-3 text-center
+            border dark:border-[color-mix(in_srgb,var(--fg)_20%,transparent)] text-app
+          "
+        >
+          <h2 className="text-base md:text-lg font-extrabold tracking-wide uppercase text-app">
             {title}
           </h2>
           <div className="mt-3 h-[6px] w-full bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]" />
@@ -184,7 +187,12 @@ export default function ActivityDetailPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.25 }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 items-stretch rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden md:min-h-[280px] lg:min-h-[320px]"
+                className="
+                  grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 items-stretch
+                  rounded-xl border overflow-hidden shadow-sm md:min-h-[280px] lg:min-h-[320px]
+                  bg-card text-app
+                  border-gray-200 dark:border-[color-mix(in_srgb,var(--fg)_20%,transparent)]
+                "
               >
                 {/* Imagen */}
                 <div
@@ -201,12 +209,10 @@ export default function ActivityDetailPage() {
                 </div>
 
                 {/* Contenido */}
-                <div
-                  className={`p-4 md:p-6 flex ${reverse ? "md:order-1" : "md:order-2"} bg-gray-50`}
-                >
+                <div className={`p-4 md:p-6 flex ${reverse ? "md:order-1" : "md:order-2"} bg-card`}>
                   <div className="my-auto w-full">
-                    <h3 className="text-lg md:text-xl font-bold text-stone-900">{sec.title}</h3>
-                    <div className="mt-2 text-stone-700 text-sm md:text-base leading-relaxed">
+                    <h3 className="text-lg md:text-xl font-bold text-app">{sec.title}</h3>
+                    <div className="mt-2 text-sm md:text-base leading-relaxed text-app">
                       {sec.key === "desc" && "body" in sec && <p>{sec.body}</p>}
 
                       {sec.key !== "desc" && "items" in sec && (

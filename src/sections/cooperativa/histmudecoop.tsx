@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 
 // Imágenes (reemplaza por las definitivas cuando las tengas)
 const imgCard1 =
-  "https://images.unsplash.com/photo-1544531586-fde5298cdd40?q=80&w=1600&auto=format&fit=crop"; // comunidad / reunión
+  "https://images.unsplash.com/photo-1544531586-fde5298cdd40?q=80&w=1600&auto=format&fit=crop";
 const imgCard2 =
-  "https://images.unsplash.com/photo-1520975693416-35a0d43390fd?q=80&w=1600&auto=format&fit=crop"; // archivo / notas / historia
+  "https://images.unsplash.com/photo-1520975693416-35a0d43390fd?q=80&w=1600&auto=format&fit=crop";
 const imgForm =
-  "https://images.unsplash.com/photo-1525182008055-f88b95ff7980?q=80&w=1600&auto=format&fit=crop"; // costa / muelle de Manzanillo
+  "https://images.unsplash.com/photo-1525182008055-f88b95ff7980?q=80&w=1600&auto=format&fit=crop";
 
 /** ---------- Card reutilizable (compacto tipo AboutMe) ---------- */
 function InfoCard({
@@ -33,7 +33,9 @@ function InfoCard({
 
   return (
     <motion.article
-      className="w-full rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden"
+      className="w-full rounded-xl border border-gray-200 overflow-hidden shadow-sm
+                 bg-card text-app 
+                 dark:border-[color-mix(in_srgb,var(--fg)_20%,transparent)]"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -64,9 +66,9 @@ function InfoCard({
         {/* Texto (padding compacto) */}
         <div className={`p-6 md:p-8 ${reverse ? "md:order-1" : "md:order-2"} flex items-center`}>
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-3">{title}</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 text-app">{title}</h2>
             {paragraphs.map((p, i) => (
-              <p key={i} className="text-base md:text-lg mb-2.5 text-gray-800">
+              <p key={i} className="text-base md:text-lg mb-2.5 text-app">
                 {p}
               </p>
             ))}
@@ -82,8 +84,7 @@ export default function HistMudecoopPage() {
   const navigate = useNavigate();
 
   return (
-    <section className="w-full">
-      {/* Ancho completo sin max-w */}
+    <section className="w-full bg-app text-black dark:text-white">
       <div className="w-full px-3 sm:px-6 lg:px-10 py-8 lg:py-12 space-y-8">
         {/* Card 1 — imagen izquierda */}
         <InfoCard
@@ -91,13 +92,13 @@ export default function HistMudecoopPage() {
           paragraphs={[
             "En el año 2000 nace SUMUPROMA, una asociación de ~60 mujeres que se organizaron para crear empleo en un contexto costero con pocas oportunidades laborales para ellas.",
             "Impulsaron proyectos iniciales como hidroponía y la construcción del redondel de Manzanillo, gestionando actividades culturales para generar ingresos.",
-            "Tras el fin de concesiones y la salida de muchas socias (2007), ingresó un nuevo grupo que mantuvo viva la organización y, años después, se consolidó la cooperativa: MUDECOOP (2017)."
+            "Tras el fin de concesiones y la salida de muchas socias (2007), ingresó un nuevo grupo que mantuvo viva la organización y, años después, se consolidó la cooperativa: MUDECOOP (2017).",
           ]}
           images={[imgCard1]}
         />
 
         {/* Card 2 — imagen derecha */}
-          <InfoCard
+        <InfoCard
           reverse
           title="Línea de tiempo: proyectos y aprendizajes"
           paragraphs={[
@@ -105,7 +106,7 @@ export default function HistMudecoopPage() {
             "2007–2015: Intento de Centro Turístico Verde Mar (bar La Ruana) que no prosperó por limitaciones de crédito y formalización.",
             "2016: Reforestación de manglar junto a Fundación Neotrópica; se estructuran viveros y protocolos de cuidado.",
             "2021: Construcción de la panga con acompañamiento del prof. Álvaro (UNA), fortaleciendo capacidades técnicas.",
-            "Actualidad: Proyección turística y comunitaria desde Manzanillo, preparando nuevas etapas (restaurante flotante en articulación con el parque marino)."
+            "Actualidad: Proyección turística y comunitaria desde Manzanillo, preparando nuevas etapas (restaurante flotante en articulación con el parque marino).",
           ]}
           images={[imgCard2, imgCard1]}
         />
@@ -116,22 +117,24 @@ export default function HistMudecoopPage() {
             "Ingreso de nuevas socias bajo contrato y período de prueba de 3 meses para asegurar compromiso y buenas prácticas.",
             "Actividades económicas complementarias: venta de comida rápida con horarios extendidos según temporada y carga operativa.",
             "Enfoque comunitario: MUDECOOP Jr donde trabajan en reforestación, educación ambiental y formación en autoestima y autocuidado.",
-            "Por la magnitud de los proyectos en curso, la incorporación de nuevas personas está temporalmente cerrada para resguardar recursos y asegurar una implementación responsable."
+            "Por la magnitud de los proyectos en curso, la incorporación de nuevas personas está temporalmente cerrada para resguardar recursos y asegurar una implementación responsable.",
           ]}
           images={[imgCard2]}
         />
 
-        {/* -------- Formulario (card de tamaño GRANDE como acordamos) -------- */}
+        {/* -------- Formulario (card de tamaño GRANDE) -------- */}
         <motion.article
           id="contacto-histmudecoop"
-          className="w-full rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden"
+          className="w-full rounded-xl border border-gray-200 bg-card shadow-sm overflow-hidden
+                     text-app
+                     dark:border-[color-mix(in_srgb,var(--fg)_20%,transparent)]"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
-            {/* Imagen izquierda: alturas grandes */}
+            {/* Imagen izquierda */}
             <div className="relative aspect-square md:aspect-auto md:min-h-[460px] lg:min-h-[520px]">
               <img
                 src={imgForm}
@@ -144,8 +147,8 @@ export default function HistMudecoopPage() {
 
             {/* Form derecha */}
             <div className="p-6 md:p-10">
-              <h3 className="text-2xl md:text-3xl font-bold mb-6 leading-tight text-center">
-                <span className="block">¡ponte en contacto con nosotros</span>
+              <h3 className="text-2xl md:text-3xl font-bold mb-6 leading-tight text-center text-app">
+                <span className="block">¡Ponte en contacto con nosotros</span>
                 <span className="block">para conocer más!</span>
               </h3>
 
@@ -157,7 +160,10 @@ export default function HistMudecoopPage() {
                 className="space-y-4"
               >
                 <div>
-                  <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="nombre"
+                    className="block text-sm font-medium text-app"
+                  >
                     Nombre
                   </label>
                   <input
@@ -166,12 +172,19 @@ export default function HistMudecoopPage() {
                     type="text"
                     required
                     placeholder="Tu nombre"
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2
+                               bg-card text-app placeholder:text-gray-500
+                               focus:outline-none focus:ring-2 focus:ring-sky-500
+                               dark:placeholder:text-gray-400
+                               dark:border-[color-mix(in_srgb,var(--fg)_25%,transparent)]"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="actividad" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="actividad"
+                    className="block text-sm font-medium text-app"
+                  >
                     Actividad
                   </label>
                   <input
@@ -180,12 +193,19 @@ export default function HistMudecoopPage() {
                     type="text"
                     required
                     placeholder="Historia de MUDECOOP u otra actividad"
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2
+                               bg-card text-app placeholder:text-gray-500
+                               focus:outline-none focus:ring-2 focus:ring-sky-500
+                               dark:placeholder:text-gray-400
+                               dark:border-[color-mix(in_srgb,var(--fg)_25%,transparent)]"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="mensaje" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="mensaje"
+                    className="block text-sm font-medium text-app"
+                  >
                     Mensaje
                   </label>
                   <textarea
@@ -194,11 +214,14 @@ export default function HistMudecoopPage() {
                     required
                     rows={8}
                     placeholder="Cuéntanos cuántas personas, fecha deseada y cualquier detalle relevante…"
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2
+                               bg-card text-app placeholder:text-gray-500
+                               focus:outline-none focus:ring-2 focus:ring-sky-500
+                               dark:placeholder:text-gray-400
+                               dark:border-[color-mix(in_srgb,var(--fg)_25%,transparent)]"
                   />
                 </div>
 
-                {/* Botones a la derecha: Regresar (izq) + Enviar (der) */}
                 <div className="flex gap-3 pt-2 justify-end">
                   <button
                     type="button"
@@ -209,7 +232,8 @@ export default function HistMudecoopPage() {
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2 rounded-lg bg-[#50ABD7] text-white font-semibold hover:bg-[#3f98c1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-500"
+                    className="px-6 py-2 rounded-lg bg-[#50ABD7] text-white font-semibold hover:bg-[#3f98c1]
+                               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-500"
                   >
                     Enviar
                   </button>

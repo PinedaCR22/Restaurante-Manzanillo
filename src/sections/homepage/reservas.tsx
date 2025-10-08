@@ -1,4 +1,4 @@
-// src/sections/homepage/reservas.tsx
+// src/sections/homepage/reservas.tsx 
 import React from "react";
 import { CheckCircle, Calendar, MapPin, User, FileCheck, Utensils } from "lucide-react";
 import ReservationCalendar from "../../components/reservations/ReservationCalendar";
@@ -145,12 +145,18 @@ const ProgressSteps: React.FC = () => {
             <div key={step.step} className="flex items-center">
               <div
                 className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-200 ${
-                  activeOrDone ? "text-white" : ""
+                  activeOrDone
+                    ? "text-white"
+                    : "text-[color:color-mix(in_srgb,var(--fg)_45%,transparent)] dark:text-white"
                 }`}
                 style={
                   activeOrDone
                     ? { backgroundColor: "var(--brand)", borderColor: "var(--brand)" }
-                    : { backgroundColor: "color-mix(in srgb, var(--fg) 7%, transparent)", borderColor: "color-mix(in srgb, var(--fg) 18%, transparent)", color: "color-mix(in srgb, var(--fg) 45%, transparent)" }
+                    : {
+                        backgroundColor: "color-mix(in srgb, var(--fg) 7%, transparent)",
+                        borderColor: "color-mix(in srgb, var(--fg) 18%, transparent)",
+                        // ⚠️ sin 'color' inline para permitir dark:text-white
+                      }
                 }
               >
                 {step.completed ? <CheckCircle className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
@@ -199,7 +205,7 @@ const ReservationContent: React.FC = () => {
           <div className="mx-auto rounded-xl bg-card shadow-sm backdrop-blur px-4 py-4">
             <h2 className="flex items-center justify-center text-xl md:text-2xl font-extrabold tracking-wide">
               <Utensils className="w-7 h-7 mr-2" style={{ color: "var(--brand)" }} />
-              ¡RESERVA TU MESA!
+              ¡RESERVA EN NUESTRO RESTAURANTE!
             </h2>
             <div className="mt-3 h-[6px] w-full bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]" />
           </div>
