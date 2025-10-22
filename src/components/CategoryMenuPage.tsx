@@ -49,11 +49,12 @@ function AnimatedText({
 }
 
 const NORMATIVAS = [
-  "Uso obligatorio de chaleco salvavidas durante traslados.",
+  "Traer ropa adecuada y usar chaleco salvavidas durante traslados.",
   "No correr ni saltar sobre pasarelas o plataformas.",
   "Niños deben estar acompañados por un adulto en todo momento.",
   "Prohibido fumar en áreas no designadas.",
   "Respetar horarios y recomendaciones del personal.",
+  "Alcohol regulado, no se permiten personas en estado de ebriedad.",
 ];
 
 // Variants reutilizables

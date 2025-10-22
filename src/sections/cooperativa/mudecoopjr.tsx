@@ -93,7 +93,7 @@ export default function MudecoopJRPage() {
             "Nace para incluir a niñas y niños de Manzanillo en actividades comunitarias con foco ambiental y valores de liderazgo.",
             "Tras una primera convocatoria, quedaron 20 niñas y se consolidó el nombre MUDECOOP JR.",
             "Gracias a la gestión vinculada a “Mujeres de Manglar” se obtuvo apoyo para alimentación, hidratación y equipo en cada jornada.",
-            "Coordinación: Marixa Obando, Alexandra Sánchez y Ana Cecilia (alimentación). Todas las participantes son de Manzanillo y alrededores."
+            "Coordinación: Maritza Obando, Allison Sánchez y Ana Cecilia (alimentación). Todas las participantes son de Manzanillo y alrededores."
           ]}
           images={[imgCard1]}
         />

@@ -90,9 +90,9 @@ export default function HistMudecoopPage() {
         <InfoCard
           title="Orígenes: de SUMUPROMA a MUDECOOP"
           paragraphs={[
-            "En el año 2000 nace SUMUPROMA, una asociación de ~60 mujeres que se organizaron para crear empleo en un contexto costero con pocas oportunidades laborales para ellas.",
+            "En el año 2000 nace ASOMUPROMA, una asociación de 60 mujeres que se organizaron para crear empleo en un contexto costero con pocas oportunidades laborales para ellas.",
             "Impulsaron proyectos iniciales como hidroponía y la construcción del redondel de Manzanillo, gestionando actividades culturales para generar ingresos.",
-            "Tras el fin de concesiones y la salida de muchas socias (2007), ingresó un nuevo grupo que mantuvo viva la organización y, años después, se consolidó la cooperativa: MUDECOOP (2017).",
+            "Tras el fin de concesiones y la salida de muchas socias (2007), ingresó un nuevo grupo que mantuvo viva la organización y, años después, se consolidó la cooperativa: MUDECOOP.",
           ]}
           images={[imgCard1]}
         />
@@ -105,7 +105,8 @@ export default function HistMudecoopPage() {
             "2000–2006: Hidroponía y redondel; organización de turnos y actividades culturales.",
             "2007–2015: Intento de Centro Turístico Verde Mar (bar La Ruana) que no prosperó por limitaciones de crédito y formalización.",
             "2016: Reforestación de manglar junto a Fundación Neotrópica; se estructuran viveros y protocolos de cuidado.",
-            "2021: Construcción de la panga con acompañamiento del prof. Álvaro (UNA), fortaleciendo capacidades técnicas.",
+             "2019: Se fundó la soda Mudecoop, la cual estaría ubicada en las cercanías del malecón de Manzanillo.",
+            "2021: Construcción de la panga con acompañamiento del prof. Álvaro (INA), fortaleciendo capacidades técnicas.",
             "Actualidad: Proyección turística y comunitaria desde Manzanillo, preparando nuevas etapas (restaurante flotante en articulación con el parque marino).",
           ]}
           images={[imgCard2, imgCard1]}
