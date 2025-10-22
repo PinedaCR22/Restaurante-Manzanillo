@@ -92,7 +92,7 @@ export default function HistFlotantePage() {
           title="Cómo nació el restaurante flotante"
           paragraphs={[
             "La idea surge en 2021, cuando en gestiones con el INA conocen a José Antonio Lee (Parque Marino). El proyecto estaba dirigido principalmente a pescadores, pero MUDECOOP aplicó y superó los requisitos administrativos y de pólizas.",
-            "A inicios de 2023 la cooperativa fue seleccionada: la primera cooperativa de mujeres en recibir un restaurante flotante (a Chira se le asignó la 2.ª etapa con granjas y una plataforma de bodega).",
+            "A inicios de 2023 la cooperativa fue seleccionada, siendo la primera cooperativa de mujeres a nivel nacional en recibir un restaurante flotante (a Chira se le asignó la 2.ª etapa con granjas y una plataforma de bodega).",
             "La construcción inició el 15 de noviembre de 2023; aunque hubo atrasos por trámites (SICOP), el equipo aprovechó para capacitarse y fortalecer el diseño único de la estructura.",
           ]}
           images={[imgCard1]}
@@ -103,7 +103,7 @@ export default function HistFlotantePage() {
           reverse
           title="Construcción y diseño de la plataforma"
           paragraphs={[
-            "Participaron ~14 mujeres y 6 hombres: ellas se formaron en fibra de vidrio y ellos en construcción; el trabajo fue colaborativo y escalonado.",
+            "Participaron 14 mujeres y 6 hombres: ellas se formaron en fibra de vidrio y ellos en construcción; el trabajo fue colaborativo y escalonado.",
             "Salón principal de 10×10 m (capacidad práctica 30–40 personas por grupo), con 4 plataformas; la cocina se sostiene en 3 plataformas. Cada plataforma soporta hasta 7 toneladas.",
             "Incluye biojardinera (piedra, arena, botellas y microorganismos) para tratar aguas residuales y grasas, reduciendo contaminación; además, jardín con servicios sanitarios y área técnica.",
             "Se inician 5 granjas: curvina, camarón blanco/yumbo y potencialmente, mejillones y otros moluscos.",
