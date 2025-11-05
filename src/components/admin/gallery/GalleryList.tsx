@@ -1,5 +1,8 @@
-import type { Gallery } from "../../../types/gallery";
+import { useState } from "react";
 import { Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
+import type { Gallery } from "../../../types/gallery";
+import Button from "../../ui/Button";
+import ConfirmDialog from "../../ui/ConfirmDialog";
 
 function formatLayout(l: Gallery["layout"]) {
   if (l === "grid") return "Cuadrícula";
@@ -22,54 +25,81 @@ export default function GalleryList({
   onToggleActive: (g: Gallery) => void;
   onDelete: (g: Gallery) => void;
 }) {
+  const [confirmDelete, setConfirmDelete] = useState<Gallery | null>(null);
+
   if (galleries.length === 0) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 text-center text-slate-500">
+      <div className="rounded-xl border border-[#C6E3D3] bg-white p-6 text-center text-slate-500">
         No hay galerías.
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-      {galleries.map((g) => (
-        <div
-          key={g.id}
-          className={`relative rounded-2xl border p-4 ${
-            selectedId === g.id ? "border-blue-600" : "border-slate-200"
-          }`}
-        >
-          <button onClick={() => onSelect(g.id)} className="block w-full text-left">
-            <div className="mb-2 flex items-center justify-between">
-              <div className="text-lg font-semibold text-slate-900">{g.title}</div>
-              <span className="text-xs text-slate-500">{formatLayout(g.layout)}</span>
-            </div>
-            {g.description && <p className="text-sm text-slate-600">{g.description}</p>}
-          </button>
+    <>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {galleries.map((g) => (
+          <div
+            key={g.id}
+            className={`relative rounded-2xl border p-4 bg-white shadow-sm hover:shadow-md transition ${
+              selectedId === g.id ? "border-[#0D784A]" : "border-gray-200"
+            }`}
+          >
+            <button
+              onClick={() => onSelect(g.id)}
+              className="block w-full text-left focus:outline-none"
+            >
+              <div className="mb-2 flex items-center justify-between">
+                <div className="text-lg font-semibold text-gray-900">{g.title}</div>
+                <span className="text-xs text-gray-500">{formatLayout(g.layout)}</span>
+              </div>
+              {g.description && (
+                <p className="text-sm text-gray-700">{g.description}</p>
+              )}
+            </button>
 
-          <div className="mt-3 flex items-center gap-2">
-            <button
-              onClick={() => onEdit(g)}
-              className="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs text-slate-700 hover:bg-slate-50"
-            >
-              <Pencil className="h-4 w-4" /> Editar
-            </button>
-            <button
-              onClick={() => onToggleActive(g)}
-              className="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs text-slate-700 hover:bg-slate-50"
-            >
-              {g.isActive ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}{" "}
-              {g.isActive ? "Activa" : "Inactiva"}
-            </button>
-            <button
-              onClick={() => onDelete(g)}
-              className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-white px-2.5 py-1 text-xs text-red-700 hover:bg-red-50"
-            >
-              <Trash2 className="h-4 w-4" /> Eliminar
-            </button>
+            <div className="mt-4 flex flex-wrap gap-2 justify-end">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => onEdit(g)}
+              >
+                <Pencil size={14} />
+                Editar
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onToggleActive(g)}
+              >
+                {g.isActive ? <Eye size={14} /> : <EyeOff size={14} />}
+                {g.isActive ? "Activa" : "Inactiva"}
+              </Button>
+
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => setConfirmDelete(g)}
+              >
+                <Trash2 size={14} />
+                Eliminar
+              </Button>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+
+      {/* Confirmación de eliminación */}
+      <ConfirmDialog
+        open={!!confirmDelete}
+        message={`¿Eliminar la galería "${confirmDelete?.title}"?`}
+        onCancel={() => setConfirmDelete(null)}
+        onConfirm={() => {
+          if (confirmDelete) onDelete(confirmDelete);
+          setConfirmDelete(null);
+        }}
+      />
+    </>
   );
 }

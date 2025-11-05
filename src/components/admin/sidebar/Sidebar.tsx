@@ -1,5 +1,4 @@
 "use client";
-
 import {
   LayoutDashboard,
   UtensilsCrossed,
@@ -40,19 +39,22 @@ type NavItem = {
   children?: NavItem[];
 };
 
+// ===================== CONFIGURACIÓN =====================
 const SIDEBAR_W_EXPANDED = 260;
 const SIDEBAR_W_COLLAPSED = 76;
 const LS_COLLAPSE = "adminSidebarCollapsed";
 const LS_GROUPS = "adminSidebarGroups";
 
-const BRAND_700 = "#0B6A41";
-const BRAND_600 = "#0D784A";
-const BRAND_50 = "#E6F4EE";
-const INK_500 = "#475569";
+const COLORS = {
+  brand50: "#E6F4EE",
+  brand600: "#0D784A",
+  brand700: "#0B6A41",
+  ink500: "#475569",
+};
 
 type CSSVars = React.CSSProperties & Record<`--${string}`, string>;
 
-// ===================== NAV =====================
+// ===================== NAVEGACIÓN =====================
 const NAV: NavItem[] = [
   {
     to: "/admin",
@@ -65,25 +67,26 @@ const NAV: NavItem[] = [
     label: "Restaurante",
     icon: <UtensilsCrossed size={20} />,
     children: [
-      { to: "/admin/menu", label: "Menú", icon: <UtensilsCrossed size={18} />, roles: ["ADMIN", "EDITOR"] },
-      { to: "/admin/reservas", label: "Reservas", icon: <CalendarDays size={18} />, roles: ["ADMIN", "EDITOR"] },
-      { to: "/admin/contacto", label: "Contacto", icon: <MessageSquareText size={18} />, roles: ["ADMIN"] },
+      { to: "/admin/menu", label: "Menú", icon: <UtensilsCrossed size={18} /> },
+      { to: "/admin/reservas", label: "Reservas", icon: <CalendarDays size={18} /> },
+      { to: "/admin/contacto", label: "Contacto", icon: <MessageSquareText size={18} /> },
     ],
   },
   {
-    label: "Ifnormación del Sitio",
+    label: "Información del Sitio",
     icon: <Building2 size={20} />,
     children: [
-      { to: "/admin/galeria", label: "Galería", icon: <Images size={18} />, roles: ["ADMIN", "EDITOR"] },
-      { to: "/admin/biografia", label: "Biografía", icon: <UsersRound size={18} />, roles: ["ADMIN"] },
+      { to: "/admin/galeria", label: "Galería", icon: <Images size={18} /> },
+      { to: "/admin/biografia", label: "Biografía", icon: <UsersRound size={18} /> },
+      { to: "/admin/actividades", label: "Actividades", icon: <CalendarDays size={18} /> },
     ],
   },
   {
     label: "Centro de Ayuda",
     icon: <LifeBuoy size={20} />,
     children: [
-      { to: "/admin/faqs", label: "Preguntas Frecuentes", icon: <HelpCircle size={18} />, roles: ["ADMIN", "EDITOR"] },
-      { to: "/admin/chatbot", label: "Chatbot", icon: <Bot size={18} />, roles: ["ADMIN", "EDITOR"] },
+      { to: "/admin/faqs", label: "Preguntas Frecuentes", icon: <HelpCircle size={18} /> },
+      { to: "/admin/chatbot", label: "Chatbot", icon: <Bot size={18} /> },
     ],
   },
 ];
@@ -111,14 +114,6 @@ export default function Sidebar(props: SidebarProps) {
   const collapsed = collapsedProp ?? collapsedLocal;
   const setCollapsed = setCollapsedProp ?? setCollapsedLocal;
 
-  useEffect(() => {
-    try {
-      localStorage.setItem(LS_COLLAPSE, collapsed ? "1" : "0");
-    } catch {
-      // noop
-    }
-  }, [collapsed]);
-
   const [mobileOpenInternal, setMobileOpenInternal] = useState(false);
   const mobileOpen = mobileOpenProp ?? mobileOpenInternal;
   const setMobileOpen = setMobileOpenProp ?? setMobileOpenInternal;
@@ -135,8 +130,12 @@ export default function Sidebar(props: SidebarProps) {
     [userRole]
   );
 
-  const brandVars: CSSVars = { "--brand-50": BRAND_50, "--brand-600": BRAND_600, "--brand-700": BRAND_700 };
-  const inkVars: CSSVars = { "--ink-500": INK_500 };
+  const brandVars: CSSVars = {
+    "--brand-50": COLORS.brand50,
+    "--brand-600": COLORS.brand600,
+    "--brand-700": COLORS.brand700,
+  };
+  const inkVars: CSSVars = { "--ink-500": COLORS.ink500 };
 
   return (
     <>
@@ -158,8 +157,8 @@ export default function Sidebar(props: SidebarProps) {
           {!collapsed && (
             <>
               <div
-                className="relative w-10 h-10 rounded-xl overflow-hidden grid place-items-center"
-                style={{ background: BRAND_50 }}
+                className="relative w-10 h-10 rounded-xl overflow-hidden grid place-items-center bg-[color:var(--brand-50)]"
+                style={brandVars}
               >
                 <img
                   src="https://i.ibb.co/b5ZY3Rb9/mudecoop.webp"
@@ -207,7 +206,7 @@ export default function Sidebar(props: SidebarProps) {
   );
 }
 
-// ===================== ENLACE SIMPLE =====================
+// ===================== ENLACES Y SUBMENÚS =====================
 function SidebarLink({ item, collapsed, brandVars, inkVars }: { item: NavItem; collapsed: boolean; brandVars: CSSVars; inkVars: CSSVars }) {
   return (
     <NavLink
@@ -243,7 +242,6 @@ function SidebarLink({ item, collapsed, brandVars, inkVars }: { item: NavItem; c
   );
 }
 
-// ===================== GRUPO CON SUBMENÚ (CON HOVER FUNCIONAL) =====================
 function SidebarGroup({
   item,
   collapsed,
@@ -273,12 +271,7 @@ function SidebarGroup({
   };
 
   return (
-    <div
-      className="relative group"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
-      {/* Grupo principal */}
+    <div className="relative group" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
       <button
         onClick={!collapsed ? toggle : undefined}
         className="w-full flex items-center justify-between rounded-xl px-3 py-2.5 text-[15px] text-neutral-800 hover:bg-[color:var(--brand-50)] hover:text-[color:var(--brand-600)] transition-colors"
@@ -298,7 +291,6 @@ function SidebarGroup({
         {!collapsed && <span className="text-neutral-500">{open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}</span>}
       </button>
 
-      {/* Submenú expandido (modo normal) */}
       {!collapsed && open && item.children && (
         <div className="ml-6 mt-1 space-y-0.5">
           {item.children.map((child, idx) => (
@@ -307,7 +299,6 @@ function SidebarGroup({
         </div>
       )}
 
-      {/* Popover flotante (modo colapsado con hover) */}
       {collapsed && hover && (
         <div className="absolute left-full top-0 ml-2 bg-white border border-neutral-200 rounded-lg shadow-md p-2 w-52 z-50 animate-fadeIn">
           {item.children?.map((child, idx) => (

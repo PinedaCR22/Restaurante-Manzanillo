@@ -11,9 +11,9 @@ type SuccessDialogProps = {
 
 export default function SuccessDialog({
   open,
-  title = "Guardado con éxito",
-  message = "La acción se realizó correctamente.",
-  autoCloseMs = 2000,
+  title = "Acción completada",
+  message = "Operación realizada correctamente.",
+  autoCloseMs = 1200, // 🔹 más rápido
   onClose,
 }: SuccessDialogProps) {
   useEffect(() => {
@@ -26,39 +26,18 @@ export default function SuccessDialog({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-fadeIn">
-      <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl border border-gray-200 animate-slideUp text-center p-6">
-        <CheckCircle className="mx-auto h-12 w-12 text-emerald-600 mb-3" />
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/30 backdrop-blur-sm">
+      <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl border border-gray-200 animate-fade-in text-center p-6">
+        <CheckCircle className="mx-auto h-12 w-12 text-emerald-600 mb-3 animate-pop" />
         <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
         <p className="mt-2 text-sm text-gray-700">{message}</p>
       </div>
 
-      {/* animaciones */}
       <style>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.15s ease-out;
-        }
-        .animate-slideUp {
-          animation: slideUp 0.2s ease-out;
-        }
+        @keyframes fade-in { from {opacity: 0;} to {opacity: 1;} }
+        @keyframes pop { 0% {transform: scale(0.9);} 100% {transform: scale(1);} }
+        .animate-fade-in { animation: fade-in 0.2s ease-out; }
+        .animate-pop { animation: pop 0.25s ease-out; }
       `}</style>
     </div>
   );

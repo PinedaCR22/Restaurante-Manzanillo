@@ -1,20 +1,19 @@
-import Modal from "./Modal";
+import ModalBase from "../../ui/ModalBase";
+import FormField, { inputClass, textAreaClass } from "../../ui/FormField";
 import UploadTile from "./UploadTile";
+import Button from "../../ui/Button";
 
 type Props = {
   open: boolean;
   onClose: () => void;
-
   name: string;
   description: string;
   setName: (v: string) => void;
   setDescription: (v: string) => void;
-
   imageFile: File | null;
   setImageFile: (f: File | null) => void;
   currentImageUrl: string | null;
   onRemoveImage?: () => void;
-
   onSubmit: () => Promise<void> | void;
   loading?: boolean;
   mode?: "create" | "edit";
@@ -44,57 +43,60 @@ export default function CategoryModal({
   }
 
   return (
-    <Modal open={open} onClose={onClose} title={mode === "create" ? "Nueva categoría" : "Editar categoría"}>
-      <form onSubmit={handleSave} className="grid gap-4 md:grid-cols-2">
-        <div className="md:col-span-2">
-          <label className="mb-1 block text-sm font-medium text-slate-700">Nombre</label>
+    <ModalBase
+      open={open}
+      onClose={onClose}
+      title={mode === "create" ? "Nueva categoría" : "Editar categoría"}
+    >
+      <form
+        onSubmit={handleSave}
+        className="flex flex-col gap-4 max-h-[75vh] overflow-y-auto p-2"
+      >
+        <FormField label="Nombre">
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none
-                       focus:ring-2 focus:ring-[#0D784A]/30 focus:border-[#0D784A]"
+            className={inputClass}
             placeholder="Ej: Entradas"
+            required
           />
-          {invalidName && <p className="mt-1 text-xs text-red-600">Nombre requerido</p>}
-        </div>
+          {invalidName && (
+            <p className="text-xs text-red-600 mt-1">Nombre requerido</p>
+          )}
+        </FormField>
 
-        <div className="md:col-span-2">
-          <label className="mb-1 block text-sm font-medium text-slate-700">Descripción</label>
+        <FormField label="Descripción (opcional)">
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            rows={4}
-            className="w-full resize-y rounded-lg border border-slate-300 px-3 py-2 outline-none
-                       focus:ring-2 focus:ring-[#0D784A]/30 focus:border-[#0D784A]"
-            placeholder="Opcional…"
+            className={textAreaClass}
+            rows={3}
+            placeholder="Ej: Entradas frías, calientes o compartidas"
           />
-        </div>
+        </FormField>
 
         <UploadTile
           file={imageFile}
           setFile={setImageFile}
           currentUrl={currentImageUrl}
           onRemoveCurrent={onRemoveImage}
-          label="Portada"
+          label="Portada de categoría"
         />
 
-        <div className="md:col-span-2 flex justify-end gap-2 pt-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
-          >
+        <div className="flex flex-col sm:flex-row justify-end gap-3 pt-2 border-t border-gray-100 mt-2">
+          <Button type="button" variant="secondary" onClick={onClose}>
             Cancelar
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
+            variant="primary"
             disabled={loading || invalidName}
-            className="rounded-lg bg-[#0D784A] hover:bg-[#0B6A41] px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+            isLoading={loading}
           >
-            {loading ? "Guardando…" : "Guardar"}
-          </button>
+            Guardar categoría
+          </Button>
         </div>
       </form>
-    </Modal>
+    </ModalBase>
   );
 }

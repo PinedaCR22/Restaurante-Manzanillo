@@ -1,112 +1,74 @@
-import { useEffect } from "react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 type ConfirmDialogProps = {
   open: boolean;
-  title: string;
+  title?: string;
   message: string;
   confirmText?: string;
   cancelText?: string;
-  variant?: "danger" | "success" | "default";
-  onConfirm: () => void;
+  onConfirm: () => Promise<void> | void;
   onCancel: () => void;
 };
 
 export default function ConfirmDialog({
   open,
-  title,
+  title = "Confirmar acción",
   message,
   confirmText = "Confirmar",
   cancelText = "Cancelar",
-  variant = "default",
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
-  // Cerrar con ESC
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onCancel();
-    };
-    if (open) document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
-  }, [open, onCancel]);
+  const [processing, setProcessing] = useState(false);
 
-  if (!open) return null;
-
-  const color =
-    variant === "danger"
-      ? "bg-red-600 hover:bg-red-700"
-      : variant === "success"
-      ? "bg-emerald-600 hover:bg-emerald-700"
-      : "bg-blue-600 hover:bg-blue-700";
+  const handleConfirm = async () => {
+    try {
+      setProcessing(true);
+      await onConfirm();
+    } finally {
+      setProcessing(false);
+    }
+  };
 
   return (
-    <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-fadeIn"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onCancel();
-      }}
-    >
-      <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl border border-gray-200 animate-slideUp">
-        {/* header */}
-        <div className="flex items-center justify-between border-b border-gray-100 px-5 py-3">
-          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-          <button
-            onClick={onCancel}
-            className="text-gray-500 hover:text-gray-700"
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div
+            className="bg-white rounded-xl shadow-lg border border-gray-200 w-full max-w-sm p-6"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
           >
-            ✕
-          </button>
-        </div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">{title}</h3>
+            <p className="text-sm text-gray-600 mb-5">{message}</p>
 
-        {/* body */}
-        <div className="px-5 py-4 text-sm text-gray-700">{message}</div>
-
-        {/* footer */}
-        <div className="flex justify-end gap-2 border-t border-gray-100 bg-gray-50 px-5 py-3">
-          {cancelText && (
-            <button
-              onClick={onCancel}
-              className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 transition-colors"
-            >
-              {cancelText}
-            </button>
-          )}
-          <button
-            onClick={onConfirm}
-            className={`rounded-md px-4 py-2 text-sm font-medium text-white transition-colors ${color}`}
-          >
-            {confirmText}
-          </button>
-        </div>
-      </div>
-
-       {/* animaciones */}
-      <style>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.15s ease-out;
-        }
-        .animate-slideUp {
-          animation: slideUp 0.2s ease-out;
-        }
-      `}</style>
-    </div>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={onCancel}
+                disabled={processing}
+                className="px-3 py-1.5 text-sm rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition disabled:opacity-50"
+              >
+                {cancelText}
+              </button>
+              <button
+                onClick={handleConfirm}
+                disabled={processing}
+                className="px-3 py-1.5 text-sm rounded-lg bg-[#0D784A] text-white hover:bg-[#09663F] transition disabled:opacity-50"
+              >
+                {processing ? "Procesando..." : confirmText}
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

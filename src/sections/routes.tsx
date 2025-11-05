@@ -24,11 +24,13 @@ import AdminLayout from "../layout/admin/AdminLayout";
 import AdminMenuPage from "../pages/admin/AdminMenuPage";
 import AdminReservasPage from "../pages/admin/AdminReservasPage.";
 import AdminBiografiaPage from "../pages/admin/AdminBiografiaPage";
+import AdminActivityPage from "../pages/admin/ActivityPage";
 import AdminGaleriaPage from "../pages/admin/AdminGaleriaPage";
 import AdminContactoPage from "../pages/admin/AdminContactoPage";
 import RoleGuard from "../components/admin/auth/RoleGuard";
 import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
 import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
+import NotificationsPage from "../pages/admin/NotificationsPage";
 
 
 
@@ -67,6 +69,15 @@ export const router = createBrowserRouter([
   ),
   children: [
     { index: true, element: <AdminPage /> }, // visible para cualquier autenticado
+    {
+  path: "notificaciones",
+  element: (
+    <RoleGuard allow={["ADMIN", "EDITOR"]} fallbackPath="/unauthorized">
+      <NotificationsPage />
+    </RoleGuard>
+  ),
+},
+
 
  {
         path: "menu",
@@ -86,6 +97,16 @@ export const router = createBrowserRouter([
           </RoleGuard>
         ),
       },
+
+      {
+  path: "actividades",
+  element: (
+    <RoleGuard allow={["ADMIN", "EDITOR"]} fallbackPath="/unauthorized">
+      <AdminActivityPage />
+    </RoleGuard>
+  ),
+},
+
 
       // Biografía: solo ADMIN
       {
@@ -116,6 +137,8 @@ export const router = createBrowserRouter([
           </RoleGuard>
         ),
       },
+
+      
     ],
   },
 

@@ -1,14 +1,19 @@
+import ModalBase from "../../ui/ModalBase";
+import FormField, {
+  inputClass,
+  textAreaClass,
+  selectClass,
+} from "../../ui/FormField";
+import Button from "../../ui/Button";
 import type { Category } from "../../../types/menu/category";
 import type { Dish } from "../../../types/menu/dish";
 import type { DishEditorForm } from "../../../types/menu/forms";
-import Modal from "./Modal";
 
 type Props = {
   open: boolean;
   onClose: () => void;
   categories: Category[];
   editing: Dish | null;
-
   form: DishEditorForm;
   setForm: React.Dispatch<React.SetStateAction<DishEditorForm>>;
   onSubmit: () => Promise<void> | void;
@@ -36,91 +41,116 @@ export default function DishModal({
   }
 
   return (
-    <Modal open={open} onClose={onClose} title={editing ? "Editar platillo" : "Nuevo platillo"}>
-      <form onSubmit={handleSave} className="grid gap-4 md:grid-cols-2">
-        <div className="md:col-span-2">
-          <label className="mb-1 block text-sm font-medium text-slate-700">Nombre</label>
+    <ModalBase
+      open={open}
+      onClose={onClose}
+      title={editing ? "Editar platillo" : "Nuevo platillo"}
+    >
+      <form
+        onSubmit={handleSave}
+        className="flex flex-col gap-4 max-h-[75vh] overflow-y-auto p-2"
+      >
+        {/* 🧾 Nombre */}
+        <FormField label="Nombre del platillo">
           <input
             value={form.name}
             onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-            placeholder="Ej: Paella Marina"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none
-                       focus:ring-2 focus:ring-[#0D784A]/30 focus:border-[#0D784A]"
+            placeholder="Ej: Filete de pescado a la plancha"
+            className={inputClass}
+            required
           />
-          {invalidName && <p className="mt-1 text-xs text-red-600">Nombre requerido</p>}
-        </div>
+          {invalidName && (
+            <p className="text-xs text-red-600 mt-1">Nombre requerido</p>
+          )}
+        </FormField>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700">Precio (CRC)</label>
-          <input
-            type="number"
-            min={1}
-            step={1}
-            value={form.price}
-            onChange={(e) => setForm((f) => ({ ...f, price: e.target.valueAsNumber || 0 }))}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none
-                       focus:ring-2 focus:ring-[#0D784A]/30 focus:border-[#0D784A]"
-          />
-          {invalidPrice && <p className="mt-1 text-xs text-red-600">Precio debe ser mayor a 0</p>}
-        </div>
-
-        <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700">Categoría</label>
-          <select
-            value={form.categoryId || ""}
-            onChange={(e) => setForm((f) => ({ ...f, categoryId: Number(e.target.value) || "" }))}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none
-                       focus:ring-2 focus:ring-[#0D784A]/30 focus:border-[#0D784A]"
-          >
-            <option value="" disabled>Selecciona…</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.id}>{c.name}</option>
-            ))}
-          </select>
-          {invalidCat && <p className="mt-1 text-xs text-red-600">Categoría requerida</p>}
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="mb-1 block text-sm font-medium text-slate-700">Descripción</label>
-          <textarea
-            rows={4}
-            value={form.description}
-            onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-            className="w-full resize-y rounded-lg border border-slate-300 px-3 py-2 outline-none
-                       focus:ring-2 focus:ring-[#0D784A]/30 focus:border-[#0D784A]"
-            placeholder="Opcional…"
-          />
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="inline-flex items-center gap-2 text-sm text-slate-700">
+        {/* 💵 Precio y Categoría */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <FormField label="Precio (₡)">
             <input
-              type="checkbox"
-              checked={!!form.isActive}
-              onChange={(e) => setForm((f) => ({ ...f, isActive: e.target.checked }))}
-              className="h-4 w-4 accent-[#0D784A]"
+              type="number"
+              min={1}
+              step={1}
+              value={form.price}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, price: e.target.valueAsNumber || 0 }))
+              }
+              className={inputClass}
+              required
             />
-            Disponible
-          </label>
+            {invalidPrice && (
+              <p className="text-xs text-red-600 mt-1">
+                Precio debe ser mayor a 0
+              </p>
+            )}
+          </FormField>
+
+          <FormField label="Categoría">
+            <select
+              value={form.categoryId || ""}
+              onChange={(e) =>
+                setForm((f) => ({
+                  ...f,
+                  categoryId: Number(e.target.value) || "",
+                }))
+              }
+              className={selectClass}
+              required
+            >
+              <option value="">Selecciona...</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            {invalidCat && (
+              <p className="text-xs text-red-600 mt-1">Categoría requerida</p>
+            )}
+          </FormField>
         </div>
 
-        <div className="md:col-span-2 flex justify-end gap-2 pt-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
-          >
+        {/* 📝 Descripción */}
+        <FormField label="Descripción (opcional)">
+          <textarea
+            rows={3}
+            value={form.description}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, description: e.target.value }))
+            }
+            className={textAreaClass}
+            placeholder="Detalles del platillo o ingredientes principales"
+          />
+        </FormField>
+
+        {/* 🔘 Checkbox */}
+        <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+          <input
+            type="checkbox"
+            checked={!!form.isActive}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, isActive: e.target.checked }))
+            }
+            className="h-4 w-4 accent-[#0D784A]"
+          />
+          Disponible
+        </label>
+
+        {/* 🧩 Botones */}
+        <div className="flex flex-col sm:flex-row justify-end gap-3 pt-2 border-t border-gray-100 mt-2">
+          <Button type="button" variant="secondary" onClick={onClose}>
             Cancelar
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
+            variant="primary"
             disabled={loading || invalidName || invalidPrice || invalidCat}
-            className="rounded-lg bg-[#0D784A] hover:bg-[#0B6A41] px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+            isLoading={loading}
           >
-            {loading ? "Guardando…" : "Guardar"}
-          </button>
+            Guardar platillo
+          </Button>
         </div>
       </form>
-    </Modal>
+    </ModalBase>
   );
 }

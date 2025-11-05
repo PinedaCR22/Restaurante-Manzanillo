@@ -1,61 +1,65 @@
-// src/components/admin/cms/BlockCard.tsx
 import { useState } from "react";
 import type { ContentBlock } from "../../../types/cms";
 import { CmsService, fileURL } from "../../../services/cms/cms.service";
 import BlockFormModal from "./BlockFormModal";
+import Button from "../../ui/Button";
 
 export default function BlockCard({
   block,
   onChanged,
+  askConfirm,
 }: {
   block: ContentBlock;
   onChanged: () => void;
+  askConfirm: (msg: string, onConfirm: () => void) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
-
   const imgSrc = block.imagePath ? fileURL(block.imagePath, true) : "";
 
   return (
-    <div className="rounded-2xl border border-emerald-200 bg-emerald-50">
+    <div className="overflow-hidden rounded-2xl border border-[#C6E3D3] bg-white shadow-sm hover:shadow-md hover:border-[#0D784A]/40 transition-all duration-200">
       {/* Imagen */}
-      <div className="grid place-items-center h-64 rounded-t-2xl bg-emerald-50/60 border-b border-emerald-200">
+      <div className="h-64 w-full grid place-items-center overflow-hidden bg-[#E6F4EE]/60 border-b border-[#C6E3D3]">
         {imgSrc ? (
           <img
             src={imgSrc}
             alt={block.title ?? "Imagen"}
-            className="h-64 w-full object-cover rounded-t-2xl"
+            className="h-64 w-full object-cover transition-transform duration-200 hover:scale-105"
             loading="lazy"
           />
         ) : (
-          <span className="text-emerald-700/70">Sin imagen</span>
+          <span className="text-[#0D784A]/60 text-sm">Sin imagen</span>
         )}
       </div>
 
       {/* Texto */}
       <div className="p-5">
-        {block.title && <h3 className="mb-2 text-xl font-semibold text-emerald-900">{block.title}</h3>}
-        {block.body && <p className="text-emerald-800 leading-relaxed">{block.body}</p>}
+        {block.title && (
+          <h3 className="mb-2 text-lg font-semibold text-[#0D784A] break-words">{block.title}</h3>
+        )}
+        {block.body && (
+          <p className="text-gray-700 leading-relaxed text-sm line-clamp-4 break-words">{block.body}</p>
+        )}
+        <div className="mt-3 text-xs text-gray-500">Orden: {block.displayOrder}</div>
 
-        <div className="mt-3 text-sm text-emerald-700/70">Orden: {block.displayOrder}</div>
-
-        <div className="mt-3 flex gap-2">
-          <button
-            onClick={() => setOpen(true)}
-            className="rounded-lg border border-emerald-300 bg-white px-3 py-1.5 text-sm text-emerald-800 hover:bg-emerald-50"
-          >
+        {/* Acciones */}
+        <div className="mt-4 flex flex-wrap gap-2 justify-end">
+          <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
             Editar
-          </button>
-          <button
-            onClick={async () => {
-              if (!confirm("¿Eliminar este bloque?")) return;
-              await CmsService.deleteBlock(block.id);
-              onChanged();
-            }}
-            className="rounded-lg border border-red-200 bg-white px-3 py-1.5 text-sm text-red-700 hover:bg-red-50"
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() =>
+              askConfirm(`¿Eliminar el bloque "${block.title}"?`, async () => {
+                await CmsService.deleteBlock(block.id);
+                onChanged();
+              })
+            }
           >
             Eliminar
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -74,11 +78,9 @@ export default function BlockCard({
         onSubmit={async ({ image, removeImage, ...form }) => {
           try {
             setSaving(true);
-            // 1) si pidió eliminar imagen: la borramos primero
             if (removeImage && block.imagePath) {
               await CmsService.deleteBlockImage(block.id);
             }
-            // 2) actualizamos texto + (opcional) imagen
             await CmsService.updateBlockWithImage(block.id, form, image ?? undefined);
             setOpen(false);
             onChanged();

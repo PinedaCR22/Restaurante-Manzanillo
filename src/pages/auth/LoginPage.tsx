@@ -1,8 +1,11 @@
 // src/pages/auth/LoginPage.tsx
 import LoginForm from "../../components/admin/auth/LoginForm";
+// ⬇️ importa la imagen local desde assets
+import playa2 from "../../assets/playa2.jpg"; // <-- ajusta a .png/.jpeg si corresponde
 
 const logoSrc = "https://i.ibb.co/b5ZY3Rb9/mudecoop.webp";
-const heroSrc = "/restaurante-flotante.jpeg";
+// ⬇️ usa la de assets (no la web ni /public)
+const heroSrc = playa2;
 
 export default function LoginPage() {
   return (
@@ -39,7 +42,14 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <LoginForm />
+          {/* Contenedor para alinear el botón de “ojo” sin tocar LoginForm */}
+          <div className="relative [&_input[type='password']]:pr-10 [&_input[type='text']]:pr-10
+                          [&_button[aria-label='toggle-password']]:absolute
+                          [&_button[aria-label='toggle-password']]:right-3
+                          [&_button[aria-label='toggle-password']]:top-1/2
+                          [&_button[aria-label='toggle-password']]:-translate-y-1/2">
+            <LoginForm />
+          </div>
 
           <div className="mt-6 border-t pt-4 text-xs text-neutral-400 text-center">
             © {new Date().getFullYear()} MUDECOOP • v2.0
