@@ -1,6 +1,6 @@
-// src/sections/homepage/reservas.tsx 
+// src/sections/homepage/reservas.tsx
 import React from "react";
-import { CheckCircle, Calendar, MapPin, User, FileCheck, Utensils } from "lucide-react";
+import { CheckCircle, Calendar, MapPin, User, FileCheck } from "lucide-react";
 import ReservationCalendar from "../../components/reservations/ReservationCalendar";
 import ReservationForm from "../../components/reservations/ReservationForm";
 import ReservationMap from "../../components/reservations/ReservationMap";
@@ -136,41 +136,71 @@ const ProgressSteps: React.FC = () => {
   const stepIcons = [Calendar, MapPin, User, FileCheck];
 
   return (
-    <div className="bg-card rounded-lg shadow-sm p-4 mb-6">
-      <div className="flex items-center justify-between">
+    <div className="bg-card rounded-lg shadow-sm p-3 sm:p-4 mb-6 overflow-x-auto scrollbar-thin scrollbar-thumb-[color:color-mix(in_srgb,var(--fg)_20%,transparent)] scrollbar-track-transparent">
+      <div className="flex items-center justify-between gap-1 sm:gap-2 md:gap-4">
         {filteredSteps.map((step: ReservationStep, index: number) => {
           const Icon = stepIcons[index];
           const activeOrDone = step.active || step.completed;
           return (
-            <div key={step.step} className="flex items-center">
-              <div
-                className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-200 ${
-                  activeOrDone
-                    ? "text-white"
-                    : "text-[color:color-mix(in_srgb,var(--fg)_45%,transparent)] dark:text-white"
-                }`}
-                style={
-                  activeOrDone
-                    ? { backgroundColor: "var(--brand)", borderColor: "var(--brand)" }
-                    : {
-                        backgroundColor: "color-mix(in srgb, var(--fg) 7%, transparent)",
-                        borderColor: "color-mix(in srgb, var(--fg) 18%, transparent)",
-                        // ⚠️ sin 'color' inline para permitir dark:text-white
-                      }
-                }
-              >
-                {step.completed ? <CheckCircle className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
+            <React.Fragment key={step.step}>
+              <div className="flex flex-col items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+                {/* Ícono circular */}
+                <div
+                  className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 transition-all duration-200 flex-shrink-0"
+                  style={
+                    activeOrDone
+                      ? {
+                          backgroundColor: "transparent",
+                          borderColor: "var(--fg)",
+                        }
+                      : {
+                          backgroundColor:
+                            "color-mix(in srgb, var(--fg) 7%, transparent)",
+                          borderColor:
+                            "color-mix(in srgb, var(--fg) 18%, transparent)",
+                        }
+                  }
+                >
+                  {step.completed ? (
+                    <CheckCircle
+                      className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5"
+                      style={{
+                        color: activeOrDone ? "var(--fg)" : "color-mix(in srgb, var(--fg) 50%, transparent)"
+                      }}
+                    />
+                  ) : (
+                    <Icon
+                      className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5"
+                      style={{
+                        color: activeOrDone ? "var(--fg)" : "color-mix(in srgb, var(--fg) 50%, transparent)"
+                      }}
+                    />
+                  )}
+                </div>
+
+                {/* Texto */}
+                <span
+                  className="text-[10px] sm:text-xs md:text-sm font-medium text-center"
+                  style={{
+                    color: activeOrDone ? "var(--fg)" : "color-mix(in srgb, var(--fg) 55%, transparent)"
+                  }}
+                >
+                  {step.title}
+                </span>
               </div>
-              <span
-                className="ml-3 text-sm font-medium"
-                style={{ color: activeOrDone ? "var(--brand)" : "color-mix(in srgb, var(--fg) 45%, transparent)" }}
-              >
-                {step.title}
-              </span>
+
+              {/* Línea conectora */}
               {index < filteredSteps.length - 1 && (
-                <div className="ml-4 w-12 h-0.5" style={{ backgroundColor: "var(--brand)" }} />
+                <div
+                  className="w-4 sm:w-8 md:w-12 h-0.5 flex-shrink-0 -mt-6"
+                  style={{
+                    backgroundColor: activeOrDone
+                      ? "var(--fg)"
+                      : "color-mix(in srgb,var(--fg) 20%,transparent)",
+                  }}
+                />
               )}
-            </div>
+            </React.Fragment>
           );
         })}
       </div>
@@ -203,8 +233,7 @@ const ReservationContent: React.FC = () => {
         {/* Título */}
         <div className="px-3 md:px-6 text-center mb-8">
           <div className="mx-auto rounded-xl bg-card shadow-sm backdrop-blur px-4 py-4">
-            <h2 className="flex items-center justify-center text-xl md:text-2xl font-extrabold tracking-wide">
-              <Utensils className="w-7 h-7 mr-2" style={{ color: "var(--brand)" }} />
+            <h2 className="flex items-center justify-center text-xl md:text-2xl font-extrabold tracking-wide text-app">
               ¡RESERVA EN NUESTRO RESTAURANTE!
             </h2>
             <div className="mt-3 h-[6px] w-full bg-gradient-to-r from-[#50ABD7] via-[#FBB517] to-[#0D784A]" />
