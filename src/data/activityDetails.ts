@@ -89,7 +89,7 @@ export const ACTIVITY_DETAILS: Record<string, ActivityDetail> = {
   // ========= JUEGOS TRADICIONALES =========
 "juegos-tradicionales": {
   id: "juegos-tradicionales",
-  title: "JGS. TRADICIONALES",
+  title: "Juegos TRADICIONALES",
   cover: fallbackCover("juegos-tradicionales"),
   description:
     "Actividad comunitaria enfocada en rescatar los juegos típicos de la zona, como el trompo, la cuerda, los zancos, la suiza y el toro mecánico. Está pensada para grupos, visitantes y familias, promoviendo la convivencia y el valor cultural de las tradiciones locales.",
