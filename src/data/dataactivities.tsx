@@ -11,7 +11,7 @@ export const ACTIVITIES: Activity[] = [
   {
     id: "malecon",
     name: "MALECÓN",
-    image: "https://pbs.twimg.com/media/DY8DdoKVAAEy82m.jpg",
+    image: "https://mapio.net/images-p/64383640.jpg",
   },
   {
     id: "juegos-tradicionales",
