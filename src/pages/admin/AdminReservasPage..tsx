@@ -7,7 +7,7 @@ import type { ReservaFormData } from "../../components/admin/restaurant-reservat
 import Button from "../../components/ui/Button";
 import { restaurantReservationService } from "../../services/restaurant-reservations/restaurantReservation.service";
 import type { RestaurantReservation } from "../../types/restaurant-reservations/RestaurantReservation";
-import { notificationsService } from "../../services/notifications/notifications.service"; // 🆕 agregado
+import { notificationsService } from "../../services/notifications/notifications.service";
 
 export default function RestaurantReservationsPage() {
   const {
@@ -37,13 +37,15 @@ export default function RestaurantReservationsPage() {
         phone: data.phone,
         email: data.email,
         peopleCount: data.peopleCount,
-        date: data.date,
+        date: data.date, // ✅ Ya viene en formato YYYY-MM-DD del input date
         time: data.time,
         note: data.note,
         zone: data.zone,
         tableNumber: data.tableNumber,
-        status: "pending" as const, // 🔹 literal compatible
+        status: "pending" as const,
       };
+
+      console.log("📤 Payload formateado:", payload);
 
       // 🟢 Crear reserva en backend
       const created = await restaurantReservationService.create(payload);
@@ -57,7 +59,7 @@ export default function RestaurantReservationsPage() {
           message: `Reserva creada por ${data.customerName} para el ${data.date} a las ${data.time} en ${data.zone}.`,
           type: "EMAIL",
           restaurant_reservation_id: created.id,
-          user_id: adminId, // ⚙️ se actualizará luego con el usuario real
+          user_id: adminId,
           reservation_url: `https://admin.mudecoop.cr/reservas/${created.id}`,
         });
         console.log("📧 Notificación enviada correctamente (push + email)");
@@ -73,7 +75,13 @@ export default function RestaurantReservationsPage() {
       setShowModal(false);
     } catch (err) {
       console.error("❌ Error al guardar reserva:", err);
-      alert("Error al guardar la reserva. Revisa la consola.");
+      
+      // Mostrar mensaje de error más específico
+      if (err instanceof Error) {
+        alert(`Error: ${err.message}`);
+      } else {
+        alert("Error al guardar la reserva. Revisa la consola.");
+      }
     } finally {
       setSaving(false);
     }

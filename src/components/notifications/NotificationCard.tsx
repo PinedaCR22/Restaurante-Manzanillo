@@ -12,7 +12,7 @@ type Props = {
 
 /**
  * Tarjeta individual de notificación
- * Muestra ícono, título, mensaje, fecha y acciones de marcar/eliminar.
+ * Muestra detalles al hacer clic en modal
  */
 const NotificationCard: FC<Props> = ({
   notification,
@@ -20,7 +20,15 @@ const NotificationCard: FC<Props> = ({
   onDelete,
   onView,
 }) => {
-  const { title, message, status, createdAt, category } = notification;
+  const { 
+    title, 
+    message, 
+    status, 
+    createdAt, 
+    category, 
+    restaurantReservation, 
+    activityContactForm 
+  } = notification;
 
   const upperCategory = category?.toUpperCase();
   const isActivity = upperCategory === "ACTIVITY";
@@ -28,6 +36,16 @@ const NotificationCard: FC<Props> = ({
     upperCategory === "RESERVATION" ||
     upperCategory === "RESERVA" ||
     upperCategory === "BOOKING";
+
+  // 🎯 Manejo de clic - solo abre modal
+  const handleCardClick = () => {
+    // Marcar como leída automáticamente al hacer clic
+    if (status !== "read") {
+      onMarkRead();
+    }
+    // Mostrar modal con detalles
+    onView();
+  };
 
   const icon = isActivity ? (
     <Mail className="w-5 h-5 text-green-600" />
@@ -51,19 +69,19 @@ const NotificationCard: FC<Props> = ({
 
   return (
     <div
-      className={`flex items-center justify-between border border-gray-200 rounded-2xl p-4 bg-white shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-150 ${
+      className={`flex items-center justify-between border border-gray-200 rounded-2xl p-4 bg-white shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-150 cursor-pointer ${
         status === "read" ? "opacity-80" : "opacity-100"
       }`}
     >
       {/* Contenido clickable */}
       <div
-        className="flex-1 cursor-pointer"
-        onClick={onView}
+        className="flex-1"
+        onClick={handleCardClick}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => e.key === "Enter" && onView()}
+        onKeyDown={(e) => e.key === "Enter" && handleCardClick()}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mb-1">
           {icon}
           <h3
             className={`font-semibold text-base ${
@@ -76,31 +94,75 @@ const NotificationCard: FC<Props> = ({
 
         <p className="text-sm text-gray-700 mt-1 line-clamp-2">{message}</p>
 
-        <div className="mt-2 flex items-center gap-3">
+        {/* Detalles adicionales según tipo */}
+        <div className="mt-2 flex flex-wrap items-center gap-3">
           <span
             className={`text-xs px-2 py-0.5 rounded-md font-medium ${labelColor}`}
           >
             {label}
           </span>
           <span className="text-xs text-gray-500">
-            {new Date(createdAt).toLocaleString("es-CR")}
+            {new Date(createdAt).toLocaleString("es-CR", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
           </span>
+          
+          {/* 📋 Info extra de reserva */}
+          {isReservation && restaurantReservation && (
+            <>
+              {restaurantReservation.customerName && (
+                <span className="text-xs text-blue-600 font-medium">
+                  👤 {restaurantReservation.customerName}
+                </span>
+              )}
+              {restaurantReservation.date && (
+                <span className="text-xs text-blue-600">
+                  📅 {restaurantReservation.date}
+                </span>
+              )}
+              {restaurantReservation.peopleCount && (
+                <span className="text-xs text-blue-600">
+                  👥 {restaurantReservation.peopleCount} {restaurantReservation.peopleCount === 1 ? 'persona' : 'personas'}
+                </span>
+              )}
+            </>
+          )}
+
+          {/* ✉️ Info extra de actividad/contacto */}
+          {isActivity && activityContactForm && (
+            <>
+              {activityContactForm.name && (
+                <span className="text-xs text-green-600 font-medium">
+                  👤 {activityContactForm.name}
+                </span>
+              )}
+              {activityContactForm.email && (
+                <span className="text-xs text-green-600">
+                  ✉️ {activityContactForm.email}
+                </span>
+              )}
+            </>
+          )}
         </div>
       </div>
 
       {/* Acciones */}
-      <div className="flex flex-col items-end gap-2 ml-4">
+      <div className="flex flex-col items-end gap-2 ml-4 shrink-0">
         {status !== "read" && (
           <Button
             variant="secondary"
             size="sm"
-            className="px-3 py-1 rounded-lg text-sm"
+            className="px-3 py-1 rounded-lg text-sm whitespace-nowrap"
             onClick={(e) => {
               e.stopPropagation();
               onMarkRead();
             }}
           >
-            Marcar
+            Marcar leída
           </Button>
         )}
         <Button

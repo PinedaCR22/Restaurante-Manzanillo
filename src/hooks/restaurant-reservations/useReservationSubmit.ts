@@ -34,18 +34,24 @@ export function useReservationSubmit() {
     setError(null);
 
     try {
-      // ✅ Consolidar zona y mesa: elige la que venga en formData o reservationData
       const zone = formData.zone ?? reservationData.zone;
       const tableNumber = formData.tableNumber ?? reservationData.tableNumber;
+
+      // ✅ Fecha sin desfase de zona horaria
+      let dateStr: string | undefined;
+      if (reservationData.date) {
+        const year = reservationData.date.getFullYear();
+        const month = String(reservationData.date.getMonth() + 1).padStart(2, "0");
+        const day = String(reservationData.date.getDate()).padStart(2, "0");
+        dateStr = `${year}-${month}-${day}`;
+      }
 
       const payload: Partial<RestaurantReservation> = {
         customerName: formData.fullName.trim(),
         email: formData.email.trim(),
         phone: formData.phone.trim(),
         note: formData.specialRequests.trim(),
-        date: reservationData.date
-          ? reservationData.date.toISOString().split("T")[0]
-          : undefined,
+        date: dateStr,
         time: reservationData.time,
         peopleCount: Number(reservationData.guests),
         zone: zone ?? undefined,

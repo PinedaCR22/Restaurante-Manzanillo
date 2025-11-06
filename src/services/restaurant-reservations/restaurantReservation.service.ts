@@ -72,4 +72,21 @@ export const restaurantReservationService = {
       method: "DELETE",
     });
   },
+
+  // 🆕 Obtener horarios disponibles para una fecha
+  async getAvailableHours(date: string): Promise<string[]> {
+    const response = await api<{ date: string; hours: string[] }>(
+      `/restaurant-reservations/available-hours?date=${date}`
+    );
+    return response.hours;
+  },
+
+  // 🆕 Obtener mesas disponibles para fecha/hora/zona
+  async getAvailableTables(date: string, time: string, zone?: string): Promise<number[]> {
+    const zoneParam = zone ? `&zone=${encodeURIComponent(zone)}` : '';
+    const response = await api<{ date: string; time: string; zone: string; tables: number[] }>(
+      `/restaurant-reservations/available-tables?date=${date}&time=${time}${zoneParam}`
+    );
+    return response.tables;
+  },
 };

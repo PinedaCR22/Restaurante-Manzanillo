@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/ui/Pagination";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
 import ToastViewport from "../../components/ui/ToastViewport";
 import ModalBase from "../../components/ui/ModalBase";
-import { RotateCcw, Filter, Trash2, ExternalLink, Bell } from "lucide-react";
+import { RotateCcw, Filter, Trash2, Bell, Mail, Calendar } from "lucide-react";
 import { useNotifications } from "../../hooks/notifications/useNotifications";
 import type { Notification } from "../../types/notifications/notification";
 import NotificationCard from "../../components/notifications/NotificationCard";
@@ -21,7 +20,6 @@ export default function NotificationsPage() {
     removeAll,
   } = useNotifications();
 
-  const navigate = useNavigate();
   const [filter, setFilter] = useState<FilterType>("all");
   const [page, setPage] = useState(1);
   const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
@@ -29,9 +27,6 @@ export default function NotificationsPage() {
   const [selected, setSelected] = useState<Notification | null>(null);
 
   const itemsPerPage = 5;
-
-  // ✅ Ya no necesitamos deduplicar aquí porque useNotifications ya lo hace
-  // Las notificaciones vienen limpias desde el hook
 
   // 🔍 Filtrar según el estado
   const filtered = notifications.filter((n) =>
@@ -42,12 +37,14 @@ export default function NotificationsPage() {
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const current = filtered.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
-  /** 🔗 Redirección contextual según tipo */
+  /** 🔍 Mostrar detalles en modal (sin redirección) */
   const handleView = (n: Notification) => {
-    if (n.category === "RESERVATION" && n.restaurantReservation)
-      navigate(`/admin/reservas/${n.restaurantReservation.id}`);
-    else if (n.category === "ACTIVITY") navigate("/admin/actividades");
-    else setSelected(n);
+    // Marcar como leída al ver
+    if (n.status !== "read") {
+      markAsRead(n.id);
+    }
+    // Mostrar modal con detalles completos
+    setSelected(n);
   };
 
   /** Estado de carga */
@@ -86,27 +83,169 @@ export default function NotificationsPage() {
         }}
       />
 
-      {/* Modal de detalle */}
+      {/* Modal de detalle mejorado */}
       <ModalBase
         open={!!selected}
         title={selected?.title ?? ""}
         onClose={() => setSelected(null)}
       >
-        <p className="text-gray-700 text-sm leading-relaxed">
-          {selected?.message}
-        </p>
-        <div className="mt-3 text-xs text-gray-500">
-          {selected && new Date(selected.createdAt).toLocaleString("es-CR")}
-        </div>
-        {selected?.category === "RESERVATION" &&
-          selected?.restaurantReservation && (
-            <a
-              href={`/admin/reservas/${selected.restaurantReservation.id}`}
-              className="inline-flex items-center text-[#0D784A] text-sm font-medium mt-3 hover:underline"
-            >
-              Ver reserva <ExternalLink className="w-4 h-4 ml-1" />
-            </a>
+        <div className="space-y-4">
+          {/* Mensaje principal */}
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-gray-700 text-sm leading-relaxed">
+              {selected?.message}
+            </p>
+          </div>
+
+          {/* Detalles de RESERVA */}
+          {selected?.category === "RESERVATION" && selected?.restaurantReservation && (
+            <div className="border-t border-gray-200 pt-4">
+              <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-blue-600" />
+                Detalles de la Reserva
+              </h4>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                {selected.restaurantReservation.customerName && (
+                  <div>
+                    <span className="text-gray-500">Cliente:</span>
+                    <p className="font-medium text-gray-900">
+                      {selected.restaurantReservation.customerName}
+                    </p>
+                  </div>
+                )}
+                {selected.restaurantReservation.date && (
+                  <div>
+                    <span className="text-gray-500">Fecha:</span>
+                    <p className="font-medium text-gray-900">
+                      {selected.restaurantReservation.date}
+                    </p>
+                  </div>
+                )}
+                {selected.restaurantReservation.time && (
+                  <div>
+                    <span className="text-gray-500">Hora:</span>
+                    <p className="font-medium text-gray-900">
+                      {selected.restaurantReservation.time}
+                    </p>
+                  </div>
+                )}
+                {selected.restaurantReservation.peopleCount && (
+                  <div>
+                    <span className="text-gray-500">Personas:</span>
+                    <p className="font-medium text-gray-900">
+                      {selected.restaurantReservation.peopleCount} {selected.restaurantReservation.peopleCount === 1 ? 'persona' : 'personas'}
+                    </p>
+                  </div>
+                )}
+                {selected.restaurantReservation.phone && (
+                  <div>
+                    <span className="text-gray-500">Teléfono:</span>
+                    <p className="font-medium text-gray-900">
+                      {selected.restaurantReservation.phone}
+                    </p>
+                  </div>
+                )}
+                {selected.restaurantReservation.email && (
+                  <div>
+                    <span className="text-gray-500">Email:</span>
+                    <p className="font-medium text-gray-900 truncate">
+                      {selected.restaurantReservation.email}
+                    </p>
+                  </div>
+                )}
+                {selected.restaurantReservation.zone && (
+                  <div>
+                    <span className="text-gray-500">Zona:</span>
+                    <p className="font-medium text-[#0D784A]">
+                      {selected.restaurantReservation.zone}
+                    </p>
+                  </div>
+                )}
+                {selected.restaurantReservation.tableNumber && (
+                  <div>
+                    <span className="text-gray-500">Mesa:</span>
+                    <p className="font-medium text-[#0D784A]">
+                      #{selected.restaurantReservation.tableNumber}
+                    </p>
+                  </div>
+                )}
+              </div>
+              {selected.restaurantReservation.note && (
+                <div className="mt-3 bg-gray-50 rounded-lg p-3">
+                  <span className="text-xs text-gray-500 font-medium">Notas:</span>
+                  <p className="text-sm text-gray-700 mt-1 italic leading-relaxed">
+                    {selected.restaurantReservation.note}
+                  </p>
+                </div>
+              )}
+            </div>
           )}
+
+          {/* Detalles de ACTIVIDAD/CONTACTO */}
+          {selected?.category === "ACTIVITY" && selected.activityContactForm && (
+            <div className="border-t border-gray-200 pt-4">
+              <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <Mail className="w-4 h-4 text-green-600" />
+                Detalles del Contacto
+              </h4>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                {selected.activityContactForm.name && (
+                  <div>
+                    <span className="text-gray-500">Nombre:</span>
+                    <p className="font-medium text-gray-900">
+                      {selected.activityContactForm.name}
+                    </p>
+                  </div>
+                )}
+                {selected.activityContactForm.email && (
+                  <div>
+                    <span className="text-gray-500">Email:</span>
+                    <p className="font-medium text-gray-900 truncate">
+                      {selected.activityContactForm.email}
+                    </p>
+                  </div>
+                )}
+                {selected.activityContactForm.phone && (
+                  <div>
+                    <span className="text-gray-500">Teléfono:</span>
+                    <p className="font-medium text-gray-900">
+                      {selected.activityContactForm.phone}
+                    </p>
+                  </div>
+                )}
+                {selected.activityContactForm.activityName && (
+                  <div className="col-span-2">
+                    <span className="text-gray-500">Actividad:</span>
+                    <p className="font-medium text-[#0D784A]">
+                      {selected.activityContactForm.activityName}
+                    </p>
+                  </div>
+                )}
+              </div>
+              {selected.activityContactForm.message && (
+                <div className="mt-3 bg-gray-50 rounded-lg p-3">
+                  <span className="text-xs text-gray-500 font-medium">Mensaje:</span>
+                  <p className="text-sm text-gray-700 mt-1 leading-relaxed">
+                    {selected.activityContactForm.message}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Fecha de la notificación */}
+          <div className="border-t border-gray-200 pt-3">
+            <p className="text-xs text-gray-500">
+              Recibida: {selected && new Date(selected.createdAt).toLocaleString("es-CR", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </p>
+          </div>
+        </div>
       </ModalBase>
 
       {/* Encabezado */}
