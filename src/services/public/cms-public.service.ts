@@ -1,12 +1,13 @@
 // src/services/public/cms.public.service.ts
 import type { PageSection, ContentBlock } from "../../types/cms";
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 /** Convierte /uploads/... a URL absoluta (con cache-busting opcional) */
 export function fileURL(relPath?: string | null, bust = false) {
   if (!relPath) return "";
-  const url = `${API_BASE}${relPath}`;
+  // Normalize to avoid duplicate slashes: ensure exactly one slash between base and relative path
+  const url = `${API_BASE}/${relPath.replace(/^\/+/, "")}`;
   return bust ? `${url}?v=${Date.now()}` : url;
 }
 

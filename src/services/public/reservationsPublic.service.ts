@@ -6,8 +6,8 @@ import type {
   ReservationResponse,
 } from "../../types/reservation";
 
-const base = import.meta.env.VITE_API_URL;
-const BASE = `${base}/restaurant-reservations`;
+const API_BASE = import.meta.env.VITE_API_URL;
+const BASE = `${API_BASE}/restaurant-reservations`;
 
 export async function fetchAvailableHours(date: string): Promise<ApiTimeSlot[]> {
   const res = await fetch(`${BASE}/available-hours?date=${date}`);

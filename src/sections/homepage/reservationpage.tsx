@@ -1,5 +1,4 @@
 // src/sections/homepage/reservationpage.tsx
-import React from "react";
 import { ReservationProvider } from "../../hooks/public/reservation.provider";
 import { useReservation } from "../../hooks/public/useReservation";
 

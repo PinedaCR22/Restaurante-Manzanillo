@@ -1,25 +1,24 @@
-import { useCallback, useState } from "react";
-import SuccessDialog from "./SuccessDialog";
+// src/components/ui/SuccessDialogProvider.tsx
+import { useState, useCallback } from "react";
 import { SuccessDialogContext } from "../../context/SuccessDialogContext";
 
 export function SuccessDialogProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState<string>("Operación exitosa");
-  const [message, setMessage] = useState<string>("Operación realizada correctamente.");
+  const [message, setMessage] = useState<string | null>(null);
 
-  const show = useCallback((t?: string, m?: string) => {
-    if (t) setTitle(t);
-    if (m) setMessage(m);
+  const show = useCallback((msg: string) => {
+    setMessage(msg);
     setOpen(true);
   }, []);
 
-  const close = useCallback(() => setOpen(false), []);
+  const close = useCallback(() => {
+    setOpen(false);
+    setMessage(null);
+  }, []);
 
   return (
-    <SuccessDialogContext.Provider value={{ open, show, close }}>
+    <SuccessDialogContext.Provider value={{ open, message, show, close }}>
       {children}
-      <SuccessDialog open={open} onClose={close} title={title} message={message} />
     </SuccessDialogContext.Provider>
   );
 }
-
