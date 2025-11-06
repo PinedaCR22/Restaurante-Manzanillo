@@ -346,8 +346,7 @@ export default function AdminFaqChatbotPage() {
         onSubmit={handleSaveMessage}
       />
 
-      {/* Confirmaciones */}
-// src/pages/admin/AdminFaqChatbotPage.tsx
+     // src/pages/admin/AdminFaqChatbotPage.tsx
 // Fragmento con las correcciones necesarias
 
 // ...imports anteriores...

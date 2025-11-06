@@ -4,8 +4,6 @@ import {
   UtensilsCrossed,
   Building2,
   LifeBuoy,
-  HelpCircle,
-  Bot,
   CalendarDays,
   Images,
   UsersRound,
@@ -15,6 +13,7 @@ import {
   ChevronDown,
   ChevronUp,
   Menu,
+  Settings, // 👈 nuevo icono
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import React, { useEffect, useMemo, useState, type ReactNode } from "react";
@@ -82,12 +81,16 @@ const NAV: NavItem[] = [
     ],
   },
   {
+    to: "/admin/faqs-chatbot",
     label: "Centro de Ayuda",
     icon: <LifeBuoy size={20} />,
-    children: [
-      { to: "/admin/faqs", label: "Preguntas Frecuentes", icon: <HelpCircle size={18} /> },
-      { to: "/admin/chatbot", label: "Chatbot", icon: <Bot size={18} /> },
-    ],
+    roles: ["ADMIN", "EDITOR"],
+  },
+  {
+    to: "/admin/configuracion", // 👈 nuevo
+    label: "Configuración",
+    icon: <Settings size={20} />,
+    roles: ["ADMIN", "EDITOR"],
   },
 ];
 

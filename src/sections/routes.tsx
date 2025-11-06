@@ -1,7 +1,5 @@
-// src/sections/routes.tsx
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layout/mainlayout";
-
 
 import HomePage from "../pages/homepage";
 import ActivitiesPage from "../pages/activities";
@@ -17,22 +15,26 @@ import ManglarPage from "./cooperativa/manglar";
 import HistFlotantePage from "./cooperativa/histflotante";
 import HistMudecoopPage from "./cooperativa/histmudecoop";
 import ProtectedRoute from "../components/admin/auth/ProtectedRoute";
-import LoginPage from "../pages/auth/LoginPage";
+import RoleGuard from "../components/admin/auth/RoleGuard";
 
-import AdminPage from "../pages/admin/adminpage";
+import LoginPage from "../pages/auth/LoginPage";
+import ForgotPasswordPage from "../pages/auth/ForgotPasswordPage";
+import ResetPasswordPage from "../pages/auth/ResetPasswordPage";
+
 import AdminLayout from "../layout/admin/AdminLayout";
+import AdminPage from "../pages/admin/adminpage";
 import AdminMenuPage from "../pages/admin/AdminMenuPage";
 import AdminReservasPage from "../pages/admin/AdminReservasPage.";
 import AdminBiografiaPage from "../pages/admin/AdminBiografiaPage";
 import AdminActivityPage from "../pages/admin/ActivityPage";
 import AdminGaleriaPage from "../pages/admin/AdminGaleriaPage";
 import AdminContactoPage from "../pages/admin/AdminContactoPage";
-import RoleGuard from "../components/admin/auth/RoleGuard";
-import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
-import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
 import NotificationsPage from "../pages/admin/NotificationsPage";
+import AdminFaqChatbotPage from "../pages/admin/AdminFaqChatbotPage";
 
-
+// 🔹 Usuarios
+import UsersPage from "../pages/admin/UsersPage";
+import ConfigPage from "../pages/admin/ConfigPage";
 
 export const router = createBrowserRouter([
   {
@@ -41,7 +43,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "activities", element: <ActivitiesPage /> },
-       { path: "activities/:activityId", element: <ActivityDetailPage /> },
+      { path: "activities/:activityId", element: <ActivityDetailPage /> },
       { path: "cooperativa", element: <CooperativaPage /> },
       { path: "unauthorized", element: <UnauthorizedPage /> },
       { path: "menu/:categoryId", element: <CategoryMenuPage /> },
@@ -54,32 +56,32 @@ export const router = createBrowserRouter([
     ],
   },
 
-// Login público
+  // 🔒 Autenticación pública
   { path: "/login", element: <LoginPage /> },
-  { path: '/forgot-password', element: <ForgotPasswordPage /> },
-  { path: '/reset-password', element: <ResetPasswordPage /> },
+  { path: "/forgot-password", element: <ForgotPasswordPage /> },
+  { path: "/reset-password", element: <ResetPasswordPage /> },
 
-  // Panel ADMIN protegido por sesión
+  // 🔐 Panel administrativo
   {
-  path: "/admin",
-  element: (
-    <ProtectedRoute redirectTo="/login">
-      <AdminLayout />
-    </ProtectedRoute>
-  ),
-  children: [
-    { index: true, element: <AdminPage /> }, // visible para cualquier autenticado
-    {
-  path: "notificaciones",
-  element: (
-    <RoleGuard allow={["ADMIN", "EDITOR"]} fallbackPath="/unauthorized">
-      <NotificationsPage />
-    </RoleGuard>
-  ),
-},
+    path: "/admin",
+    element: (
+      <ProtectedRoute redirectTo="/login">
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <AdminPage /> },
 
+      {
+        path: "notificaciones",
+        element: (
+          <RoleGuard allow={["ADMIN", "EDITOR"]} fallbackPath="/unauthorized">
+            <NotificationsPage />
+          </RoleGuard>
+        ),
+      },
 
- {
+      {
         path: "menu",
         element: (
           <RoleGuard allow={["ADMIN", "EDITOR"]} fallbackPath="/unauthorized">
@@ -88,7 +90,6 @@ export const router = createBrowserRouter([
         ),
       },
 
-      // Reservas: ADMIN y EDITOR
       {
         path: "reservas",
         element: (
@@ -99,16 +100,14 @@ export const router = createBrowserRouter([
       },
 
       {
-  path: "actividades",
-  element: (
-    <RoleGuard allow={["ADMIN", "EDITOR"]} fallbackPath="/unauthorized">
-      <AdminActivityPage />
-    </RoleGuard>
-  ),
-},
+        path: "actividades",
+        element: (
+          <RoleGuard allow={["ADMIN", "EDITOR"]} fallbackPath="/unauthorized">
+            <AdminActivityPage />
+          </RoleGuard>
+        ),
+      },
 
-
-      // Biografía: solo ADMIN
       {
         path: "biografia",
         element: (
@@ -118,7 +117,6 @@ export const router = createBrowserRouter([
         ),
       },
 
-      // Galería: ADMIN y EDITOR
       {
         path: "galeria",
         element: (
@@ -128,7 +126,6 @@ export const router = createBrowserRouter([
         ),
       },
 
-      // Contacto: solo ADMIN (ajústalo si quieres)
       {
         path: "contacto",
         element: (
@@ -138,10 +135,38 @@ export const router = createBrowserRouter([
         ),
       },
 
-      
+      // 🔹 Centro de Ayuda - FAQs y Chatbot (NUEVA RUTA)
+      {
+        path: "faqs-chatbot",
+        element: (
+          <RoleGuard allow={["ADMIN", "EDITOR"]} fallbackPath="/unauthorized">
+            <AdminFaqChatbotPage />
+          </RoleGuard>
+        ),
+      },
+
+      // 🔹 Configuración personal (todos los usuarios autenticados)
+      {
+        path: "configuracion",
+        element: (
+          <RoleGuard allow={["ADMIN", "EDITOR"]} fallbackPath="/unauthorized">
+            <ConfigPage />
+          </RoleGuard>
+        ),
+      },
+
+      // 🔹 Gestión de usuarios (solo ADMIN)
+      {
+        path: "usuarios",
+        element: (
+          <RoleGuard allow={["ADMIN"]} fallbackPath="/unauthorized">
+            <UsersPage />
+          </RoleGuard>
+        ),
+      },
     ],
   },
 
-  // 404 global
+  // 404
   { path: "*", element: <NotFoundPage /> },
 ]);
