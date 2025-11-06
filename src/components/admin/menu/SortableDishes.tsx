@@ -52,7 +52,6 @@ export default function SortableDishes({ dishes, setDishes, onEdit, onDelete, on
                 onEdit={onEdit}
                 onDelete={onDelete}
                 onToggle={onToggle}
-                draggable
               />
             </SortableItem>
           ))}
