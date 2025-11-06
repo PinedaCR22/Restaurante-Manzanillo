@@ -26,11 +26,11 @@ const GLOBAL_FALLBACK =
   "https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1200&auto=format&fit=crop";
 
 const DEFAULT: CoopItem[] = [
-  { id: "reforestacion", name: "REFORESTACIÓN", image: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1200&auto=format&fit=crop" },
-  { id: "mudecoop-jr", name: "MUDECOOP JR", image: "https://images.unsplash.com/photo-1604881991720-f91add269bed?q=80&w=1200&auto=format&fit=crop" },
-  { id: "tour-de-manglar", name: "TOUR DE MANGLAR", image: "https://images.unsplash.com/photo-1517456793572-97f240c05be8?q=80&w=1200&auto=format&fit=crop" },
-  { id: "hist-mudecoop", name: "HIST. MUDECOOP", image: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=1200&auto=format&fit=crop" },
-  { id: "hist-rest-flotante", name: "HIST. REST FLOTANTE", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop" },
+  { id: "reforestacion", name: "REFORESTACIÓN", image: "https://scontent.fsjo14-1.fna.fbcdn.net/v/t39.30808-6/487580626_1104655321702106_1892592701440093431_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=GLR2_pe0IP4Q7kNvwF7xgMI&_nc_oc=AdlNn_7XmldTMGoYfeVZSiacGiQrkDl-2-1g2unpIA1p5XI3UNeEmmNog6I8Zi0JpI0&_nc_zt=23&_nc_ht=scontent.fsjo14-1.fna&_nc_gid=KtQwCv5FhXcUuS13GrDRNQ&oh=00_AfjzyzxkCZ9qYHOLpC66-fKiNRi3tOWQMsZ5d7-RbIR6PQ&oe=6912A789" },
+  { id: "mudecoop-jr", name: "MUDECOOP JR", image: "https://scontent.fsjo14-1.fna.fbcdn.net/v/t39.30808-6/547408939_1240869241414046_3173049238036513901_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=plBxmRDEB7YQ7kNvwFRl5VN&_nc_oc=Admeysa42rFsLHRKO-1x6WrwCQiYoIjqVVqlVXGs3GzrebyQBIcIxlqsDTx3T1pgEoM&_nc_zt=23&_nc_ht=scontent.fsjo14-1.fna&_nc_gid=xDcckxTXf2vck0oLa51QSA&oh=00_AfjOK8IhpCNTqoS9IVvSSSQdoAvdmGPwsHO3LbXFyFvdgA&oe=69129B6B" },
+  { id: "tour-de-manglar", name: "TOUR DE MANGLAR", image: "https://scontent.fsjo14-1.fna.fbcdn.net/v/t39.30808-6/494197683_1128372019330436_3311475259952933669_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=XWgyauz4gfQQ7kNvwEKc0uE&_nc_oc=AdkikZ1tX9PpWl-VsECC3BnjrHrA4XpJQCIrwDv10PRjlIOiGQ2YqAA7pXj379xb9ys&_nc_zt=23&_nc_ht=scontent.fsjo14-1.fna&_nc_gid=Wdgm8IVDnQewdECU-PLX0w&oh=00_AfgsLj2qzuzRKIkzlXBnmI3YWriDehSb0OIItEyFAPfhwQ&oe=6912C4B2" },
+  { id: "hist-mudecoop", name: "HIST. MUDECOOP", image: "https://scontent.fsjo14-1.fna.fbcdn.net/v/t39.30808-6/524322548_1197563492411288_8905657637842777964_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=dIajkkvGKxcQ7kNvwFuMCa9&_nc_oc=AdmsddXHbT3YDIAHvyVebdLlXzYdxDsDHLKJia6CpEfmp4Aspt3crfYJlhpBWOqI8cE&_nc_zt=23&_nc_ht=scontent.fsjo14-1.fna&_nc_gid=RTjO5Vzn2CBiS1JwtJ9qOQ&oh=00_AfgFLtvsWsV9AKealNQ4YSxyJ9OBC0XfhUiTdfhpdPFVOQ&oe=691294C2" },
+  { id: "hist-rest-flotante", name: "HIST. REST FLOTANTE", image: "https://scontent.fsjo14-1.fna.fbcdn.net/v/t39.30808-6/487565415_1100732205427751_4199912478517104809_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=jNlWC57yvrMQ7kNvwHJY6jK&_nc_oc=AdmKSXrSd443veXPuC9_W-kT-i08YZlyq3p6hxFvtgh0-cI2oXjXhs6QhCtfHmxl79A&_nc_zt=23&_nc_ht=scontent.fsjo14-1.fna&_nc_gid=1eMTaRnCpZaGoEZdI4TVqg&oh=00_AfhIz_NOT-hawaETftTWUizoOPaqfrIGQZcJ1JJNUfn4og&oe=6912C3BC" },
 ];
 
 function clsx(...c: Array<string | false | null | undefined>) {
