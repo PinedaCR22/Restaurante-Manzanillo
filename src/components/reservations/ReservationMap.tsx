@@ -7,105 +7,64 @@ import {
   XCircle,
   Calendar,
   Clock,
-  CircleDot,
 } from "lucide-react";
 import { useReservation } from "../../sections/homepage/reservationpage";
 import type { TableInfo } from "../../types/reservation";
 
-/** Brand colors */
+/** Brand color */
 const BLUE = "#50ABD7";
+const SEATS_PER_TABLE = 6;
 
-/** Helper */
+/** Mapeo del label mostrado para la ubicación que SÍ es válida en tu tipo */
+const LOCATION_KEY: TableInfo["location"] = "interior"; // <- clave válida del union
+
 const titleByLocation: Record<string, string> = {
-  terraza: "Terraza",
-  interior: "Salón Interior",
-  privada: "Área Privada",
-  bar: "Zona Bar",
+  interior: "Salón Principal",
 };
-
 const descByLocation: Record<string, string> = {
-  terraza: "Vista al jardín con ambiente relajado",
-  interior: "Ambiente acogedor y climatizado",
-  privada: "Perfecta para eventos especiales",
-  bar: "Ambiente casual junto a la barra",
+  interior: "Ambiente amplio, climatizado y cómodo para grupos.",
 };
 
 const ReservationMap: React.FC = () => {
   const { reservationData, updateReservationData, nextStep, prevStep } =
     useReservation();
 
-  const [selectedTable, setSelectedTable] = useState<number | null>(
-    reservationData.tableId
+  // Mantener compatibilidad con tableId: guardamos la primera seleccionada
+  const [selectedTables, setSelectedTables] = useState<number[]>(
+    reservationData.tableId ? [reservationData.tableId] : []
   );
   const [tables, setTables] = useState<TableInfo[]>([]);
-  const [filterByCapacity, setFilterByCapacity] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  /** Simulación de carga (reemplazar por endpoint real luego) */
+  /** Cargar 10 mesas, 6 asientos, todas en LOCATION_KEY (interior) */
   useEffect(() => {
     const fetchTables = async () => {
       setIsLoading(true);
-      await new Promise((r) => setTimeout(r, 800));
-
-      const mock: TableInfo[] = [
-        // Terraza
-        { id: 1, seats: 2, available: true, location: "terraza" },
-        { id: 2, seats: 2, available: false, location: "terraza" },
-        { id: 3, seats: 4, available: true, location: "terraza" },
-        { id: 4, seats: 4, available: true, location: "terraza" },
-        { id: 5, seats: 6, available: false, location: "terraza" },
-        // Interior
-        { id: 6, seats: 2, available: true, location: "interior" },
-        { id: 7, seats: 2, available: true, location: "interior" },
-        { id: 8, seats: 4, available: false, location: "interior" },
-        { id: 9, seats: 4, available: true, location: "interior" },
-        { id: 10, seats: 6, available: true, location: "interior" },
-        { id: 11, seats: 8, available: true, location: "interior" },
-        // Privada
-        { id: 12, seats: 6, available: true, location: "privada" },
-        { id: 13, seats: 8, available: false, location: "privada" },
-        { id: 14, seats: 10, available: true, location: "privada" },
-        // Bar
-        { id: 15, seats: 2, available: true, location: "bar" },
-        { id: 16, seats: 2, available: true, location: "bar" },
-        { id: 17, seats: 3, available: false, location: "bar" },
-        { id: 18, seats: 4, available: true, location: "bar" },
-      ];
-
+      await new Promise((r) => setTimeout(r, 300)); // simulación breve
+      const mock: TableInfo[] = Array.from({ length: 10 }, (_, i) => ({
+        id: i + 1,
+        seats: SEATS_PER_TABLE,
+        available: Math.random() > 0.2, // ~80% disponibles
+        location: LOCATION_KEY,
+      }));
       setTables(mock);
       setIsLoading(false);
     };
-
     fetchTables();
   }, []);
 
-  /** Si cambian comensales, valida que la mesa seleccionada siga sirviendo */
-  useEffect(() => {
-    if (
-      selectedTable != null &&
-      tables.length > 0 &&
-      reservationData.guests > 0
-    ) {
-      const t = tables.find((x) => x.id === selectedTable);
-      if (!t || t.seats < reservationData.guests || !t.available) {
-        setSelectedTable(null);
-      }
-    }
-  }, [reservationData.guests, tables, selectedTable]);
+  /** Capacidad y reglas */
+  const guests = reservationData.guests || 1;
+  const allowMulti = guests > SEATS_PER_TABLE;
+  const seatsSelected = selectedTables.length * SEATS_PER_TABLE;
+  const coverageReached = allowMulti && seatsSelected >= guests;
 
-  /** Filtrado por capacidad mínima requerida */
-  const filteredTables = useMemo(() => {
-    if (!filterByCapacity) return tables;
-    const req = reservationData.guests;
-    return tables.filter((t) => t.seats >= req);
-  }, [tables, filterByCapacity, reservationData.guests]);
-
-  /** Agrupación por ubicación dinámica */
+  /** Única ubicación (interior) */
   const locations = useMemo(() => {
     const set = new Set<string>();
-    for (const t of filteredTables) if (t.location) set.add(t.location);
+    for (const t of tables) if (t.location) set.add(t.location);
     return Array.from(set);
-  }, [filteredTables]);
+  }, [tables]);
 
   /** Helpers UI */
   const selectedStyle = {
@@ -125,23 +84,51 @@ const ReservationMap: React.FC = () => {
       "hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]";
   };
 
-  const handleTableSelect = (tableId: number) => {
+  /** Selección:
+   *  - guests ≤ 6: solo 1 mesa
+   *  - guests > 6: múltiples hasta cubrir (bloquear extras al cubrir)
+   */
+  const handleTableToggle = (tableId: number) => {
     const table = tables.find((t) => t.id === tableId);
     if (!table || !table.available) return;
-    setSelectedTable((prev) => (prev === tableId ? null : tableId));
+
+    setSelectedTables((prev) => {
+      const already = prev.includes(tableId);
+
+      // Modo una sola mesa
+      if (!allowMulti) {
+        const next = already ? [] : [tableId];
+        updateReservationData({ tableId: next[0] ?? null });
+        return next;
+      }
+
+      // Modo múltiple
+      const seatsBefore = prev.length * SEATS_PER_TABLE;
+
+      // Si ya estamos cubiertos y no estamos quitando, bloquear
+      if (coverageReached && !already) return prev;
+
+      if (already) {
+        const next = prev.filter((id) => id !== tableId);
+        updateReservationData({ tableId: next[0] ?? null });
+        return next;
+      } else {
+        if (seatsBefore < guests) {
+          const next = [...prev, tableId];
+          updateReservationData({ tableId: next[0] ?? null });
+          return next;
+        }
+        return prev;
+      }
+    });
   };
 
   const handleContinue = () => {
-    if (selectedTable != null) {
-      updateReservationData({ tableId: selectedTable });
-      nextStep();
-    }
+    if (selectedTables.length > 0) nextStep();
   };
 
   const handleBack = () => {
-    if (selectedTable != null) {
-      updateReservationData({ tableId: selectedTable });
-    }
+    updateReservationData({ tableId: selectedTables[0] ?? null });
     prevStep();
   };
 
@@ -164,12 +151,12 @@ const ReservationMap: React.FC = () => {
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-2">Selecciona tu Mesa</h2>
         <p className="text-muted">
-          Elige la mesa perfecta para tu experiencia gastronómica
+          Elige en el Salón Principal la(s) mesa(s) para tu experiencia gastronómica
         </p>
       </div>
 
       <div className="grid lg:grid-cols-4 gap-6">
-        {/* Sidebar resumen */}
+        {/* Sidebar resumen (sin el cuadro del filtro) */}
         <div className="lg:col-span-1">
           <div className="rounded-lg p-4 sticky top-4 bg-card border border-[color:color-mix(in srgb,var(--fg) 12%,transparent)]">
             <h3 className="font-semibold mb-3">Tu Reserva</h3>
@@ -195,57 +182,12 @@ const ReservationMap: React.FC = () => {
               <div className="flex items-center text-muted">
                 <Users className="w-4 h-4 mr-2" />
                 <span>
-                  {reservationData.guests}{" "}
-                  {reservationData.guests === 1 ? "persona" : "personas"}
+                  {guests} {guests === 1 ? "persona" : "personas"}
                 </span>
               </div>
             </div>
 
-            {selectedTable != null && (
-              <div
-                className="mt-4 p-3 rounded-lg"
-                style={{
-                  background: "color-mix(in srgb, var(--fg) 10%, transparent)",
-                }}
-              >
-                <h4 className="font-medium mb-1">Mesa Seleccionada</h4>
-                <p className="text-sm" style={{ color: BLUE }}>
-                  Mesa #{selectedTable} -{" "}
-                  {tables.find((t) => t.id === selectedTable)?.seats} asientos
-                </p>
-                <p className="text-xs text-muted mt-1">
-                  {
-                    titleByLocation[
-                      tables.find((t) => t.id === selectedTable)?.location || ""
-                    ]
-                  }
-                </p>
-              </div>
-            )}
-
-            {/* Filtro de capacidad */}
-            <div className="mt-4 p-3 border rounded-lg border-[color:color-mix(in srgb,var(--fg) 16%,transparent)]">
-              <label className="flex items-center space-x-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={filterByCapacity}
-                  onChange={(e) => setFilterByCapacity(e.target.checked)}
-                  className="rounded border-[color:color-mix(in srgb,var(--fg) 30%,transparent)] focus:ring-2"
-                  style={{ accentColor: BLUE }}
-                />
-                <span>Solo mostrar mesas adecuadas</span>
-              </label>
-              <p className="text-xs text-muted mt-1">
-                Filtra por capacidad mínima requerida
-              </p>
-              <div className="mt-2 text-xs text-muted">
-                {filteredTables.length} mesa
-                {filteredTables.length === 1 ? "" : "s"} disponibles según tu
-                selección
-              </div>
-            </div>
-
-            {/* Leyenda */}
+            {/* Leyenda (sin “Disponible”) */}
             <div className="mt-4">
               <h4 className="font-medium mb-2 text-sm">Leyenda</h4>
               <div className="space-y-2 text-xs">
@@ -254,15 +196,24 @@ const ReservationMap: React.FC = () => {
                   <span>Seleccionada</span>
                 </div>
                 <div className="flex items-center">
-                  <CircleDot className="w-4 h-4 mr-2" style={{ color: "#16a34a" }} />
-                  <span>Disponible</span>
-                </div>
-                <div className="flex items-center">
-                  <XCircle className="w-4 h-4 mr-2" style={{ color: "color-mix(in srgb, var(--fg) 35%, transparent)" as any }} />
+                  <XCircle
+                    className="w-4 h-4 mr-2"
+                    style={{
+                      color: "color-mix(in srgb, var(--fg) 35%, transparent)",
+                    }}
+                  />
                   <span>Ocupada</span>
                 </div>
               </div>
             </div>
+
+            {/* Estado de cobertura */}
+            {allowMulti && (
+              <p className="mt-4 text-xs text-muted">
+                Capacidad seleccionada: {seatsSelected}/{guests} asientos
+                {coverageReached ? " (requisitos cubiertos)" : ""}
+              </p>
+            )}
           </div>
         </div>
 
@@ -270,15 +221,20 @@ const ReservationMap: React.FC = () => {
         <div className="lg:col-span-3">
           <div className="space-y-6">
             {locations.map((loc) => {
-              const byLoc = filteredTables.filter((t) => t.location === loc);
+              const byLoc = tables.filter((t) => t.location === loc);
               if (byLoc.length === 0) return null;
 
               return (
-                <section key={loc} className="border rounded-lg p-4 border-[color:color-mix(in srgb,var(--fg) 16%,transparent)]">
+                <section
+                  key={loc}
+                  className="border rounded-lg p-4 border-[color:color-mix(in srgb,var(--fg) 16%,transparent)]"
+                >
                   <div className="flex items-center mb-4">
                     <MapPin className="w-5 h-5 mr-2" style={{ color: BLUE }} />
                     <div>
-                      <h3 className="font-semibold">{titleByLocation[loc] || loc}</h3>
+                      <h3 className="font-semibold">
+                        {titleByLocation[loc] || "Salón Principal"}
+                      </h3>
                       <p className="text-sm text-muted">
                         {descByLocation[loc] || ""}
                       </p>
@@ -287,29 +243,34 @@ const ReservationMap: React.FC = () => {
 
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                     {byLoc.map((table) => {
-                      const isSelected = selectedTable === table.id;
+                      const isSelected = selectedTables.includes(table.id);
                       const classes = getTableClasses(table, isSelected);
+
+                      // Bloquear sumar más si ya se cubrió (pero permitir des-seleccionar)
+                      const disableForCoverage =
+                        !isSelected && allowMulti && coverageReached;
+
+                      const disabled = !table.available || disableForCoverage;
 
                       return (
                         <div key={table.id} className="relative">
                           <button
-                            onClick={() =>
-                              table.available && handleTableSelect(table.id)
-                            }
-                            disabled={!table.available}
-                            className={classes}
+                            onClick={() => !disabled && handleTableToggle(table.id)}
+                            disabled={disabled}
+                            className={`${classes} ${
+                              disabled && !isSelected
+                                ? "cursor-not-allowed opacity-50"
+                                : ""
+                            }`}
                             style={isSelected ? selectedStyle : undefined}
                             role="button"
                             aria-pressed={isSelected}
-                            aria-disabled={!table.available}
+                            aria-disabled={disabled}
                             tabIndex={0}
                             onKeyDown={(e) => {
-                              if (
-                                table.available &&
-                                (e.key === "Enter" || e.key === " ")
-                              ) {
+                              if (!disabled && (e.key === "Enter" || e.key === " ")) {
                                 e.preventDefault();
-                                handleTableSelect(table.id);
+                                handleTableToggle(table.id);
                               }
                             }}
                           >
@@ -345,30 +306,7 @@ const ReservationMap: React.FC = () => {
             })}
           </div>
 
-          {/* Vacío / sin resultados */}
-          {filteredTables.length === 0 && (
-            <div className="text-center py-12 border-2 border-dashed rounded-lg mt-6 border-[color:color-mix(in srgb,var(--fg) 20%,transparent)]">
-              <Users
-                className="w-12 h-12 mx-auto mb-4"
-                style={{ color: "color-mix(in srgb, var(--fg) 35%, transparent)" as any }}
-              />
-              <h3 className="text-lg font-medium mb-2">No hay mesas disponibles</h3>
-              <p className="text-muted mb-4">
-                Para {reservationData.guests}{" "}
-                {reservationData.guests === 1 ? "persona" : "personas"} en este
-                horario
-              </p>
-              <button
-                onClick={() => setFilterByCapacity(false)}
-                className="font-medium"
-                style={{ color: BLUE }}
-              >
-                Ver todas las mesas
-              </button>
-            </div>
-          )}
-
-          {/* Botones de acción */}
+          {/* Acciones */}
           <div className="flex gap-4 mt-8">
             <button
               onClick={handleBack}
@@ -381,14 +319,14 @@ const ReservationMap: React.FC = () => {
             </button>
             <button
               onClick={handleContinue}
-              disabled={selectedTable == null}
+              disabled={selectedTables.length === 0}
               className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
-                selectedTable != null
+                selectedTables.length > 0
                   ? "text-white shadow-md hover:shadow-lg"
                   : "cursor-not-allowed opacity-70"
               }`}
               style={
-                selectedTable != null
+                selectedTables.length > 0
                   ? { backgroundColor: BLUE }
                   : {
                       backgroundColor:
@@ -398,8 +336,10 @@ const ReservationMap: React.FC = () => {
               }
               type="button"
             >
-              {selectedTable != null
-                ? `Continuar con Mesa #${selectedTable}`
+              {selectedTables.length > 0
+                ? `Continuar con ${selectedTables.length} mesa${
+                    selectedTables.length > 1 ? "s" : ""
+                  }`
                 : "Continuar"}
             </button>
           </div>
