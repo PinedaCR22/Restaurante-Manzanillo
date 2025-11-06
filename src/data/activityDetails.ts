@@ -20,28 +20,28 @@ const fallbackCover = (id: string) =>
   "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg";
 
 export const ACTIVITY_DETAILS: Record<string, ActivityDetail> = {
-  // ========= ASO. COYOLITO =========
-  "aso-coyolito": {
-    id: "aso-coyolito",
-    title: "ASO. COYOLITO",
-    cover: fallbackCover("aso-coyolito"),
-    description:
-      "Experiencia comunitaria en Coyolito con enfoque cultural y gastronómico. Recorrido guiado por puntos de interés, historia local y degustaciones artesanales de la zona.",
-    includes: [
-      "Guía local",
-      "Degustación de platillos típicos",
-      "Recorrido por puntos históricos",
-    ],
-    schedules: [
-      { day: "Lunes a Viernes", hours: "9:00–12:00 / 14:00–17:00" },
-      { day: "Sábados y Domingos", hours: "9:00–13:00" },
-    ],
-    contacts: [
-      { label: "WhatsApp", value: "+506 7000-7000", href: "https://wa.me/50670007000" },
-      { label: "Correo", value: "info@coyolito.org", href: "mailto:info@coyolito.org" },
-    ],
-    gallery: [fallbackCover("aso-coyolito"), fallbackCover("aso-coyolito")],
-  },
+// ========= ASO. COYOLITO =========
+"aso-coyolito": {
+  id: "aso-coyolito",
+  title: "ASO. COYOLITO",
+  cover: fallbackCover("aso-coyolito"),
+  description:
+    "La Asociación de Mujeres Unidas de la Montaña de Coyolito fue fundada en el año 2000 y agrupa actualmente a 10 mujeres activas dedicadas al turismo rural comunitario. Su labor se centra en rescatar tradiciones locales mediante actividades culturales, gastronómicas y recreativas como el tour del pan, los juegos tradicionales y las comidas típicas de la región.",
+  includes: [
+    "Elaboración de pan en horno de barro",
+    "Comidas criollas: tamal asado, tortillas palmeadas, picadillo de papaya, sopa de gallina criolla",
+    "Hospedaje y espacios seguros para acampar",
+  ],
+  schedules: [
+    { day: "Actividades", hours: "Según llegada de grupos o coordinación previa" },
+  ],
+  contacts: [
+    { label: "Yenory Rodríguez Arias", value: "+506 8806-7943", href: "tel:+50688067943" },
+    { label: "María Eugenia Campos Moraga", value: "+506 8814-3097", href: "tel:+50688143097" },
+    { label: "Correo", value: "yrodriguezarias18@gmail.com", href: "mailto:yrodriguezarias18@gmail.com" },
+  ],
+  gallery: [fallbackCover("aso-coyolito"), fallbackCover("aso-coyolito")],
+},
 
   // ========= MALECÓN =========
   "malecon": {
@@ -71,14 +71,14 @@ export const ACTIVITY_DETAILS: Record<string, ActivityDetail> = {
     title: "MANZANILLO CENTRO",
     cover: fallbackCover("manzanillo-centro"),
     description:
-      "Comunidad costera de 1.000 habitantes (300 familias). La pesca artesanal es la actividad principal; parte de la población trabaja en fincas cercanas o se desplaza a otras localidades. Cuenta con servicios básicos (escuela, colegio, CEN, EBAIS, salón comunal, iglesia, plaza deportiva y redondel), aunque algunos operan de forma intermitente.",
+      "Comunidad costera de 3.000 habitantes (300 familias). La pesca artesanal es la actividad principal; parte de la población trabaja en fincas cercanas o se desplaza a otras localidades. Cuenta con servicios básicos (escuela, colegio, CEN, EBAIS, salón comunal, iglesia, plaza deportiva y redondel), aunque algunos operan de forma intermitente.",
     includes: [
-      "EBAIS para Manzanillo/Don Garito cada 15 días (atención limitada; emergencias suelen trasladarse a clínicas de Chómez o Colorado).",
+      "EBAIS para Manzanillo/Abangaritos cada 15 días (atención limitada; emergencias suelen trasladarse a clínicas de Chomes o Colorado).",
       "Traslados también por panga hacia zonas como Nicoya, dependientes de la marea."
     ],
     schedules: [
       { day: "Buses (Lun–Sáb)", hours: "05:30, 06:40, 08:30, 11:30, 13:30 y 15:30 (último)" },
-      { day: "Domingos", hours: "Servicio reducido; confirmar en terminal de Chómez/Colorado" }
+      { day: "Domingos", hours: "Servicio reducido; confirmar en terminal de Chomes/Colorado" }
     ],
     contacts: [
       { label: "Contacto y reservas", value: "Información basada en entrevistas comunitarias; coordinar con comité local o lideres de MUDECOOP en el salón comunal." }
@@ -86,72 +86,116 @@ export const ACTIVITY_DETAILS: Record<string, ActivityDetail> = {
     gallery: [fallbackCover("manzanillo-centro")],
   },
 
-
   // ========= JUEGOS TRADICIONALES =========
-  "juegos-tradicionales": {
-    id: "juegos-tradicionales",
-    title: "JGS. TRADICIONALES",
-    cover: fallbackCover("juegos-tradicionales"),
-    description:
-      "Tarde de juegos tradicionales para todas las edades: trompo, cuerda, carrera de sacos y más. Actividad ideal para grupos y familias.",
-    includes: ["Materiales de juego", "Coordinación", "Hidratación"],
-    schedules: [{ day: "Sábados", hours: "15:00–17:30" }],
-    contacts: [{ label: "Coordinación", value: "juegos@manzanillo.cr", href: "mailto:juegos@manzanillo.cr" }],
-    gallery: [fallbackCover("juegos-tradicionales")],
-  },
+"juegos-tradicionales": {
+  id: "juegos-tradicionales",
+  title: "Juegos TRADICIONALES",
+  cover: fallbackCover("juegos-tradicionales"),
+  description:
+    "Actividad comunitaria enfocada en rescatar los juegos típicos de la zona, como el trompo, la cuerda, los zancos, la suiza y el toro mecánico. Está pensada para grupos, visitantes y familias, promoviendo la convivencia y el valor cultural de las tradiciones locales.",
+  includes: [
+    "Materiales de juego y acompañamiento local",
+    "Coordinación de actividades para grupos y visitantes",
+    "Paquetes temáticos como el 'tour del pan', con preparación y degustación artesanal",
+  ],
+  schedules: [
+    { day: "Coordinación", hours: "Según disponibilidad o previa reserva con la Asociación de Coyolito" },
+  ],
+  contacts: [
+    { label: "Yenory Rodríguez Arias", value: "+506 8806-7943", href: "tel:+50688067943" },
+    { label: "María Eugenia Campos Moraga", value: "+506 8814-3097", href: "tel:+50688143097" },
+    { label: "Correo", value: "yrodriguezarias18@gmail.com", href: "mailto:yrodriguezarias18@gmail.com" },
+  ],
+  gallery: [fallbackCover("juegos-tradicionales")],
+},
 
-  // ========= TOUR SENDEROS =========
-  "tour-senderos": {
-    id: "tour-senderos",
-    title: "TOUR SENDEROS",
-    cover: fallbackCover("tour-senderos"),
-    description:
-      "Recorrido por senderos naturales con miradores y observación de flora y fauna. Apto para nivel principiante e intermedio.",
-    includes: ["Guía certificado", "Seguro básico", "Bastones de apoyo (opcional)"],
-    schedules: [
-      { day: "Diario", hours: "8:00–11:30" },
-      { day: "Diario", hours: "14:30–17:30" },
-    ],
-    contacts: [{ label: "Reservas", value: "+506 7200-7200", href: "https://wa.me/50672007200" }],
-    gallery: [fallbackCover("tour-senderos"), fallbackCover("tour-senderos")],
-  },
+// ========= TOUR SENDEROS =========
+"tour-senderos": {
+  id: "tour-senderos",
+  title: "TOUR SENDEROS",
+  cover: fallbackCover("tour-senderos"),
+  description:
+    "Caminata guiada por los senderos naturales de la montaña de Coyolito, ubicada detrás del Salón Comunal de las Mujeres. El recorrido ofrece vistas panorámicas del Golfo de Nicoya y permite disfrutar de la flora y fauna local en un entorno tranquilo y seguro.",
+  includes: [
+    "Hidratación y refrigerio",
+    "Charla interpretativa sobre árboles, aves y elementos históricos del lugar",
+    "Recorrido guiado con vista panorámica al Golfo de Nicoya",
+  ],
+  schedules: [
+    { day: "Temporada seca", hours: "Disponible con reserva previa (duración aproximada: 1 hora ida y vuelta)" },
+    { day: "Temporada lluviosa", hours: "Suspendido por seguridad" },
+  ],
+  contacts: [
+    { label: "Yenory Rodríguez Arias", value: "+506 8806-7943", href: "tel:+50688067943" },
+    { label: "María Eugenia Campos Moraga", value: "+506 8814-3097", href: "tel:+50688143097" },
+    { label: "Correo", value: "yrodriguezarias18@gmail.com", href: "mailto:yrodriguezarias18@gmail.com" },
+  ],
+  gallery: [fallbackCover("tour-senderos"), fallbackCover("tour-senderos")],
+},
 
-  // ========= HOSPEDAJES =========
-  "hospedajes": {
-    id: "hospedajes",
-    title: "HOSPEDAJES",
-    cover: fallbackCover("hospedajes"),
-    description:
-      "Opciones de hospedaje aliadas, con estándares básicos para familias y ciclistas: parqueo, Wi-Fi y acompañamiento local.",
-    includes: ["Habitaciones privadas", "Wi-Fi", "Parqueo"],
-    schedules: [{ day: "Check-in", hours: "14:00–21:00" }],
-    contacts: [{ label: "Reservas", value: "reservas@hospedajes.cr", href: "mailto:reservas@hospedajes.cr" }],
-    gallery: [fallbackCover("hospedajes")],
-  },
+// ========= HOSPEDAJES =========
+"hospedajes": {
+  id: "hospedajes",
+  title: "HOSPEDAJES",
+  cover: fallbackCover("hospedajes"),
+  description:
+    "Servicio de hospedaje rural administrado por la Asociación de Mujeres de Coyolito. Cuenta con dos cabañas equipadas para cinco personas cada una, ubicadas dentro del proyecto comunitario en la montaña de Coyolito, a unos 15 km de Judas de Chomes.",
+  includes: [
+    "Baño privado con jabón, papel higiénico y toallas sanitarias",
+    "Parqueo interno para dos vehículos",
+    "Área cerrada y segura para acampar",
+  ],
+  schedules: [
+    { day: "Check-in", hours: "Flexible; coordinar previamente con la Asociación de Coyolito" },
+  ],
+  contacts: [
+    { label: "Yenory Rodríguez Arias", value: "+506 8806-7943", href: "tel:+50688067943" },
+    { label: "María Eugenia Campos Moraga", value: "+506 8814-3097", href: "tel:+50688143097" },
+    { label: "Correo", value: "yrodriguezarias18@gmail.com", href: "mailto:yrodriguezarias18@gmail.com" },
+  ],
+  gallery: [fallbackCover("hospedajes")],
+},
 
-  // ========= TOURS EN BICI =========
-  "tours-en-bici": {
-    id: "tours-en-bici",
-    title: "TOURS EN BICI",
-    cover: fallbackCover("tours-en-bici"),
-    description:
-      "Rutas guiadas en bicicleta por caminos locales. Opciones para principiantes e intermedios con paradas escénicas.",
-    includes: ["Bicicleta (opcional)", "Casco", "Guía"],
-    schedules: [{ day: "Mié / Sáb / Dom", hours: "7:00–10:30" }],
-    contacts: [{ label: "WhatsApp", value: "+506 7300-7300", href: "https://wa.me/50673007300" }],
-    gallery: [fallbackCover("tours-en-bici"), fallbackCover("tours-en-bici")],
-  },
+// ========= TOURS EN BICI =========
+"tours-en-bici": {
+  id: "tours-en-bici",
+  title: "TOURS EN BICI",
+  cover: fallbackCover("tours-en-bici"),
+  description:
+    "Recorrido guiado en bicicleta por la comunidad de Coyolito, con paradas en dos puntos de interés donde se comparten reseñas y relatos sobre la historia local. La experiencia combina actividad física con contenido cultural, ideal para visitantes que desean conocer el entorno desde una perspectiva comunitaria.",
+  includes: [
+    "Uso de bicicleta e hidratación",
+    "Charlas en puntos emblemáticos del pueblo sobre historia y tradiciones locales",
+    "Coordinación con refrigerio, desayuno o almuerzo según disponibilidad",
+  ],
+  schedules: [
+    { day: "Coordinación", hours: "Sin horario fijo; disponible por reserva previa" },
+  ],
+  contacts: [
+    { label: "Yenory Rodríguez Arias", value: "+506 8806-7943", href: "tel:+50688067943" },
+    { label: "María Eugenia Campos Moraga", value: "+506 8814-3097", href: "tel:+50688143097" },
+    { label: "Correo", value: "yrodriguezarias18@gmail.com", href: "mailto:yrodriguezarias18@gmail.com" },
+  ],
+  gallery: [fallbackCover("tours-en-bici"), fallbackCover("tours-en-bici")],
+},
 
-  // ========= PESCA ARTESANAL =========
-  "pesca-artesanal": {
-    id: "pesca-artesanal",
-    title: "PESC. ARTESANAL",
-    cover: fallbackCover("pesca-artesanal"),
-    description:
-      "Experiencia de pesca artesanal con pescadores locales: técnicas, seguridad y sostenibilidad en el mar.",
-    includes: ["Chaleco salvavidas", "Hidratación", "Guía"],
-    schedules: [{ day: "Mañanas", hours: "5:00–8:30" }],
-    contacts: [{ label: "Capitanía", value: "+506 7100-7100", href: "tel:+50671007100" }],
-    gallery: [fallbackCover("pesca-artesanal"), fallbackCover("pesca-artesanal")],
-  },
+// ========= PESCA ARTESANAL =========
+"pesca-artesanal": {
+  id: "pesca-artesanal",
+  title: "PESC. ARTESANAL",
+  cover: fallbackCover("pesca-artesanal"),
+  description:
+    "La pesca artesanal en el Golfo de Nicoya se realiza con pequeñas embarcaciones y técnicas tradicionales, enfocadas en la sostenibilidad y el uso responsable de los recursos marinos. Los pescadores locales practican este oficio diario en escalas reducidas, manteniendo vivas las costumbres del litoral.",
+  includes: [
+    "Explicación sobre técnicas tradicionales: trasmayo y pesca a mano",
+    "Observación del trabajo de los pescadores locales en su entorno natural",
+  ],
+  schedules: [
+    { day: "Recomendado", hours: "Mañanas, según condiciones del mar" },
+  ],
+  contacts: [
+    { label: "Contacto y reservas", value: "Según entrevistas con líderes locales; coordinar en el mismo sitio o con referentes comunitarios." },
+  ],
+  gallery: [fallbackCover("pesca-artesanal"), fallbackCover("pesca-artesanal")],
+},
 };

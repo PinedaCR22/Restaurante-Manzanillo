@@ -3,11 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": { "node": ">=20" },
+  "packageManager": "npm@10.9.2",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "node -e \"try{require('@tailwindcss/oxide');console.log('Oxide OK')}catch(e){console.log('Oxide no disponible, usar\u00E9 WASM') }\""
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -19,10 +22,14 @@
     "@tailwindcss/vite": "^4.1.12",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.23.12",
+    "fuse.js": "^7.1.0",
     "i18next": "^25.5.3",
     "i18next-browser-languagedetector": "^8.2.0",
+    "keyword-extractor": "^0.0.28",
     "lightningcss-wasm": "^1.30.2",
     "lucide-react": "^0.540.0",
+    "lunr": "^2.3.9",
+    "lunr-languages": "^1.14.0",
     "react": "^19.1.1",
     "react-day-picker": "^9.11.0",
     "react-dom": "^19.1.1",
@@ -32,14 +39,17 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.8.1",
     "sonner": "^2.0.7",
+    "stopword": "^3.1.5",
     "swiper": "^11.2.10",
     "tailwindcss": "^4.1.12",
     "zod": "^4.1.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@types/lunr": "^2.3.7",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
+    "@types/stopword": "^2.0.3",
     "@vitejs/plugin-react": "^5.0.4",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
