@@ -13,7 +13,7 @@ import {
   ChevronDown,
   ChevronUp,
   Menu,
-  Settings, // 👈 nuevo icono
+  Settings,
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import React, { useEffect, useMemo, useState, type ReactNode } from "react";
@@ -38,7 +38,6 @@ type NavItem = {
   children?: NavItem[];
 };
 
-// ===================== CONFIGURACIÓN =====================
 const SIDEBAR_W_EXPANDED = 260;
 const SIDEBAR_W_COLLAPSED = 76;
 const LS_COLLAPSE = "adminSidebarCollapsed";
@@ -53,7 +52,6 @@ const COLORS = {
 
 type CSSVars = React.CSSProperties & Record<`--${string}`, string>;
 
-// ===================== NAVEGACIÓN =====================
 const NAV: NavItem[] = [
   {
     to: "/admin",
@@ -87,14 +85,13 @@ const NAV: NavItem[] = [
     roles: ["ADMIN", "EDITOR"],
   },
   {
-    to: "/admin/configuracion", // 👈 nuevo
+    to: "/admin/configuracion",
     label: "Configuración",
     icon: <Settings size={20} />,
     roles: ["ADMIN", "EDITOR"],
   },
 ];
 
-// ===================== COMPONENTE PRINCIPAL =====================
 export default function Sidebar(props: SidebarProps) {
   const {
     mobileOpen: mobileOpenProp,
@@ -142,7 +139,6 @@ export default function Sidebar(props: SidebarProps) {
 
   return (
     <>
-      {/* Overlay móvil */}
       <div
         className={`fixed inset-0 z-40 bg-black/30 md:hidden transition-opacity ${
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
@@ -155,7 +151,6 @@ export default function Sidebar(props: SidebarProps) {
                     md:translate-x-0 ${mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
         style={{ width: collapsed ? SIDEBAR_W_COLLAPSED : SIDEBAR_W_EXPANDED }}
       >
-        {/* Header */}
         <div className="h-16 flex items-center gap-3 px-3">
           {!collapsed && (
             <>
@@ -180,14 +175,11 @@ export default function Sidebar(props: SidebarProps) {
           <button
             className="ml-auto rounded-lg p-2 hover:bg-neutral-100"
             onClick={() => (onToggleCollapse ? onToggleCollapse() : setCollapsed((c) => !c))}
-            aria-label={collapsed ? "Expandir menú" : "Colapsar menú"}
-            title={collapsed ? "Expandir" : "Colapsar"}
           >
             {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
           </button>
         </div>
 
-        {/* Navegación */}
         <nav className="px-2 py-3 space-y-1 overflow-y-auto h-[calc(100vh-4rem)]">
           {navItems.map((item, i) =>
             item.children ? (
@@ -198,7 +190,6 @@ export default function Sidebar(props: SidebarProps) {
           )}
         </nav>
 
-        {/* Footer */}
         {!collapsed && (
           <div className="absolute bottom-3 left-3 right-3 rounded-xl border border-neutral-200 bg-white px-3 py-2.5">
             <div className="text-xs text-neutral-500">© {new Date().getFullYear()} Restaurante Flotante</div>
@@ -209,7 +200,6 @@ export default function Sidebar(props: SidebarProps) {
   );
 }
 
-// ===================== ENLACES Y SUBMENÚS =====================
 function SidebarLink({ item, collapsed, brandVars, inkVars }: { item: NavItem; collapsed: boolean; brandVars: CSSVars; inkVars: CSSVars }) {
   return (
     <NavLink
@@ -238,7 +228,11 @@ function SidebarLink({ item, collapsed, brandVars, inkVars }: { item: NavItem; c
               {item.icon}
             </span>
           )}
-          {!collapsed && <span className={isActive ? "font-medium text-white" : "group-hover:text-[color:var(--brand-600)]"}>{item.label}</span>}
+          {!collapsed && (
+            <span className={isActive ? "font-medium text-white" : "group-hover:text-[color:var(--brand-600)]"}>
+              {item.label}
+            </span>
+          )}
         </>
       )}
     </NavLink>

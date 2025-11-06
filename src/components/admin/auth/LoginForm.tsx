@@ -132,7 +132,6 @@ export default function LoginForm() {
           </button>
         </div>
 
-        {/* ahora separado → no afecta alineación del botón */}
         <p className="mt-3 text-center text-sm">
           <a href="/forgot-password" className="text-[#C58940] hover:underline">
             ¿Olvidaste tu contraseña?
@@ -140,7 +139,7 @@ export default function LoginForm() {
         </p>
       </div>
 
-      {/* 🔹 Botón de enviar */}
+      {/* 🔹 Botón enviar */}
       <button
         type="submit"
         disabled={submitting}
