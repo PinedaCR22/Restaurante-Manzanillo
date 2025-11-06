@@ -51,6 +51,7 @@ export default function LoginForm() {
         </div>
       )}
 
+      {/* 🔹 Campo de correo */}
       <div className="space-y-2">
         <label htmlFor="email" className="block font-medium text-neutral-700">
           Usuario
@@ -69,10 +70,13 @@ export default function LoginForm() {
         />
       </div>
 
+      {/* 🔹 Campo de contraseña con ícono centrado */}
       <div className="space-y-2">
         <label htmlFor="password" className="block font-medium text-neutral-700">
           Contraseña
         </label>
+
+        {/* input + botón dentro del relative */}
         <div className="relative">
           <input
             id="password"
@@ -87,35 +91,55 @@ export default function LoginForm() {
                        focus:border-[#0D784A] focus:ring-2 focus:ring-[#0D784A]/30 transition
                        text-[15px]"
           />
+
           <button
             type="button"
             onClick={() => setShowPass((s) => !s)}
             aria-pressed={showPass}
             aria-label={showPass ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-            className="absolute inset-y-0 right-0 px-3 flex items-center text-neutral-500 hover:text-neutral-700"
+            className="absolute right-3 inset-y-0 my-auto grid place-items-center 
+                       text-neutral-500 hover:text-neutral-700 h-6 w-6"
           >
             {showPass ? (
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <path d="M3 3l18 18" />
                 <path d="M10.58 10.58a2 2 0 002.84 2.84" />
                 <path d="M16.24 16.24A10.94 10.94 0 0112 18c-5 0-9-4-9-6a10.94 10.94 0 013.95-4.95" />
                 <path d="M9.88 4.24A10.94 10.94 0 0112 4c5 0 9 4 9 6a10.94 10.94 0 01-2.12 3.17" />
               </svg>
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
                 <circle cx="12" cy="12" r="3" />
               </svg>
             )}
           </button>
-          <p className="mt-3 text-center text-sm">
-            <a href="/forgot-password" className="text-[#C58940] hover:underline">
-              ¿Olvidaste tu contraseña?
-            </a>
-          </p>
         </div>
+
+        <p className="mt-3 text-center text-sm">
+          <a href="/forgot-password" className="text-[#C58940] hover:underline">
+            ¿Olvidaste tu contraseña?
+          </a>
+        </p>
       </div>
 
+      {/* 🔹 Botón enviar */}
       <button
         type="submit"
         disabled={submitting}

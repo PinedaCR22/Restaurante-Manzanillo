@@ -1,9 +1,11 @@
 import type { Gallery, GalleryImage } from "../../types/gallery";
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, {
+  // Ensure single slash between API_BASE and path
+  const url = `${API_BASE}/${path.replace(/^\/+/, "")}`;
+  const res = await fetch(url, {
     ...init,
     headers: { Accept: "application/json", ...(init.headers || {}) },
   });
