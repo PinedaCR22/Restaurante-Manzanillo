@@ -9,7 +9,7 @@ import { ReservationProvider, useReservation } from "./reservationpage";
 
 /* ----------------- Confirmación ----------------- */
 const ReservationConfirmation: React.FC = () => {
-  const { reservationData, submitReservation, resetReservation } = useReservation();
+  const { reservationData, submitReservation, resetReservation, prevStep } = useReservation();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isConfirmed, setIsConfirmed] = React.useState(false);
 
@@ -39,16 +39,31 @@ const ReservationConfirmation: React.FC = () => {
           <p className="text-muted">Tu mesa ha sido reservada exitosamente</p>
         </div>
 
-        <div className="rounded-lg p-6 mb-6" style={{ background: "color-mix(in srgb, var(--brand) 8%, var(--bg))" }}>
+        <div
+          className="rounded-lg p-6 mb-6"
+          style={{
+            background: "color-mix(in srgb, var(--brand) 8%, var(--bg))",
+          }}
+        >
           <h3 className="font-semibold mb-3" style={{ color: "var(--brand)" }}>
             Detalles de tu reserva:
           </h3>
           <div className="space-y-2" style={{ color: "var(--brand)" }}>
-            <p><strong>Fecha:</strong> {formatDate(reservationData.date)}</p>
-            <p><strong>Hora:</strong> {reservationData.time}</p>
-            <p><strong>Mesa:</strong> #{reservationData.tableId}</p>
-            <p><strong>Comensales:</strong> {reservationData.guests}</p>
-            <p><strong>Nombre:</strong> {reservationData.customerInfo.fullName}</p>
+            <p>
+              <strong>Fecha:</strong> {formatDate(reservationData.date)}
+            </p>
+            <p>
+              <strong>Hora:</strong> {reservationData.time}
+            </p>
+            <p>
+              <strong>Mesa:</strong> #{reservationData.tableId}
+            </p>
+            <p>
+              <strong>Comensales:</strong> {reservationData.guests}
+            </p>
+            <p>
+              <strong>Nombre:</strong> {reservationData.customerInfo.fullName}
+            </p>
           </div>
         </div>
 
@@ -67,7 +82,7 @@ const ReservationConfirmation: React.FC = () => {
     );
   }
 
-  // Vista de confirmación (previa al envío)
+  // Vista previa antes del envío
   return (
     <div className="bg-card rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
       <div className="mb-6">
@@ -107,20 +122,33 @@ const ReservationConfirmation: React.FC = () => {
         <p className="text-muted">{reservationData.customerInfo.phone}</p>
       </div>
 
+      {/* BOTONES */}
       <div className="mt-8 flex gap-4">
         <button
           type="button"
-          onClick={() => window.history.back()}
-          className="flex-1 py-3 px-4 rounded-lg font-medium transition-colors border border-[color:color-mix(in srgb,var(--fg) 18%,transparent)] text-app hover:bg-card"
+          onClick={prevStep}
+          className="flex-1 py-3 px-4 rounded-lg font-medium transition
+                     border border-[color:color-mix(in srgb,var(--fg) 18%,transparent)]
+                     text-app hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]"
         >
           Modificar
         </button>
+
         <button
           type="button"
           onClick={handleConfirm}
           disabled={isSubmitting}
-          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${isSubmitting ? "cursor-not-allowed" : ""}`}
-          style={{ backgroundColor: isSubmitting ? "color-mix(in srgb, var(--fg) 35%, transparent)" : "var(--brand)", color: "#fff" }}
+          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
+            isSubmitting
+              ? "cursor-not-allowed opacity-70"
+              : "text-white shadow-md hover:shadow-lg"
+          }`}
+          style={{
+            backgroundColor: isSubmitting
+              ? "color-mix(in srgb, var(--fg) 35%, transparent)"
+              : "var(--brand)",
+            color: "#fff",
+          }}
         >
           {isSubmitting ? "Confirmando..." : "Confirmar Reserva"}
         </button>
@@ -165,14 +193,18 @@ const ProgressSteps: React.FC = () => {
                     <CheckCircle
                       className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5"
                       style={{
-                        color: activeOrDone ? "var(--fg)" : "color-mix(in srgb, var(--fg) 50%, transparent)"
+                        color: activeOrDone
+                          ? "var(--fg)"
+                          : "color-mix(in srgb, var(--fg) 50%, transparent)",
                       }}
                     />
                   ) : (
                     <Icon
                       className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5"
                       style={{
-                        color: activeOrDone ? "var(--fg)" : "color-mix(in srgb, var(--fg) 50%, transparent)"
+                        color: activeOrDone
+                          ? "var(--fg)"
+                          : "color-mix(in srgb, var(--fg) 50%, transparent)",
                       }}
                     />
                   )}
@@ -182,7 +214,9 @@ const ProgressSteps: React.FC = () => {
                 <span
                   className="text-[10px] sm:text-xs md:text-sm font-medium text-center"
                   style={{
-                    color: activeOrDone ? "var(--fg)" : "color-mix(in srgb, var(--fg) 55%, transparent)"
+                    color: activeOrDone
+                      ? "var(--fg)"
+                      : "color-mix(in srgb, var(--fg) 55%, transparent)",
                   }}
                 >
                   {step.title}
