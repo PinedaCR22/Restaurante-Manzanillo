@@ -1,4 +1,4 @@
-// components/reservations/ReservationMap.tsx
+// ✅ src/components/reservations/ReservationMap.tsx
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Users,
@@ -8,339 +8,211 @@ import {
   Calendar,
   Clock,
 } from "lucide-react";
-import { useReservation } from "../../sections/homepage/reservationpage";
-import type { TableInfo } from "../../types/reservation";
+import { useReservation } from "../../hooks/public/useReservation";
+import type { TableInfo, TableLocation } from "../../types/reservation";
 
-/** Brand color */
 const BLUE = "#50ABD7";
 const SEATS_PER_TABLE = 6;
 
-/** Mapeo del label mostrado para la ubicación que SÍ es válida en tu tipo */
-const LOCATION_KEY: TableInfo["location"] = "interior"; // <- clave válida del union
-
-const titleByLocation: Record<string, string> = {
+const titleByLocation: Record<TableLocation, string> = {
   interior: "Salón Principal",
+  terraza: "Terraza",
+  privada: "Sala Privada",
+  bar: "Área de Bar",
 };
-const descByLocation: Record<string, string> = {
-  interior: "Ambiente amplio, climatizado y cómodo para grupos.",
+
+const descByLocation: Record<TableLocation, string> = {
+  interior: "Ambiente amplio y climatizado.",
+  terraza: "Aire libre y vista al mar.",
+  privada: "Privacidad total para grupos.",
+  bar: "Zona dinámica cerca de la barra.",
 };
+
+const DEFAULT_LOCATION: TableLocation = "interior";
 
 const ReservationMap: React.FC = () => {
   const { reservationData, updateReservationData, nextStep, prevStep } =
     useReservation();
 
-  // Mantener compatibilidad con tableId: guardamos la primera seleccionada
+  // ✅ Estado local, NO actualizar provider en cada render
   const [selectedTables, setSelectedTables] = useState<number[]>(
-    reservationData.tableId ? [reservationData.tableId] : []
+    reservationData.tableNumber ? [reservationData.tableNumber] : []
   );
-  const [tables, setTables] = useState<TableInfo[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  /** Cargar 10 mesas, 6 asientos, todas en LOCATION_KEY (interior) */
+  const [tables, setTables] = useState<TableInfo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const people = reservationData.peopleCount;
+  const allowMulti = people > SEATS_PER_TABLE;
+  const seatsSelected = selectedTables.length * SEATS_PER_TABLE;
+  const coverageReached = allowMulti && seatsSelected >= people;
+
+  // ✅ Mock de mesas
   useEffect(() => {
-    const fetchTables = async () => {
-      setIsLoading(true);
-      await new Promise((r) => setTimeout(r, 300)); // simulación breve
-      const mock: TableInfo[] = Array.from({ length: 10 }, (_, i) => ({
-        id: i + 1,
-        seats: SEATS_PER_TABLE,
-        available: Math.random() > 0.2, // ~80% disponibles
-        location: LOCATION_KEY,
-      }));
+    const mock: TableInfo[] = Array.from({ length: 12 }, (_, i) => ({
+      id: i + 1,
+      seats: SEATS_PER_TABLE,
+      available: Math.random() > 0.25,
+      location: DEFAULT_LOCATION,
+    }));
+
+    setTimeout(() => {
       setTables(mock);
       setIsLoading(false);
-    };
-    fetchTables();
+    }, 300);
   }, []);
 
-  /** Capacidad y reglas */
-  const guests = reservationData.guests || 1;
-  const allowMulti = guests > SEATS_PER_TABLE;
-  const seatsSelected = selectedTables.length * SEATS_PER_TABLE;
-  const coverageReached = allowMulti && seatsSelected >= guests;
-
-  /** Única ubicación (interior) */
-  const locations = useMemo(() => {
-    const set = new Set<string>();
-    for (const t of tables) if (t.location) set.add(t.location);
+  const locations = useMemo<TableLocation[]>(() => {
+    const set = new Set<TableLocation>();
+    tables.forEach((t) => t.location && set.add(t.location));
     return Array.from(set);
   }, [tables]);
 
-  /** Helpers UI */
-  const selectedStyle = {
-    backgroundColor: BLUE,
-    borderColor: BLUE,
-    color: "#fff",
-  } as React.CSSProperties;
-
-  const getTableClasses = (table: TableInfo, isSelected: boolean) => {
-    if (isSelected)
-      return "p-4 border-2 rounded-lg transition-all duration-200 text-center shadow-md outline-none";
-    if (!table.available)
-      return "p-4 border-2 rounded-lg transition-all duration-200 text-center cursor-not-allowed opacity-60 " +
-        "bg-card border-[color:color-mix(in srgb,var(--fg) 16%,transparent)] text-muted";
-    return "p-4 border-2 rounded-lg transition-all duration-200 text-center outline-none " +
-      "bg-card text-app border-[color:color-mix(in srgb,var(--fg) 18%,transparent)] " +
-      "hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]";
-  };
-
-  /** Selección:
-   *  - guests ≤ 6: solo 1 mesa
-   *  - guests > 6: múltiples hasta cubrir (bloquear extras al cubrir)
-   */
-  const handleTableToggle = (tableId: number) => {
+  // ✅ Selección local de mesas
+  const handleSelect = (tableId: number) => {
     const table = tables.find((t) => t.id === tableId);
     if (!table || !table.available) return;
 
     setSelectedTables((prev) => {
-      const already = prev.includes(tableId);
+      const exists = prev.includes(tableId);
 
-      // Modo una sola mesa
-      if (!allowMulti) {
-        const next = already ? [] : [tableId];
-        updateReservationData({ tableId: next[0] ?? null });
-        return next;
-      }
+      if (!allowMulti) return exists ? [] : [tableId];
 
-      // Modo múltiple
-      const seatsBefore = prev.length * SEATS_PER_TABLE;
+      if (coverageReached && !exists) return prev;
 
-      // Si ya estamos cubiertos y no estamos quitando, bloquear
-      if (coverageReached && !already) return prev;
-
-      if (already) {
-        const next = prev.filter((id) => id !== tableId);
-        updateReservationData({ tableId: next[0] ?? null });
-        return next;
-      } else {
-        if (seatsBefore < guests) {
-          const next = [...prev, tableId];
-          updateReservationData({ tableId: next[0] ?? null });
-          return next;
-        }
-        return prev;
-      }
+      return exists
+        ? prev.filter((id) => id !== tableId)
+        : [...prev, tableId];
     });
   };
 
+  // ✅ Actualizar provider SOLO al continuar
   const handleContinue = () => {
-    if (selectedTables.length > 0) nextStep();
-  };
+    updateReservationData({
+      tableNumber: selectedTables[0] ?? null,
+    });
 
-  const handleBack = () => {
-    updateReservationData({ tableId: selectedTables[0] ?? null });
-    prevStep();
+    nextStep();
   };
 
   if (isLoading) {
     return (
-      <div className="bg-card text-app rounded-lg shadow-lg p-6 max-w-6xl mx-auto border border-[color:color-mix(in srgb,var(--fg) 12%,transparent)]">
-        <div className="text-center py-12">
-          <div
-            className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4"
-            style={{ borderColor: BLUE }}
-          />
-          <p className="text-muted">Cargando disponibilidad de mesas...</p>
-        </div>
+      <div className="p-10 text-center">
+        <div className="animate-spin h-10 w-10 border-b-2 mx-auto" />
+        <p className="text-muted mt-4">Cargando mesas...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-card text-app rounded-lg shadow-lg p-6 max-w-6xl mx-auto border border-[color:color-mix(in srgb,var(--fg) 12%,transparent)]">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2">Selecciona tu Mesa</h2>
-        <p className="text-muted">
-          Elige en el Salón Principal la(s) mesa(s) para tu experiencia gastronómica
-        </p>
-      </div>
+    <div className="bg-card p-6 rounded-lg shadow-lg border max-w-6xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4">Selecciona tu Mesa</h2>
 
       <div className="grid lg:grid-cols-4 gap-6">
-        {/* Sidebar resumen (sin el cuadro del filtro) */}
-        <div className="lg:col-span-1">
-          <div className="rounded-lg p-4 sticky top-4 bg-card border border-[color:color-mix(in srgb,var(--fg) 12%,transparent)]">
-            <h3 className="font-semibold mb-3">Tu Reserva</h3>
+        {/* RESUMEN */}
+        <div className="lg:col-span-1 border p-4 rounded-lg">
+          <h3 className="font-semibold mb-3">Tu Reserva</h3>
 
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center text-muted">
-                <Calendar className="w-4 h-4 mr-2" />
-                <span>
-                  {reservationData.date
-                    ? new Intl.DateTimeFormat("es-CR", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      }).format(reservationData.date)
-                    : "—"}
-                </span>
-              </div>
-              <div className="flex items-center text-muted">
-                <Clock className="w-4 h-4 mr-2" />
-                <span>{reservationData.time || "—"}</span>
-              </div>
-              <div className="flex items-center text-muted">
-                <Users className="w-4 h-4 mr-2" />
-                <span>
-                  {guests} {guests === 1 ? "persona" : "personas"}
-                </span>
-              </div>
-            </div>
+          <p className="text-sm text-muted flex items-center">
+            <Calendar className="w-4 h-4 mr-2" />
+            {reservationData.date
+              ? reservationData.date.toLocaleDateString("es-CR")
+              : "—"}
+          </p>
 
-            {/* Leyenda (sin “Disponible”) */}
-            <div className="mt-4">
-              <h4 className="font-medium mb-2 text-sm">Leyenda</h4>
-              <div className="space-y-2 text-xs">
-                <div className="flex items-center">
-                  <CheckCircle className="w-4 h-4 mr-2" style={{ color: BLUE }} />
-                  <span>Seleccionada</span>
-                </div>
-                <div className="flex items-center">
-                  <XCircle
-                    className="w-4 h-4 mr-2"
-                    style={{
-                      color: "color-mix(in srgb, var(--fg) 35%, transparent)",
-                    }}
-                  />
-                  <span>Ocupada</span>
-                </div>
-              </div>
-            </div>
+          <p className="text-sm text-muted flex items-center">
+            <Clock className="w-4 h-4 mr-2" />
+            {reservationData.time}
+          </p>
 
-            {/* Estado de cobertura */}
-            {allowMulti && (
-              <p className="mt-4 text-xs text-muted">
-                Capacidad seleccionada: {seatsSelected}/{guests} asientos
-                {coverageReached ? " (requisitos cubiertos)" : ""}
-              </p>
-            )}
-          </div>
+          <p className="text-sm text-muted flex items-center">
+            <Users className="w-4 h-4 mr-2" />
+            {people} personas
+          </p>
+
+          {allowMulti && (
+            <p className="text-xs mt-2 text-muted">
+              Capacidad seleccionada: {seatsSelected}/{people}
+            </p>
+          )}
         </div>
 
-        {/* Grid de mesas */}
-        <div className="lg:col-span-3">
-          <div className="space-y-6">
-            {locations.map((loc) => {
-              const byLoc = tables.filter((t) => t.location === loc);
-              if (byLoc.length === 0) return null;
+        {/* MAPA */}
+        <div className="lg:col-span-3 space-y-6">
+          {locations.map((loc) => {
+            const byLoc = tables.filter((t) => t.location === loc);
+            if (!byLoc.length) return null;
 
-              return (
-                <section
-                  key={loc}
-                  className="border rounded-lg p-4 border-[color:color-mix(in srgb,var(--fg) 16%,transparent)]"
-                >
-                  <div className="flex items-center mb-4">
-                    <MapPin className="w-5 h-5 mr-2" style={{ color: BLUE }} />
-                    <div>
-                      <h3 className="font-semibold">
-                        {titleByLocation[loc] || "Salón Principal"}
-                      </h3>
-                      <p className="text-sm text-muted">
-                        {descByLocation[loc] || ""}
-                      </p>
-                    </div>
-                  </div>
+            return (
+              <section key={loc} className="border p-4 rounded-lg">
+                <h3 className="font-semibold mb-2 flex items-center">
+                  <MapPin className="w-5 h-5 mr-2" />
+                  {titleByLocation[loc]}
+                </h3>
 
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                    {byLoc.map((table) => {
-                      const isSelected = selectedTables.includes(table.id);
-                      const classes = getTableClasses(table, isSelected);
+                <p className="text-sm text-muted mb-4">
+                  {descByLocation[loc]}
+                </p>
 
-                      // Bloquear sumar más si ya se cubrió (pero permitir des-seleccionar)
-                      const disableForCoverage =
-                        !isSelected && allowMulti && coverageReached;
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  {byLoc.map((table) => {
+                    const selected = selectedTables.includes(table.id);
+                    const disabled =
+                      !table.available ||
+                      (!selected && allowMulti && coverageReached);
 
-                      const disabled = !table.available || disableForCoverage;
+                    return (
+                      <button
+                        key={table.id}
+                        disabled={disabled}
+                        onClick={() => handleSelect(table.id)}
+                        className={`p-4 border rounded-lg ${
+                          selected
+                            ? "bg-blue-500 text-white"
+                            : disabled
+                            ? "opacity-50"
+                            : "hover:bg-gray-100"
+                        }`}
+                      >
+                        <div className="font-medium">Mesa #{table.id}</div>
 
-                      return (
-                        <div key={table.id} className="relative">
-                          <button
-                            onClick={() => !disabled && handleTableToggle(table.id)}
-                            disabled={disabled}
-                            className={`${classes} ${
-                              disabled && !isSelected
-                                ? "cursor-not-allowed opacity-50"
-                                : ""
-                            }`}
-                            style={isSelected ? selectedStyle : undefined}
-                            role="button"
-                            aria-pressed={isSelected}
-                            aria-disabled={disabled}
-                            tabIndex={0}
-                            onKeyDown={(e) => {
-                              if (!disabled && (e.key === "Enter" || e.key === " ")) {
-                                e.preventDefault();
-                                handleTableToggle(table.id);
-                              }
-                            }}
-                          >
-                            <div className="font-medium">Mesa #{table.id}</div>
-                            <div className="text-sm flex items-center justify-center mt-1">
-                              <Users className="w-3 h-3 mr-1" />
-                              {table.seats}
-                            </div>
-
-                            {isSelected && (
-                              <CheckCircle
-                                className="w-4 h-4 mx-auto mt-2"
-                                aria-hidden
-                                style={{ color: "#fff" }}
-                              />
-                            )}
-                            {!table.available && !isSelected && (
-                              <XCircle
-                                className="w-4 h-4 mx-auto mt-2"
-                                style={{
-                                  color:
-                                    "color-mix(in srgb, var(--fg) 35%, transparent)",
-                                }}
-                              />
-                            )}
-                          </button>
+                        <div className="text-sm flex items-center justify-center mt-1">
+                          <Users className="w-3 h-3 mr-1" />
+                          {table.seats}
                         </div>
-                      );
-                    })}
-                  </div>
-                </section>
-              );
-            })}
-          </div>
 
-          {/* Acciones */}
-          <div className="flex gap-4 mt-8">
+                        {selected && (
+                          <CheckCircle className="w-4 h-4 mx-auto mt-2" />
+                        )}
+
+                        {!table.available && !selected && (
+                          <XCircle className="w-4 h-4 mx-auto mt-2" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })}
+
+          <div className="flex gap-4">
             <button
-              onClick={handleBack}
-              className="flex-1 py-3 px-4 rounded-lg font-medium transition
-                         border border-[color:color-mix(in srgb,var(--fg) 18%,transparent)]
-                         text-app hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]"
-              type="button"
+              onClick={prevStep}
+              className="flex-1 py-3 border rounded-lg"
             >
               Volver
             </button>
+
             <button
               onClick={handleContinue}
               disabled={selectedTables.length === 0}
-              className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
-                selectedTables.length > 0
-                  ? "text-white shadow-md hover:shadow-lg"
-                  : "cursor-not-allowed opacity-70"
-              }`}
-              style={
-                selectedTables.length > 0
-                  ? { backgroundColor: BLUE }
-                  : {
-                      backgroundColor:
-                        "color-mix(in srgb, var(--fg) 18%, transparent)",
-                      color: "var(--fg)",
-                    }
-              }
-              type="button"
+              className="flex-1 py-3 rounded-lg text-white shadow-md"
+              style={{
+                backgroundColor: selectedTables.length > 0 ? BLUE : "gray",
+              }}
             >
-              {selectedTables.length > 0
-                ? `Continuar con ${selectedTables.length} mesa${
-                    selectedTables.length > 1 ? "s" : ""
-                  }`
-                : "Continuar"}
+              Continuar
             </button>
           </div>
         </div>

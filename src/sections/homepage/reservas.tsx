@@ -1,22 +1,37 @@
 // src/sections/homepage/reservas.tsx
 import React from "react";
 import { CheckCircle, Calendar, MapPin, User, FileCheck } from "lucide-react";
+
 import ReservationCalendar from "../../components/reservations/ReservationCalendar";
 import ReservationForm from "../../components/reservations/ReservationForm";
 import ReservationMap from "../../components/reservations/ReservationMap";
-import type { ReservationStep } from "../../types/reservation";
-import { ReservationProvider, useReservation } from "./reservationpage";
+
+import type { ReservationStep, ReservationResponse } from "../../types/reservation";
+
+import { ReservationProvider } from "../../hooks/public/reservation.provider";
+import { useReservation } from "../../hooks/public/useReservation";
 
 /* ----------------- Confirmación ----------------- */
 const ReservationConfirmation: React.FC = () => {
-  const { reservationData, submitReservation, resetReservation, prevStep } = useReservation();
+  const { reservationData, submitReservation, resetReservation, prevStep } =
+    useReservation();
+
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isConfirmed, setIsConfirmed] = React.useState(false);
 
+  // ✅ Tipo correcto → ReservationResponse | null
+  const [confirmationData, setConfirmationData] =
+    React.useState<ReservationResponse | null>(null);
+
   const handleConfirm = async () => {
     setIsSubmitting(true);
-    await submitReservation();
-    setIsConfirmed(true);
+    const response = await submitReservation();
+
+    if (response) {
+      setConfirmationData(response);
+      setIsConfirmed(true);
+    }
+
     setIsSubmitting(false);
   };
 
@@ -30,12 +45,18 @@ const ReservationConfirmation: React.FC = () => {
         }).format(date)
       : "";
 
-  if (isConfirmed) {
+  /* ✅ Vista después de confirmar */
+  if (isConfirmed && confirmationData) {
     return (
       <div className="bg-card rounded-lg shadow-lg p-8 max-w-2xl mx-auto text-center">
         <div className="mb-6">
-          <CheckCircle className="w-16 h-16 mx-auto mb-4" style={{ color: "var(--brand)" }} />
-          <h2 className="text-2xl font-bold text-app mb-2">¡Reserva Confirmada!</h2>
+          <CheckCircle
+            className="w-16 h-16 mx-auto mb-4"
+            style={{ color: "var(--brand)" }}
+          />
+          <h2 className="text-2xl font-bold text-app mb-2">
+            ¡Reserva Confirmada!
+          </h2>
           <p className="text-muted">Tu mesa ha sido reservada exitosamente</p>
         </div>
 
@@ -48,7 +69,12 @@ const ReservationConfirmation: React.FC = () => {
           <h3 className="font-semibold mb-3" style={{ color: "var(--brand)" }}>
             Detalles de tu reserva:
           </h3>
+
           <div className="space-y-2" style={{ color: "var(--brand)" }}>
+            <p>
+              <strong>Número de confirmación:</strong>{" "}
+              {confirmationData.confirmationNumber}
+            </p>
             <p>
               <strong>Fecha:</strong> {formatDate(reservationData.date)}
             </p>
@@ -56,10 +82,10 @@ const ReservationConfirmation: React.FC = () => {
               <strong>Hora:</strong> {reservationData.time}
             </p>
             <p>
-              <strong>Mesa:</strong> #{reservationData.tableId}
+              <strong>Mesa:</strong> #{reservationData.tableNumber}
             </p>
             <p>
-              <strong>Comensales:</strong> {reservationData.guests}
+              <strong>Comensales:</strong> {reservationData.peopleCount}
             </p>
             <p>
               <strong>Nombre:</strong> {reservationData.customerInfo.fullName}
@@ -68,7 +94,8 @@ const ReservationConfirmation: React.FC = () => {
         </div>
 
         <p className="text-sm text-muted mb-6">
-          Recibirás un email de confirmación en {reservationData.customerInfo.email}
+          Recibirás un correo de confirmación en{" "}
+          {reservationData.customerInfo.email}
         </p>
 
         <button
@@ -82,12 +109,16 @@ const ReservationConfirmation: React.FC = () => {
     );
   }
 
-  // Vista previa antes del envío
+  /* ✅ Vista previa antes de confirmar */
   return (
     <div className="bg-card rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-app mb-2">Confirmar Reserva</h2>
-        <p className="text-muted">Revisa todos los detalles antes de confirmar</p>
+        <h2 className="text-2xl font-bold text-app mb-2">
+          Confirmar Reserva
+        </h2>
+        <p className="text-muted">
+          Revisa todos los detalles antes de confirmar
+        </p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -107,8 +138,10 @@ const ReservationConfirmation: React.FC = () => {
             <MapPin className="w-5 h-5 mr-2" style={{ color: "var(--brand)" }} />
             Mesa
           </h3>
-          <p className="text-muted">Mesa #{reservationData.tableId}</p>
-          <p className="text-sm text-muted">{reservationData.guests} comensales</p>
+          <p className="text-muted">Mesa #{reservationData.tableNumber}</p>
+          <p className="text-sm text-muted">
+            {reservationData.peopleCount} comensales
+          </p>
         </div>
       </div>
 
@@ -127,9 +160,7 @@ const ReservationConfirmation: React.FC = () => {
         <button
           type="button"
           onClick={prevStep}
-          className="flex-1 py-3 px-4 rounded-lg font-medium transition
-                     border border-[color:color-mix(in srgb,var(--fg) 18%,transparent)]
-                     text-app hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]"
+          className="flex-1 py-3 px-4 rounded-lg font-medium transition border border-[color:color-mix(in srgb,var(--fg) 18%,transparent)] text-app hover:bg-[color:color-mix(in srgb,var(--fg) 10%,transparent)]"
         >
           Modificar
         </button>
@@ -147,7 +178,6 @@ const ReservationConfirmation: React.FC = () => {
             backgroundColor: isSubmitting
               ? "color-mix(in srgb, var(--fg) 35%, transparent)"
               : "var(--brand)",
-            color: "#fff",
           }}
         >
           {isSubmitting ? "Confirmando..." : "Confirmar Reserva"}
@@ -164,66 +194,42 @@ const ProgressSteps: React.FC = () => {
   const stepIcons = [Calendar, MapPin, User, FileCheck];
 
   return (
-    <div className="bg-card rounded-lg shadow-sm p-3 sm:p-4 mb-6 overflow-x-auto scrollbar-thin scrollbar-thumb-[color:color-mix(in_srgb,var(--fg)_20%,transparent)] scrollbar-track-transparent">
+    <div className="bg-card rounded-lg shadow-sm p-3 sm:p-4 mb-6 overflow-x-auto">
       <div className="flex items-center justify-between gap-1 sm:gap-2 md:gap-4">
         {filteredSteps.map((step: ReservationStep, index: number) => {
           const Icon = stepIcons[index];
           const activeOrDone = step.active || step.completed;
+
           return (
             <React.Fragment key={step.step}>
               <div className="flex flex-col items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
-                {/* Ícono circular */}
                 <div
-                  className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 transition-all duration-200 flex-shrink-0"
-                  style={
-                    activeOrDone
-                      ? {
-                          backgroundColor: "transparent",
-                          borderColor: "var(--fg)",
-                        }
-                      : {
-                          backgroundColor:
-                            "color-mix(in srgb, var(--fg) 7%, transparent)",
-                          borderColor:
-                            "color-mix(in srgb, var(--fg) 18%, transparent)",
-                        }
-                  }
+                  className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 transition-all duration-200"
+                  style={{
+                    borderColor: activeOrDone
+                      ? "var(--fg)"
+                      : "color-mix(in srgb, var(--fg) 50%, transparent)",
+                  }}
                 >
                   {step.completed ? (
-                    <CheckCircle
-                      className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5"
-                      style={{
-                        color: activeOrDone
-                          ? "var(--fg)"
-                          : "color-mix(in srgb, var(--fg) 50%, transparent)",
-                      }}
-                    />
+                    <CheckCircle className="w-5 h-5" />
                   ) : (
-                    <Icon
-                      className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5"
-                      style={{
-                        color: activeOrDone
-                          ? "var(--fg)"
-                          : "color-mix(in srgb, var(--fg) 50%, transparent)",
-                      }}
-                    />
+                    <Icon className="w-5 h-5" />
                   )}
                 </div>
 
-                {/* Texto */}
                 <span
                   className="text-[10px] sm:text-xs md:text-sm font-medium text-center"
                   style={{
                     color: activeOrDone
                       ? "var(--fg)"
-                      : "color-mix(in srgb, var(--fg) 55%, transparent)",
+                      : "color-mix(in srgb, var(--fg) 50%, transparent)",
                   }}
                 >
                   {step.title}
                 </span>
               </div>
 
-              {/* Línea conectora */}
               {index < filteredSteps.length - 1 && (
                 <div
                   className="w-4 sm:w-8 md:w-12 h-0.5 flex-shrink-0 -mt-6"
@@ -264,7 +270,6 @@ const ReservationContent: React.FC = () => {
   return (
     <section id="reservar" className="anchor-offset bg-app py-8 px-4">
       <div className="max-w-6xl mx-auto text-app">
-        {/* Título */}
         <div className="px-3 md:px-6 text-center mb-8">
           <div className="mx-auto rounded-xl bg-card shadow-sm backdrop-blur px-4 py-4">
             <h2 className="flex items-center justify-center text-xl md:text-2xl font-extrabold tracking-wide text-app">

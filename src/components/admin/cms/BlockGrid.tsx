@@ -1,6 +1,7 @@
 import type { ContentBlock } from "../../../types/cms";
 import { resolveImageUrl } from "../../../helpers/media";
 import { ArrowDown, ArrowUp, Image as ImgIcon, Trash2, Upload } from "lucide-react";
+import Button from "../../ui/Button";
 
 export default function BlockGrid({
   blocks,
@@ -19,59 +20,65 @@ export default function BlockGrid({
 }) {
   if (blocks.length === 0) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 text-center text-slate-500">
+      <div className="rounded-xl border border-[#C6E3D3] bg-white p-6 text-center text-[#0D784A]/70 shadow-sm">
         Sin bloques.
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
       {blocks.map((b) => {
         const src = resolveImageUrl(b.imagePath) ?? "";
         return (
-          <div key={b.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white">
-            <div className="h-40 w-full bg-slate-100 grid place-items-center overflow-hidden">
+          <div
+            key={b.id}
+            className="overflow-hidden rounded-2xl border border-[#C6E3D3] bg-white shadow-sm hover:shadow-md hover:border-[#0D784A]/40 transition-all"
+          >
+            {/* Imagen */}
+            <div className="h-40 w-full bg-[#E6F4EE]/60 grid place-items-center overflow-hidden border-b border-[#C6E3D3]">
               {b.imagePath ? (
-                <img src={src} alt="" className="h-full w-full object-cover" />
+                <img src={src} alt="" className="h-full w-full object-cover transition-transform hover:scale-105" />
               ) : (
-                <div className="flex flex-col items-center text-slate-400">
+                <div className="flex flex-col items-center text-[#0D784A]/50">
                   <ImgIcon className="h-8 w-8" />
-                  <div className="text-xs mt-1">Sin imagen</div>
+                  <span className="text-xs mt-1">Sin imagen</span>
                 </div>
               )}
             </div>
 
-            <div className="p-3">
+            {/* Texto */}
+            <div className="p-4">
               <div className="mb-2 flex items-center justify-between">
-                <div className="text-sm font-medium text-slate-900">{b.title || "(Sin título)"}</div>
-                <div className="text-xs text-slate-500">#{b.displayOrder}</div>
+                <div className="text-sm font-medium text-[#0D784A]">{b.title || "(Sin título)"}</div>
+                <div className="text-xs text-gray-500">#{b.displayOrder}</div>
               </div>
-              {b.body && <p className="text-xs text-slate-600 line-clamp-3">{b.body}</p>}
+              {b.body && <p className="text-xs text-gray-600 line-clamp-3">{b.body}</p>}
             </div>
 
-            <div className="flex items-center justify-between gap-2 p-2">
-              <div className="flex items-center gap-1">
+            {/* Acciones */}
+            <div className="flex flex-wrap items-center justify-between gap-2 p-3 border-t border-[#E6F4EE]">
+              <div className="flex gap-1">
                 <button
                   onClick={() => onMove(b, "up")}
-                  className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs hover:bg-slate-50"
+                  className="rounded-md border border-gray-200 bg-white px-2 py-1 text-xs hover:bg-gray-50"
                   title="Subir"
                 >
                   <ArrowUp className="h-4 w-4" />
                 </button>
                 <button
                   onClick={() => onMove(b, "down")}
-                  className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs hover:bg-slate-50"
+                  className="rounded-md border border-gray-200 bg-white px-2 py-1 text-xs hover:bg-gray-50"
                   title="Bajar"
                 >
                   <ArrowDown className="h-4 w-4" />
                 </button>
               </div>
 
-              <div className="flex items-center gap-1">
-                <label className="inline-flex cursor-pointer items-center gap-1 rounded-md border border-slate-200 bg-white px-2 py-1 text-xs text-slate-700 hover:bg-slate-50">
+              <div className="flex flex-wrap gap-2 justify-end">
+                <label className="inline-flex items-center gap-1 cursor-pointer text-xs text-[#0D784A] hover:underline">
                   <Upload className="h-4 w-4" />
-                  <span>Cambiar img</span>
+                  Cambiar
                   <input
                     type="file"
                     accept="image/*"
@@ -85,27 +92,33 @@ export default function BlockGrid({
                 </label>
 
                 {b.imagePath && (
-                  <button
+                  <Button
+                    variant="secondary"
+                    size="sm"
                     onClick={() => onRemoveImage(b)}
-                    className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs text-slate-700 hover:bg-slate-50"
+                    className="!py-1 !px-2 text-xs"
                   >
                     Quitar img
-                  </button>
+                  </Button>
                 )}
 
-                <button
+                <Button
+                  variant="secondary"
+                  size="sm"
                   onClick={() => onEdit(b)}
-                  className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs text-slate-700 hover:bg-slate-50"
+                  className="!py-1 !px-2 text-xs"
                 >
                   Editar
-                </button>
+                </Button>
 
-                <button
+                <Button
+                  variant="danger"
+                  size="sm"
                   onClick={() => onDelete(b)}
-                  className="rounded-md border border-red-200 bg-white px-2 py-1 text-xs text-red-700 hover:bg-red-50"
+                  className="!py-1 !px-2 text-xs"
                 >
                   <Trash2 className="h-4 w-4" />
-                </button>
+                </Button>
               </div>
             </div>
           </div>
