@@ -5,6 +5,7 @@ import { coopActivityService } from "../../../services/activity/coopActivityServ
 import { CoopActivityBlocksForm } from "./CoopActivityBlocksForm";
 import { CoopActivityContacts } from "./CoopActivityContacts";
 import Button from "../../ui/Button";
+import { API_URL } from "../../../lib/config";
 
 type TabKey = "blocks" | "contacts";
 
@@ -63,11 +64,20 @@ export function CoopActivityDetail({ id, onBack }: Props) {
       {/* Portada full-bleed */}
       {activity.image_path && (
         <div className="relative w-full mb-8 overflow-hidden">
-          <img
-            src={activity.image_path}
-            alt={activity.title}
-            className="w-full h-80 sm:h-[420px] object-cover object-center"
-          />
+        import { API_URL } from "../../../lib/config";
+
+<img
+  src={
+    activity.image_path
+      ? activity.image_path.startsWith("http")
+        ? activity.image_path
+        : `${API_URL.replace(/\/$/, "")}${activity.image_path.startsWith("/") ? activity.image_path : "/" + activity.image_path}`
+      : "/placeholder.jpg"
+  }
+  alt={activity.title}
+  className="w-full h-80 sm:h-[420px] object-cover object-center"
+/>
+
         </div>
       )}
 

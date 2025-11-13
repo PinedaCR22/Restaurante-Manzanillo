@@ -77,17 +77,25 @@ export default function CooperativaDinamicaPage() {
                 } aspect-square md:aspect-[16/9] md:min-h-[300px] lg:min-h-[340px]`}
               >
                 <AnimatePresence mode="wait">
-                  <motion.img
-                    key={b.image_path ?? i}
-                    src={b.image_path || "https://picsum.photos/800/500?blur=5"}
-                    alt={b.title ?? ""}
-                    className="absolute inset-0 h-full w-full object-cover"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.6 }}
-                    loading="lazy"
-                  />
+                 <motion.img
+  key={b.image_path ?? i}
+  src={
+    b.image_path
+      ? b.image_path.replace(
+          "http://localhost:3000",
+          "https://mudecoopback-production.up.railway.app"
+        )
+      : "https://picsum.photos/800/500?blur=5"
+  }
+  alt={b.title ?? ""}
+  className="absolute inset-0 h-full w-full object-cover"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0 }}
+  transition={{ duration: 0.6 }}
+  loading="lazy"
+/>
+
                 </AnimatePresence>
               </div>
 
@@ -122,10 +130,18 @@ export default function CooperativaDinamicaPage() {
             {/* Imagen lateral */}
             <div className="relative aspect-square md:aspect-auto md:min-h-[460px] lg:min-h-[520px]">
               <img
-                src={activity.image_path || "https://picsum.photos/600/400?blur=5"}
-                alt="Contáctanos"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
+  src={
+    activity.image_path
+      ? activity.image_path.replace(
+          "http://localhost:3000",
+          "https://mudecoopback-production.up.railway.app"
+        )
+      : "https://picsum.photos/600/400?blur=5"
+  }
+  alt="Contáctanos"
+  className="absolute inset-0 h-full w-full object-cover"
+/>
+
             </div>
 
             {/* Formulario */}

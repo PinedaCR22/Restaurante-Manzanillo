@@ -79,10 +79,18 @@ function Cooperativeservices() {
           >
             <div className="aspect-[5/3] w-full overflow-hidden bg-gray-100">
               <img
-                src={a.image_path || "https://picsum.photos/600/400?blur=5"}
-                alt={a.title}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+  src={
+    a.image_path
+      ? a.image_path.replace(
+          "http://localhost:3000",
+          "https://mudecoopback-production.up.railway.app"
+        )
+      : "https://picsum.photos/600/400?blur=5"
+  }
+  alt={a.title}
+  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+/>
+
             </div>
             <div className="p-3 border-t border-gray-100">
               <span className="block text-center text-[13px] md:text-sm font-semibold uppercase tracking-wide text-white bg-[#50ABD7] rounded-md px-3 py-1">

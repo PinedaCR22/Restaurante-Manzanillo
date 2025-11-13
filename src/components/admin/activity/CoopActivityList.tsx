@@ -7,6 +7,7 @@ import Button from "../../ui/Button";
 import ModalBase from "../../ui/ModalBase";
 import ConfirmDialog from "../../ui/ConfirmDialog";
 import { useSuccessDialog } from "../../../hooks/useSuccessDialog";
+import { API_URL } from "../../../lib/config";
 
 interface Props {
   onSelect: (id: number) => void;
@@ -88,11 +89,17 @@ export function CoopActivityList({ onSelect }: Props) {
             >
               <div className="h-48 bg-gray-100 overflow-hidden">
                 {a.image_path ? (
-                  <img
-                    src={a.image_path}
-                    alt={a.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                <img
+  src={
+    a.image_path
+      ? a.image_path.startsWith("http")
+        ? a.image_path
+        : `${API_URL.replace(/\/$/, "")}${a.image_path.startsWith("/") ? a.image_path : "/" + a.image_path}`
+      : "/placeholder.jpg"
+  }
+  alt={a.title}
+  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+/>
                 ) : (
                   <div className="flex items-center justify-center h-full text-gray-400 text-sm">
                     Sin imagen

@@ -4,6 +4,7 @@ import type { TourismActivity } from "../../../types/activity/TourismActivity";
 import { tourismActivityService } from "../../../services/activity/tourismActivityService";
 import { TourismActivityBlocksForm } from "./TourismActivityBlocksForm";
 import Button from "../../ui/Button";
+import { API_URL } from "../../../lib/config";
 
 interface Props {
   id: number;
@@ -59,11 +60,15 @@ export function TourismActivityDetail({ id, onBack }: Props) {
       {/* Portada principal */}
       {activity.image_path && (
         <div className="relative w-full mb-8 overflow-hidden rounded-2xl shadow-sm border border-[#C6E3D3]">
-          <img
-            src={activity.image_path}
-            alt={activity.title}
-            className="w-full h-72 sm:h-[420px] object-cover object-center hover:scale-[1.02] transition-transform duration-500"
-          />
+         <img
+  src={
+    activity.image_path?.startsWith("http")
+      ? activity.image_path
+      : `${API_URL}${activity.image_path}`
+  }
+  alt={activity.title}
+  className="w-full h-72 sm:h-[420px] object-cover object-center hover:scale-[1.02] transition-transform duration-500"
+/>
         </div>
       )}
 

@@ -176,7 +176,17 @@ export default function ActivityDetailPage() {
       <div className="relative w-full h-[50vh] overflow-hidden">
         <div
           className="absolute inset-0 bg-center bg-cover"
-          style={{ backgroundImage: `url(${cover})` }}
+          style={{
+  backgroundImage: `url(${
+    cover
+      ? cover.replace(
+          "http://localhost:3000",
+          "https://mudecoopback-production.up.railway.app"
+        )
+      : FALLBACK_IMG
+  })`,
+}}
+
           role="img"
           aria-label={title}
         />
@@ -245,11 +255,19 @@ export default function ActivityDetailPage() {
                   }`}
                 >
                   <img
-                    src={sec.image || FALLBACK_IMG}
-                    alt={sec.title}
-                    className="absolute inset-0 h-full w-full object-cover"
-                    loading="lazy"
-                  />
+  src={
+    sec.image
+      ? sec.image.replace(
+          "http://localhost:3000",
+          "https://mudecoopback-production.up.railway.app"
+        )
+      : FALLBACK_IMG
+  }
+  alt={sec.title}
+  className="absolute inset-0 h-full w-full object-cover"
+  loading="lazy"
+/>
+
                 </div>
 
                 <div
@@ -292,11 +310,19 @@ export default function ActivityDetailPage() {
                     reverse ? "md:order-2" : "md:order-1"
                   }`}
                 >
-                  <img
-                    src={block.image_path || FALLBACK_IMG}
-                    alt={block.title ?? "Bloque"}
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
+<img
+  src={
+    block.image_path
+      ? block.image_path.replace(
+          "http://localhost:3000",
+          "https://mudecoopback-production.up.railway.app"
+        )
+      : FALLBACK_IMG
+  }
+  alt={block.title ?? "Bloque"}
+  className="absolute inset-0 h-full w-full object-cover"
+/>
+
                 </div>
                 <div
                   className={`p-4 md:p-6 flex ${

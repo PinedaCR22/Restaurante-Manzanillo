@@ -101,13 +101,21 @@ function Activities() {
               {/* Imagen */}
               <div className="aspect-[5/3] w-full overflow-hidden bg-gray-100 dark:bg-[color-mix(in_srgb,var(--card)_80%,black_10%)]">
                 <img
-                  src={act.image_path || PLACEHOLDER}
-                  alt={act.title}
-                  loading="lazy"
-                  decoding="async"
-                  referrerPolicy="no-referrer"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+  src={
+    act.image_path
+      ? act.image_path.replace(
+          "http://localhost:3000",
+          "https://mudecoopback-production.up.railway.app"
+        )
+      : PLACEHOLDER
+  }
+  alt={act.title}
+  loading="lazy"
+  decoding="async"
+  referrerPolicy="no-referrer"
+  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+/>
+
               </div>
 
               {/* Título */}

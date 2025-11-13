@@ -6,6 +6,7 @@ import { coopActivityBlockService } from "../../../services/activity/coopActivit
 import Button from "../../ui/Button";
 import ConfirmDialog from "../../ui/ConfirmDialog";
 import { useSuccessDialog } from "../../../hooks/useSuccessDialog";
+import { API_URL } from "../../../lib/config";
 
 interface Props {
   activity: CoopActivity;
@@ -167,10 +168,14 @@ export function CoopActivityBlocksForm({ activity }: Props) {
                         />
                       ) : b.image_path ? (
                         <img
-                          src={b.image_path}
-                          alt={b.title ?? "block"}
-                          className="object-cover w-full h-full"
-                        />
+  src={
+    b.image_path?.startsWith("http")
+      ? b.image_path
+      : `${API_URL}${b.image_path}`
+  }
+  alt={b.title ?? "block"}
+  className="object-cover w-full h-full"
+/>
                       ) : (
                         <div className="flex justify-center items-center h-full bg-gray-100 text-gray-500">
                           Haz clic para subir imagen
@@ -179,11 +184,18 @@ export function CoopActivityBlocksForm({ activity }: Props) {
                     </label>
                   </>
                 ) : (
-                  <img
-                    src={b.image_path || "/placeholder.jpg"}
-                    alt={b.title ?? "block"}
-                    className="object-cover w-full h-full"
-                  />
+                 <img
+  src={
+    b.image_path
+      ? b.image_path.startsWith("http")
+        ? b.image_path
+        : `${API_URL}${b.image_path}`
+      : "/placeholder.jpg"
+  }
+  alt={b.title ?? "block"}
+  className="object-cover w-full h-full"
+/>
+
                 )}
               </div>
 

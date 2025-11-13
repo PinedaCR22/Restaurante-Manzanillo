@@ -3,14 +3,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+// ✅ IMPORT CORRECTO (2 niveles hacia arriba)
+import portadaLocal from "../../assets/image4-1024x678.png";
+
 const Mudecoop: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
   const { t } = useTranslation("mudecoop");
 
-  const images = [
-    "https://scontent.fsjo14-1.fna.fbcdn.net/v/t39.30808-6/516498648_1179772304190407_6105943606169912598_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=k9s26L4wcBkQ7kNvwEfQlEX&_nc_oc=AdmAhAxcI3y1tTWIM0japgag_voHYEnqaWVsl1a2uBpx6UBbdmShfDAY2dDSCYLxT4U&_nc_zt=23&_nc_ht=scontent.fsjo14-1.fna&_nc_gid=LNr8UDE55olA-sSm_giygQ&oh=00_Afg1JIbSI-i4Z5gUpoljNvb-fZsdif3fUy2Ly7LI327D3g&oe=691291CF"
-  ];
+  // ✅ Reemplaza la URL de Facebook por tu imagen local
+  const images = [portadaLocal];
 
   useEffect(() => {
     const interval = setInterval(() => {
