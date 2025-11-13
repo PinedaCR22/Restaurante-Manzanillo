@@ -1,8 +1,16 @@
+// ========================================
+// Configuración del Chatbot
+// ========================================
+
 export interface ChatbotSetting {
   id: number;
   isEnabled: boolean;
   updatedAt: string;
 }
+
+// ========================================
+// Mensajes Automáticos (Bienvenida/Fallback)
+// ========================================
 
 export interface ChatbotMessage {
   id: number;
@@ -19,6 +27,10 @@ export interface ChatbotMessageForm {
   displayOrder: number;
 }
 
+// ========================================
+// Respuestas del Bot
+// ========================================
+
 export interface BotReplyMeta {
   matchedQuestion?: string;
   tokens?: string[];
@@ -32,6 +44,10 @@ export interface BotReply {
   confidence?: number;
   meta?: BotReplyMeta;
 }
+
+// ========================================
+// Health Check
+// ========================================
 
 export interface BotHealth {
   ok: boolean;

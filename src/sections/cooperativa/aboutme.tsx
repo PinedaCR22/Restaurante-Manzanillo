@@ -31,7 +31,7 @@ export default function AboutMe() {
           <AnimatePresence mode="wait">
             <motion.img
               key={img || "fallback"}
-              src={img || "https://via.placeholder.com/1200x600?text=Mudecoop"}
+              src={img || "https://picsum.photos/1200/600?blur=5"}
               alt={historia?.title ?? "Historia de Mudecoop"}
               className="w-full h-full object-cover"
               initial={{ opacity: 0 }}

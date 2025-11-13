@@ -34,7 +34,7 @@ export default function Descriptions() {
           <AnimatePresence mode="wait">
             <motion.img
               key={img || "fallback"}
-              src={img || "https://via.placeholder.com/1200x600?text=Turismo"}
+              src={img || "https://picsum.photos/1200/600?blur=5"}
               alt={titulo}
               className="w-full h-full object-cover"
               initial={{ opacity: 0 }}

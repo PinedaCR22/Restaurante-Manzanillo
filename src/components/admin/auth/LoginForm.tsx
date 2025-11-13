@@ -76,7 +76,6 @@ export default function LoginForm() {
           Contraseña
         </label>
 
-        {/* input + botón dentro del relative */}
         <div className="relative">
           <input
             id="password"
@@ -149,6 +148,18 @@ export default function LoginForm() {
       >
         {submitting ? 'Accediendo…' : 'Acceder al Sistema'}
       </button>
+
+      {/* 🔹 Botón regresar al Home */}
+      <div className="pt-4 text-center">
+        <button
+          type="button"
+          onClick={() => navigate('/')}
+          className="px-6 py-2 text-[#0D784A] font-semibold rounded-lg border border-[#0D784A]
+                     hover:bg-[#0D784A] hover:text-white transition duration-200"
+        >
+          ← Regresar al Inicio
+        </button>
+      </div>
     </form>
   );
 }

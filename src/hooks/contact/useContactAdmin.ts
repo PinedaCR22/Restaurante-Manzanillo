@@ -5,12 +5,22 @@ import type { ContactForm, ContactItem } from "../../types/contact/contact";
 export function useContactAdmin() {
   const [items, setItems] = useState<ContactItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    setLoading(true);
-    const data = await ContactService.list();
-    setItems(data);
-    setLoading(false);
+    console.log("🔄 [useContactAdmin] Iniciando carga...");
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await ContactService.list();
+      console.log("✅ [useContactAdmin] Contactos cargados:", data);
+      setItems(data);
+    } catch (err) {
+      console.error("❌ [useContactAdmin] Error:", err);
+      setError(err instanceof Error ? err.message : "Error desconocido");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -19,40 +29,70 @@ export function useContactAdmin() {
 
   const onCreate = useCallback(
     async (form: ContactForm) => {
-      await ContactService.create(form);
-      await load();
+      console.log("➕ [useContactAdmin] Creando contacto:", form);
+      try {
+        await ContactService.create(form);
+        await load();
+      } catch (err) {
+        console.error("❌ [useContactAdmin] Error al crear:", err);
+        throw err;
+      }
     },
     [load]
   );
 
   const onEdit = useCallback(
     async (id: number, form: ContactForm) => {
-      await ContactService.update(id, form);
-      await load();
+      console.log("✏️ [useContactAdmin] Editando contacto:", id, form);
+      try {
+        await ContactService.update(id, form);
+        await load();
+      } catch (err) {
+        console.error("❌ [useContactAdmin] Error al editar:", err);
+        throw err;
+      }
     },
     [load]
   );
 
   const onDelete = useCallback(
     async (id: number) => {
-      await ContactService.remove(id);
-      await load();
+      console.log("🗑️ [useContactAdmin] Eliminando contacto:", id);
+      try {
+        await ContactService.remove(id);
+        await load();
+      } catch (err) {
+        console.error("❌ [useContactAdmin] Error al eliminar:", err);
+        throw err;
+      }
     },
     [load]
   );
 
   const onToggle = useCallback(
     async (id: number, val: boolean) => {
-      await ContactService.updateVisibility(id, val);
-      await load();
+      console.log("🔄 [useContactAdmin] Toggle visibilidad:", id, val);
+      try {
+        await ContactService.updateVisibility(id, val);
+        await load();
+      } catch (err) {
+        console.error("❌ [useContactAdmin] Error al toggle:", err);
+        throw err;
+      }
     },
     [load]
   );
 
   const onReorder = useCallback(
     async (id: number, displayOrder: number) => {
-      await ContactService.updateOrder(id, displayOrder);
-      await load();
+      console.log("🔢 [useContactAdmin] Reordenando:", id, displayOrder);
+      try {
+        await ContactService.updateOrder(id, displayOrder);
+        await load();
+      } catch (err) {
+        console.error("❌ [useContactAdmin] Error al reordenar:", err);
+        throw err;
+      }
     },
     [load]
   );
@@ -65,6 +105,7 @@ export function useContactAdmin() {
   return {
     items,
     loading,
+    error, // 👈 Exportar el error
     reload: load,
     onCreate,
     onEdit,

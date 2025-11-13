@@ -147,8 +147,9 @@ export default function Sidebar(props: SidebarProps) {
       />
 
       <aside
-        className={`fixed top-0 left-0 z-50 h-screen bg-white/95 backdrop-blur border-r border-neutral-200 transition-[width,transform]
-                    md:translate-x-0 ${mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
+        className={`fixed top-0 left-0 z-50 h-screen bg-white/95 backdrop-blur border-r border-neutral-200 transition-[width,transform] md:translate-x-0 ${
+          mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
         style={{ width: collapsed ? SIDEBAR_W_COLLAPSED : SIDEBAR_W_EXPANDED }}
       >
         <div className="h-16 flex items-center gap-3 px-3">
@@ -180,7 +181,8 @@ export default function Sidebar(props: SidebarProps) {
           </button>
         </div>
 
-        <nav className="px-2 py-3 space-y-1 overflow-y-auto h-[calc(100vh-4rem)]">
+        {/* Contenedor de navegación con scroll */}
+        <nav className="px-2 py-3 space-y-1 overflow-y-auto h-[calc(100vh-4rem-3rem)]"> {/* Ajustar la altura y overflow */}
           {navItems.map((item, i) =>
             item.children ? (
               <SidebarGroup key={i} item={item} collapsed={collapsed} brandVars={brandVars} inkVars={inkVars} />
@@ -190,6 +192,7 @@ export default function Sidebar(props: SidebarProps) {
           )}
         </nav>
 
+        {/* Pie de página fijo al fondo */}
         {!collapsed && (
           <div className="absolute bottom-3 left-3 right-3 rounded-xl border border-neutral-200 bg-white px-3 py-2.5">
             <div className="text-xs text-neutral-500">© {new Date().getFullYear()} Restaurante Flotante</div>
@@ -229,9 +232,7 @@ function SidebarLink({ item, collapsed, brandVars, inkVars }: { item: NavItem; c
             </span>
           )}
           {!collapsed && (
-            <span className={isActive ? "font-medium text-white" : "group-hover:text-[color:var(--brand-600)]"}>
-              {item.label}
-            </span>
+            <span className={isActive ? "font-medium text-white" : "group-hover:text-[color:var(--brand-600)]"}>{item.label}</span>
           )}
         </>
       )}
