@@ -2,14 +2,18 @@ import type { ContactForm, ContactItem } from "../../types/contact/contact";
 
 const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
+console.log("🔧 [ContactService] API_BASE:", API_BASE);
+
 // --- helpers ---
 function getToken(): string {
-  return (
+  const token =
     localStorage.getItem("token") ||
     localStorage.getItem("accessToken") ||
     sessionStorage.getItem("token") ||
-    ""
-  );
+    "";
+  
+  console.log("🔑 [ContactService] Token encontrado:", token ? `${token.substring(0, 20)}...` : "❌ NO HAY TOKEN");
+  return token;
 }
 
 function isFormData(v: unknown): v is FormData {
@@ -19,20 +23,41 @@ function isFormData(v: unknown): v is FormData {
 async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   const headers = new Headers(init.headers);
   const token = getToken();
-  if (token && !headers.has("Authorization"))
+  
+  if (token && !headers.has("Authorization")) {
     headers.set("Authorization", `Bearer ${token}`);
+    console.log("✅ [ContactService] Header Authorization agregado");
+  } else if (!token) {
+    console.warn("⚠️ [ContactService] NO HAY TOKEN para agregar");
+  }
+
   if (!isFormData(init.body)) {
     if (!headers.has("Content-Type"))
       headers.set("Content-Type", "application/json");
     if (!headers.has("Accept")) headers.set("Accept", "application/json");
   }
-  const res = await fetch(`${API_BASE}${path}`, { ...init, headers });
+
+  const url = `${API_BASE}${path}`;
+  console.log(`📡 [ContactService] ${init.method || "GET"} ${url}`);
+
+  const res = await fetch(url, { ...init, headers });
+  
+  console.log(`📥 [ContactService] Response status: ${res.status}`);
+
   if (!res.ok) {
     const text = await res.text().catch(() => "");
+    console.error(`❌ [ContactService] Error response:`, text);
     throw new Error(`HTTP ${res.status} ${res.statusText} - ${text}`);
   }
-  if (res.status === 204) return undefined as unknown as T;
-  return res.json() as Promise<T>;
+
+  if (res.status === 204) {
+    console.log("✅ [ContactService] 204 No Content");
+    return undefined as unknown as T;
+  }
+
+  const data = await res.json();
+  console.log("✅ [ContactService] Data received:", data);
+  return data as T;
 }
 
 // --- service ---

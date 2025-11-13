@@ -60,15 +60,15 @@ export function CoopActivityContacts({ activityId }: Props) {
           No hay mensajes de contacto para esta actividad.
         </div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {contacts.map((c) => (
             <div
               key={c.id}
-              className="bg-white rounded-xl shadow-sm p-5 hover:shadow-md transition cursor-pointer"
+              className="bg-white rounded-xl shadow-sm p-5 hover:shadow-md transition cursor-pointer w-full"
               onClick={() => setSelected(c)}
             >
-              <div className="flex justify-between items-start">
-                <div>
+              <div className="flex justify-between items-start flex-wrap">
+                <div className="flex-1">
                   <p className="font-semibold text-[#0D784A]">{c.full_name}</p>
                   <p className="text-sm text-gray-600">{c.email}</p>
                 </div>
@@ -79,6 +79,7 @@ export function CoopActivityContacts({ activityId }: Props) {
                     e.stopPropagation();
                     void handleDelete(c.id);
                   }}
+                  className="mt-2 sm:mt-0"
                 >
                   Eliminar
                 </Button>

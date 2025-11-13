@@ -3,14 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "packageManager": "npm@10.9.2",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "postinstall": "node -e \"try{require('@tailwindcss/oxide');console.log('Oxide OK')}catch(e){console.log('Oxide no disponible, usar\u00E9 WASM') }\""
+    "postinstall": "node -e \"try{require('@tailwindcss/oxide');console.log('Oxide OK')}catch(e){console.log('Oxide no disponible, usaré WASM') }\""
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -21,7 +23,7 @@
     "@radix-ui/react-select": "^2.2.6",
     "@tailwindcss/vite": "^4.1.12",
     "date-fns": "^4.1.0",
-    "framer-motion": "^12.23.12",
+    "framer-motion": "^12.23.24",
     "fuse.js": "^7.1.0",
     "i18next": "^25.5.3",
     "i18next-browser-languagedetector": "^8.2.0",

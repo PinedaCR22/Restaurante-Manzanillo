@@ -346,13 +346,6 @@ export default function AdminFaqChatbotPage() {
         onSubmit={handleSaveMessage}
       />
 
-     // src/pages/admin/AdminFaqChatbotPage.tsx
-// Fragmento con las correcciones necesarias
-
-// ...imports anteriores...
-
-// En la sección de ConfirmDialogs, cambiar:
-
       {/* Confirmaciones */}
       <ConfirmDialog
         open={!!confirmDeleteFaq}

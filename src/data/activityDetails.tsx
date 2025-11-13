@@ -63,26 +63,17 @@ export interface ActivityBlock {
    🏝️ Página principal del detalle de actividad
 --------------------------------------------------------- */
 export default function ActivityDetailPage() {
-  const { activityId } = useParams<{ activityId: string }>();
+  const { id } = useParams();
   const navigate = useNavigate();
   const contentRef = useRef<HTMLDivElement | null>(null);
 
-  // ✅ Validación y conversión segura del ID
-  const parsedId = React.useMemo(() => {
-    if (!activityId) return undefined;
-    const trimmed = activityId.trim();
-    if (!/^[0-9]+$/.test(trimmed)) return undefined;
-    const num = parseInt(trimmed, 10);
-    return num > 0 ? num : undefined;
-  }, [activityId]);
-
-  // ✅ Hook del backend
-  const { activity, loading, error } = useTourismDetail(parsedId);
+  const activityId = Number(id);
+  const { activity, loading, error } = useTourismDetail(activityId);
 
   const cover = activity?.image_path || FALLBACK_IMG;
-  const title = activity?.title || "Actividad";
+  const title = activity?.title || "Actividad Turística";
 
-  const schedulesText = activity?.include_schedule_text || null;
+  const schedulesText = activity?.include_schedule_text ?? "Horarios: por confirmar.";
   const contacts = [
     activity?.contact_email && `Correo: ${activity.contact_email}`,
     activity?.contact_phone && `Teléfono: ${activity.contact_phone}`,
@@ -100,7 +91,7 @@ export default function ActivityDetailPage() {
         }))
       : [];
 
-  // ✅ Secciones principales (solo mostrar si tienen contenido REAL)
+  // ✅ Secciones principales
   const sections = useMemo<
     Array<
       | { key: string; title: string; image: string; body: string }
@@ -108,40 +99,26 @@ export default function ActivityDetailPage() {
     >
   >(() => {
     if (!activity) return [];
-    
-    const allSections = [];
-    
-    // Solo agregar descripción si existe
-    if (activity.description) {
-      allSections.push({
+    return [
+      {
         key: "desc",
         title: "Descripción",
         image: cover,
-        body: activity.description,
-      });
-    }
-    
-    // Solo agregar horarios si existe
-    if (schedulesText) {
-      allSections.push({
+        body: activity.description ?? "Sin descripción disponible.",
+      },
+      {
         key: "incluye",
         title: "¿Qué incluye y horarios?",
         image: cover,
         items: [schedulesText],
-      });
-    }
-    
-    // Solo agregar contacto si hay al menos un dato de contacto
-    if (contacts.length > 0) {
-      allSections.push({
+      },
+      {
         key: "contacto",
         title: "Contacto y reservas",
         image: cover,
-        items: contacts,
-      });
-    }
-    
-    return allSections;
+        items: contacts.length ? contacts : ["Sin información de contacto."],
+      },
+    ];
   }, [activity, cover, schedulesText, contacts]);
 
   const handleScrollDown = () =>
@@ -275,7 +252,7 @@ export default function ActivityDetailPage() {
             );
           })}
 
-          {/* Bloques dinámicos */}
+          {/* Bloques dinámicos tipados */}
           {blocks.map((block, idx) => {
             const reverse = idx % 2 === 0;
             return (

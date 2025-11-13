@@ -60,14 +60,14 @@ export default function RestaurantReservationsPage() {
           type: "EMAIL",
           restaurant_reservation_id: created.id,
           user_id: adminId,
-          reservation_url: `https://admin.mudecoop.cr/reservas/${created.id}`,
+          reservation_url: `${window.location.origin}/admin/reservas/${created.id}`,
         });
         console.log("📧 Notificación enviada correctamente (push + email)");
       } catch (notifyErr) {
         console.error("⚠️ Error al enviar notificación:", notifyErr);
       }
 
-      alert("Reserva creada correctamente ✅");
+      //alert("Reserva creada correctamente ✅");
 
       // 🔄 Actualizamos lista local
       await refetch();

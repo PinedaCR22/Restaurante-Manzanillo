@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { DonCangrejo } from "./DonCangrejo";
+import { BotPublicService } from "../services/public/bot-public.service";
 
 /* ========= Tipos ========= */
 export type ChatCrabMessage = {
@@ -12,14 +13,13 @@ export type ChatCrabMessage = {
 export type ChatCrabProps = {
   title?: string;
   subtitle?: string;
-  accent?: string;        // color acento (botón, burbuja user)
-  headerColor?: string;   // color del header
+  accent?: string;
+  headerColor?: string;
   position?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
-  offset?: { x?: number; y?: number }; // opcional
+  offset?: { x?: number; y?: number };
   initialOpen?: boolean;
-  initialMessages?: ChatCrabMessage[];
-  onSend?: (text: string) => Promise<ChatCrabMessage | void> | ChatCrabMessage | void;
   botMood?: "happy" | "helpful" | "thinking" | "celebrate" | "warning" | "sleep";
+  onSend?: (text: string) => Promise<ChatCrabMessage>;
 };
 
 /* ========= Botón flotante (launcher) ========= */
@@ -48,21 +48,18 @@ const Launcher: React.FC<{
       onClick={onClick}
       aria-label="Abrir chat Don Cangrejo"
       style={corner}
-      className={`group rounded-full shadow-lg border border-[color-mix(in srgb, var(--fg) 20%, transparent)]
+      className={`group rounded-full shadow-lg border border-[color-mix(in_srgb,_var(--fg)_20%,_transparent)]
                   bg-[var(--card)] backdrop-blur p-3 transition
                   focus:outline-none focus:ring-2 focus:ring-offset-2
                   ${open ? "opacity-0 pointer-events-none" : "opacity-100"}`}
     >
       <div
         className="relative grid place-items-center rounded-full size-12 md:size-14 overflow-hidden
-                   border border-[color-mix(in srgb, var(--fg) 25%, transparent)]"
-        // Fondo adaptado a tema
+                   border border-[color-mix(in_srgb,_var(--fg)_25%,_transparent)]"
         style={{ background: "var(--card)" }}
       >
-        {/* Mascota */}
         <DonCangrejo mood="happy" size={40} className="animate-crab-bob" />
 
-        {/* halo suave en hover */}
         <span
           className="pointer-events-none absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition"
           style={{ boxShadow: `0 0 0 6px ${accent}1A inset` }}
@@ -78,8 +75,6 @@ const Launcher: React.FC<{
   );
 };
 
-
-
 /* ========= Panel del chat ========= */
 const ChatPanel: React.FC<{
   open: boolean;
@@ -90,7 +85,9 @@ const ChatPanel: React.FC<{
   headerColor: string;
   messages: ChatCrabMessage[];
   onSend: (text: string) => void;
+  onClear?: () => void;
   botMood?: ChatCrabProps["botMood"];
+  isLoading?: boolean;
 }> = ({
   open,
   onClose,
@@ -100,7 +97,9 @@ const ChatPanel: React.FC<{
   headerColor,
   messages,
   onSend,
+  onClear,
   botMood = "helpful",
+  isLoading = false,
 }) => {
   const [text, setText] = useState("");
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -140,7 +139,7 @@ const ChatPanel: React.FC<{
 
   const handleSend = () => {
     const trimmed = text.trim();
-    if (!trimmed) return;
+    if (!trimmed || isLoading) return;
     onSend(trimmed);
     setText("");
   };
@@ -178,13 +177,43 @@ const ChatPanel: React.FC<{
             <h3 className="text-base font-semibold truncate">{title}</h3>
             {subtitle && <p className="text-xs/5 opacity-90 truncate">{subtitle}</p>}
           </div>
-          <button
-            onClick={onClose}
-            className="rounded-md bg-white/10 hover:bg-white/20 active:bg-white/25 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-white/60"
-            aria-label="Cerrar"
-          >
-            ✕
-          </button>
+          <div className="flex items-center gap-1">
+            {/* Botón limpiar chat */}
+            {onClear && messages.length > 0 && (
+              <button
+                onClick={onClear}
+                className="rounded-md bg-white/10 hover:bg-white/20 active:bg-white/25 p-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-white/60"
+                aria-label="Limpiar conversación"
+                title="Limpiar conversación"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M3 6h18" />
+                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                  <line x1="10" y1="11" x2="10" y2="17" />
+                  <line x1="14" y1="11" x2="14" y2="17" />
+                </svg>
+              </button>
+            )}
+            {/* Botón cerrar */}
+            <button
+              onClick={onClose}
+              className="rounded-md bg-white/10 hover:bg-white/20 active:bg-white/25 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-white/60"
+              aria-label="Cerrar"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Mensajes */}
@@ -215,10 +244,10 @@ const ChatPanel: React.FC<{
                   }`}
                   style={
                     m.role === "user"
-                      ? {
-                          ["--accent-50" as any]: accent + "1A",
-                          ["--accent-200" as any]: accent + "66",
-                        }
+                      ? ({
+                          "--accent-50": accent + "1A",
+                          "--accent-200": accent + "66",
+                        } as React.CSSProperties)
                       : undefined
                   }
                 >
@@ -226,6 +255,19 @@ const ChatPanel: React.FC<{
                 </div>
               </div>
             ))
+          )}
+          
+          {/* Indicador de escritura */}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="max-w-[85%] rounded-2xl px-3 py-2 text-sm shadow-sm border bg-[var(--card)] border-neutral-300 dark:border-neutral-600">
+                <div className="flex gap-1 items-center">
+                  <span className="inline-block w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                  <span className="inline-block w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                  <span className="inline-block w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                </div>
+              </div>
+            </div>
           )}
         </div>
 
@@ -238,15 +280,17 @@ const ChatPanel: React.FC<{
               onChange={(e) => setText(e.target.value)}
               placeholder="Escribe tu mensaje…"
               rows={1}
+              disabled={isLoading}
               onKeyDown={(e) => {
                 if ((e.ctrlKey || e.metaKey) && e.key === "Enter") handleSend();
               }}
-              className="flex-1 resize-none rounded-xl border border-neutral-300 dark:border-neutral-600 bg-[var(--card)] px-3 py-2 text-sm text-[var(--fg)] outline-none focus:ring-2 focus:ring-[var(--accent)]"
-              style={{ ["--accent" as any]: accent }}
+              className="flex-1 resize-none rounded-xl border border-neutral-300 dark:border-neutral-600 bg-[var(--card)] px-3 py-2 text-sm text-[var(--fg)] outline-none focus:ring-2 focus:ring-[var(--accent)] disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ "--accent": accent } as React.CSSProperties}
             />
             <button
               onClick={handleSend}
-              className="relative z-20 shrink-0 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm focus:outline-none focus:ring-2"
+              disabled={isLoading || !text.trim()}
+              className="relative z-20 shrink-0 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ background: accent }}
             >
               Enviar
@@ -259,13 +303,6 @@ const ChatPanel: React.FC<{
   );
 };
 
-/* ========= Mensajes demo ========= */
-const defaultDemo: ChatCrabMessage[] = [
-  { id: "1", role: "assistant", text: "¡Pura vida! ¿Reservamos o quieres ver horarios?" },
-  { id: "2", role: "user", text: "Reserva para 4 mañana 7pm." },
-  { id: "3", role: "assistant", text: "Con gusto. ¿Nombre y teléfono de contacto?" },
-];
-
 /* ========= Widget principal ========= */
 const ChatCrabWidget: React.FC<ChatCrabProps> = ({
   title = "Don Cangrejo — Chat",
@@ -275,49 +312,129 @@ const ChatCrabWidget: React.FC<ChatCrabProps> = ({
   position = "bottom-right",
   offset = { x: 20, y: 20 },
   initialOpen = false,
-  initialMessages = defaultDemo,
-  onSend,
   botMood,
+  onSend,
 }) => {
   const [open, setOpen] = useState(initialOpen);
-  const [messages, setMessages] = useState<ChatCrabMessage[]>(initialMessages);
+  const [messages, setMessages] = useState<ChatCrabMessage[]>([]);
   const [unread, setUnread] = useState(false);
   const [mood, setMood] = useState<NonNullable<ChatCrabProps["botMood"]>>(botMood ?? "helpful");
+  const [isLoadingInitial, setIsLoadingInitial] = useState(true);
+  const [botReady, setBotReady] = useState(false);
+  const [initialMessagesCache, setInitialMessagesCache] = useState<ChatCrabMessage[]>([]);
+
+  // 🔄 Cargar mensajes iniciales y verificar salud del bot
+  useEffect(() => {
+    (async () => {
+      try {
+        console.log("🔄 [ChatCrab] Inicializando...");
+        
+        // Verificar salud del bot primero
+        const health = await BotPublicService.checkHealth();
+        console.log("🩺 [ChatCrab] Health check:", health);
+        
+        if (!health.ok) {
+          console.log("🚫 [ChatCrab] Bot deshabilitado");
+          setBotReady(false);
+          return;
+        }
+        
+        setBotReady(true);
+        
+        // Cargar mensajes iniciales
+        const initialMsgs = await BotPublicService.getInitialMessages();
+        
+        if (initialMsgs.length > 0) {
+          const formatted: ChatCrabMessage[] = initialMsgs.map((msg) => ({
+            id: crypto.randomUUID(),
+            role: "assistant" as const,
+            text: msg.content,
+            ts: Date.now(),
+          }));
+          
+          setMessages(formatted);
+          setInitialMessagesCache(formatted); // 💾 Guardar para reset
+          console.log("✅ [ChatCrab] Mensajes iniciales cargados:", formatted.length);
+        } else {
+          // Mensaje de bienvenida por defecto
+          const defaultMsg = [{
+            id: crypto.randomUUID(),
+            role: "assistant" as const,
+            text: "¡Pura vida! 🦀 Soy Don Cangrejo, tu anfitrión del restaurante flotante. ¿En qué puedo ayudarte hoy?",
+            ts: Date.now(),
+          }];
+          setMessages(defaultMsg);
+          setInitialMessagesCache(defaultMsg); // 💾 Guardar para reset
+        }
+      } catch (error) {
+        console.error("❌ [ChatCrab] Error inicializando:", error);
+        setBotReady(false);
+      } finally {
+        setIsLoadingInitial(false);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     if (!open && messages.at(-1)?.role === "assistant") setUnread(true);
   }, [messages, open]);
 
+  // 🗑️ Función para limpiar el chat
+  const handleClear = () => {
+    if (window.confirm("¿Estás seguro de que quieres limpiar la conversación?")) {
+      setMessages(initialMessagesCache);
+      setMood("helpful");
+      console.log("🗑️ [ChatCrab] Chat limpiado");
+    }
+  };
+
   const send = async (text: string) => {
-    const userMsg: ChatCrabMessage = { id: crypto.randomUUID(), role: "user", text, ts: Date.now() };
+    const userMsg: ChatCrabMessage = { 
+      id: crypto.randomUUID(), 
+      role: "user", 
+      text, 
+      ts: Date.now() 
+    };
+    
     setMessages((prev) => [...prev, userMsg]);
     setMood("thinking");
 
     try {
-      const maybe = await onSend?.(text);
-      if (maybe && typeof maybe === "object") {
-        setMessages((prev) => [...prev, maybe]);
-      } else if (!onSend) {
-        const reply: ChatCrabMessage = {
+      if (onSend) {
+        // Usar el callback proporcionado (del hook useChatbot)
+        const reply = await onSend(text);
+        setMessages((prev) => [...prev, reply]);
+        setMood("helpful");
+      } else {
+        // Fallback si no hay onSend
+        const reply = await BotPublicService.sendMessage(text);
+        const assistantMsg: ChatCrabMessage = {
           id: crypto.randomUUID(),
           role: "assistant",
-          text: "Gracias. Enlazaremos disponibilidad real en breve.",
+          text: reply.reply,
           ts: Date.now(),
         };
-        setMessages((prev) => [...prev, reply]);
+        setMessages((prev) => [...prev, assistantMsg]);
+        setMood("helpful");
       }
-      setMood("helpful");
-    } catch {
-      const err: ChatCrabMessage = {
+    } catch (error) {
+      console.error("❌ [ChatCrab] Error enviando mensaje:", error);
+      setMood("warning");
+      
+      const errorMsg: ChatCrabMessage = {
         id: crypto.randomUUID(),
         role: "assistant",
-        text: "Ups, hubo un problema enviando tu mensaje. Intenta de nuevo.",
+        text: "¡Ups! 🦀 Hubo un problema. Intenta de nuevo en un momento.",
         ts: Date.now(),
       };
-      setMessages((prev) => [...prev, err]);
-      setMood("warning");
+      setMessages((prev) => [...prev, errorMsg]);
     }
   };
+
+  // No mostrar el widget si está cargando o el bot no está listo
+  if (isLoadingInitial || !botReady) {
+    return null;
+  }
 
   return (
     <>
@@ -342,7 +459,9 @@ const ChatCrabWidget: React.FC<ChatCrabProps> = ({
         headerColor={headerColor}
         messages={messages}
         onSend={send}
+        onClear={handleClear}
         botMood={mood}
+        isLoading={false}
       />
     </>
   );

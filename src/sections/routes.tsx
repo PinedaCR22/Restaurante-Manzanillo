@@ -17,6 +17,8 @@ import ReforestacionPage from "./cooperativa/reforestacion";
 import ManglarPage from "./cooperativa/manglar";
 import HistFlotantePage from "./cooperativa/histflotante";
 import HistMudecoopPage from "./cooperativa/histmudecoop";
+import CooperativaDinamicaPage from "../pages/cooperativa-dinamica";
+
 
 // ===== AUTH =====
 import LoginPage from "../pages/auth/LoginPage";
@@ -56,6 +58,7 @@ export const router = createBrowserRouter([
       { path: "activities/:activityId", element: <ActivityDetailPage /> },
 
       { path: "cooperativa", element: <CooperativaPage /> },
+      { path: "cooperativa/:id", element: <CooperativaDinamicaPage /> },
       { path: "cooperativa/mudecoop-jr", element: <MudecoopJRPage /> },
       { path: "cooperativa/reforestacion", element: <ReforestacionPage /> },
       { path: "cooperativa/tour-de-manglar", element: <ManglarPage /> },

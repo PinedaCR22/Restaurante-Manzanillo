@@ -1,32 +1,10 @@
 import React from "react";
+import { DON_COLORS, type DonMood, type DonCangrejoProps } from "./don-cangrejo-constants";
 
 /**
  * DonCangrejo.tsx — Mascota del Restaurante Flotante (SVG + React)
  * Incluye clases para animar ojos (blink) y pinzas (pinch).
  */
-
-export const DON_COLORS = {
-  shell: "#E24A3B",
-  shellDark: "#C93E31",
-  highlight: "#EF6B5A",
-  eye: "#1F2937",
-  white: "#FFFFFF",
-  wood: "#443314", // MUDECOOP
-  sea: "#0D784A",  // acento
-  sand: "#FBE8D2",
-};
-
-export type DonMood = "happy" | "helpful" | "thinking" | "celebrate" | "warning" | "sleep";
-
-export type DonCangrejoProps = {
-  mood?: DonMood;
-  size?: number;          // px
-  cap?: boolean;          // gorra de capitán
-  mustache?: boolean;     // bigote (Don)
-  title?: string;
-  colors?: Partial<typeof DON_COLORS>;
-  className?: string;
-};
 
 const Eye = ({
   x,
@@ -35,14 +13,24 @@ const Eye = ({
   colors = DON_COLORS,
   className = "",
 }: {
-  x: number; y: number; mood?: DonMood; colors?: typeof DON_COLORS; className?: string;
+  x: number;
+  y: number;
+  mood?: DonMood;
+  colors?: typeof DON_COLORS;
+  className?: string;
 }) => {
   const pupil = { r: 2.2, fill: colors.eye };
   switch (mood) {
     case "sleep":
       return (
         <g className={className}>
-          <path d={`M${x - 8} ${y} q 8 4 16 0`} stroke={colors.eye} strokeWidth={2} fill="none" strokeLinecap="round" />
+          <path
+            d={`M${x - 8} ${y} q 8 4 16 0`}
+            stroke={colors.eye}
+            strokeWidth={2}
+            fill="none"
+            strokeLinecap="round"
+          />
         </g>
       );
     case "thinking":
@@ -71,31 +59,95 @@ const Eye = ({
 const Mouth = ({ mood = "happy" }: { mood?: DonMood }) => {
   switch (mood) {
     case "helpful":
-      return <path d="M52 78 q 12 10 24 0" stroke="#3a120a" strokeWidth={3} fill="none" strokeLinecap="round" />;
+      return (
+        <path
+          d="M52 78 q 12 10 24 0"
+          stroke="#3a120a"
+          strokeWidth={3}
+          fill="none"
+          strokeLinecap="round"
+        />
+      );
     case "thinking":
-      return <path d="M56 78 q 8 -4 16 0" stroke="#3a120a" strokeWidth={3} fill="none" strokeLinecap="round" />;
+      return (
+        <path
+          d="M56 78 q 8 -4 16 0"
+          stroke="#3a120a"
+          strokeWidth={3}
+          fill="none"
+          strokeLinecap="round"
+        />
+      );
     case "celebrate":
-      return <path d="M50 76 q 14 14 28 0" stroke="#3a120a" strokeWidth={3} fill="none" strokeLinecap="round" />;
+      return (
+        <path
+          d="M50 76 q 14 14 28 0"
+          stroke="#3a120a"
+          strokeWidth={3}
+          fill="none"
+          strokeLinecap="round"
+        />
+      );
     case "warning":
-      return <path d="M58 80 h20" stroke="#3a120a" strokeWidth={3} fill="none" strokeLinecap="round" />;
+      return (
+        <path
+          d="M58 80 h20"
+          stroke="#3a120a"
+          strokeWidth={3}
+          fill="none"
+          strokeLinecap="round"
+        />
+      );
     case "sleep":
-      return <path d="M58 82 q 10 2 20 0" stroke="#3a120a" strokeWidth={3} fill="none" strokeLinecap="round" />;
+      return (
+        <path
+          d="M58 82 q 10 2 20 0"
+          stroke="#3a120a"
+          strokeWidth={3}
+          fill="none"
+          strokeLinecap="round"
+        />
+      );
     default:
-      return <path d="M54 80 q 10 6 20 0" stroke="#3a120a" strokeWidth={3} fill="none" strokeLinecap="round" />;
+      return (
+        <path
+          d="M54 80 q 10 6 20 0"
+          stroke="#3a120a"
+          strokeWidth={3}
+          fill="none"
+          strokeLinecap="round"
+        />
+      );
   }
 };
 
 const Cap = ({ colors = DON_COLORS }: { colors?: typeof DON_COLORS }) => (
   <g>
-    <path d="M40 36 q 24 -18 48 0 l -4 6 q -20 -8 -40 0 z" fill={colors.sea} opacity={0.92} />
+    <path
+      d="M40 36 q 24 -18 48 0 l -4 6 q -20 -8 -40 0 z"
+      fill={colors.sea}
+      opacity={0.92}
+    />
     <rect x="45" y="41" width="38" height="6" rx="3" fill={colors.wood} opacity={0.9} />
   </g>
 );
 
 const Mustache = ({ colors = DON_COLORS }: { colors?: typeof DON_COLORS }) => (
   <g>
-    <path d="M52 86 q 6 -6 12 0" stroke={colors.wood} strokeWidth={3} fill="none" strokeLinecap="round" />
-    <path d="M64 86 q 6 -6 12 0" stroke={colors.wood} strokeWidth={3} fill="none" strokeLinecap="round" />
+    <path
+      d="M52 86 q 6 -6 12 0"
+      stroke={colors.wood}
+      strokeWidth={3}
+      fill="none"
+      strokeLinecap="round"
+    />
+    <path
+      d="M64 86 q 6 -6 12 0"
+      stroke={colors.wood}
+      strokeWidth={3}
+      fill="none"
+      strokeLinecap="round"
+    />
   </g>
 );
 
@@ -107,11 +159,33 @@ export const DonCangrejoLogoMark: React.FC<{
 }> = ({ size = 44, className, title = "Don Cangrejo", colors }) => {
   const C = { ...DON_COLORS, ...colors };
   return (
-    <svg width={size} height={size} viewBox="0 0 128 128" className={className} role="img" aria-label={title} xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 128 128"
+      className={className}
+      role="img"
+      aria-label={title}
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <title>{title}</title>
       <circle cx="64" cy="64" r="60" fill={C.sand} stroke={C.sea} strokeWidth={6} />
-      <path d="M36 56 q 12 -22 32 -12 q 18 8 24 26 q -22 10 -40 0 q -10 -6 -16 -14 z" fill={C.shell} stroke={C.shellDark} strokeWidth={2}/>
-      <text x="66" y="86" fontSize="40" fontWeight="800" fill={C.wood} fontFamily="ui-sans-serif, system-ui">D</text>
+      <path
+        d="M36 56 q 12 -22 32 -12 q 18 8 24 26 q -22 10 -40 0 q -10 -6 -16 -14 z"
+        fill={C.shell}
+        stroke={C.shellDark}
+        strokeWidth={2}
+      />
+      <text
+        x="66"
+        y="86"
+        fontSize="40"
+        fontWeight="800"
+        fill={C.wood}
+        fontFamily="ui-sans-serif, system-ui"
+      >
+        D
+      </text>
     </svg>
   );
 };
@@ -163,9 +237,21 @@ export const DonCangrejo: React.FC<DonCangrejoProps> = ({
         <path d="M92 86 l 10 10" />
       </g>
 
-      {/* pinzas con “pinch” */}
-      <path className="animate-claw-pinch" d="M26 52c-6-6-8-14-5-19 6 0 12 6 14 12-4 2-7 4-9 7z" fill={C.shell} stroke={C.shellDark} strokeWidth={2} />
-      <path className="animate-claw-pinch" d="M102 52c6-6 8-14 5-19-6 0-12 6-14 12 4 2 7 4 9 7z" fill={C.shell} stroke={C.shellDark} strokeWidth={2} />
+      {/* pinzas con "pinch" */}
+      <path
+        className="animate-claw-pinch"
+        d="M26 52c-6-6-8-14-5-19 6 0 12 6 14 12-4 2-7 4-9 7z"
+        fill={C.shell}
+        stroke={C.shellDark}
+        strokeWidth={2}
+      />
+      <path
+        className="animate-claw-pinch"
+        d="M102 52c6-6 8-14 5-19-6 0-12 6-14 12 4 2 7 4 9 7z"
+        fill={C.shell}
+        stroke={C.shellDark}
+        strokeWidth={2}
+      />
 
       {cap && <Cap colors={C} />}
 

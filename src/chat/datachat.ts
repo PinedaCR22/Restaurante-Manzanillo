@@ -1,3 +1,8 @@
+/**
+ * Este archivo ya no es necesario porque los mensajes vienen del backend.
+ * Se mantiene solo como referencia o fallback local en desarrollo.
+ */
+
 export const quickReplies = [
   { id: "qr1", text: "Reservar mesa" },
   { id: "qr2", text: "Horarios de hoy" },
@@ -7,3 +12,6 @@ export const quickReplies = [
 
 export const greeting =
   "¡Hola! Soy Don Cangrejo 🦀⚓ Tu anfitrión del restaurante flotante. ¿Te ayudo a reservar?";
+
+// Los mensajes iniciales ahora vienen de /bot/messages/initial
+// Las respuestas vienen de /bot/reply con el matching de FAQs
